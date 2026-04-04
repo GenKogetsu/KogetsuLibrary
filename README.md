@@ -44,6 +44,9 @@
 * **C# Version:** Internal enforcement of **C# 10.0** via `csc.rsp`.
 * **Dependencies:** `com.unity.textmeshpro` is required and automatically resolved.
 
+### 📄 License
+This work is licensed under the CC BY-NC 4.0 (Attribution-NonCommercial) license. Commercial use without permission from Genoverrei is prohibited.
+
 ---
 
 <h2 id="thai-version-ภาษาไทย">🇹🇭 Thai Version (ภาษาไทย)</h2>
