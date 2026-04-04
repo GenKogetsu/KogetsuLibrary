@@ -77,9 +77,9 @@
 `git@github.com:GenKogetsu/GenoverreiLibary6.git`
 
 ### ⚙️ ความต้องการของระบบ
-* **Unity:** 6000.0 or higher.
-* **C# Version:** Internal enforcement of **C# 10.0** via `csc.rsp`.
-* **Dependencies:** `com.unity.textmeshpro` is required and automatically resolved.
+* **Unity:** 6000.0 หรือ สูงกว่า.
+* **C# Version:** บังคับใช้งาน **C# 10.0** โดยใช้ไฟล์ `csc.rsp`.
+* **Dependencies:** `com.unity.textmeshpro` จะถูกติดตั้งโดยอัตโนมัติ.
 
 ### 📄 สัญญาอนุญาตสิทธิ์ (License)
 อยู่ภายใต้สัญญาอนุญาตแบบ **CC BY-NC 4.0** (แสดงที่มา-ไม่ใช้เพื่อการค้า) **ห้ามใช้ในเชิงพาณิชย์โดยไม่ได้รับอนุญาตจาก Genoverrei**
