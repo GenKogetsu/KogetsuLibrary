@@ -37,7 +37,7 @@
 ### 🚀 Installation
 1. Open **Unity Package Manager**.
 2. Click **+** -> **Add package from git URL...**
-3. Enter: `https://github.com/GenKogetsu/GenoverreiLibrary6-Release.git`
+3. Enter: `git@github.com:GenKogetsu/GenoverreiLibary6.git`
 
 ### ⚙️ Requirements
 * **Unity:** 6000.0 or higher.
