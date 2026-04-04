@@ -74,7 +74,7 @@
 
 ### 🚀 การติดตั้ง
 ติดตั้งผ่าน **Unity Package Manager** โดยใช้ Git URL:
-`https://github.com/GenKogetsu/GenoverreiLibrary6-Release.git`
+`git@github.com:GenKogetsu/GenoverreiLibary6.git`
 
 ### 📄 สัญญาอนุญาตสิทธิ์ (License)
 อยู่ภายใต้สัญญาอนุญาตแบบ **CC BY-NC 4.0** (แสดงที่มา-ไม่ใช้เพื่อการค้า) **ห้ามใช้ในเชิงพาณิชย์โดยไม่ได้รับอนุญาตจาก Genoverrei**
