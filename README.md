@@ -76,6 +76,11 @@
 ติดตั้งผ่าน **Unity Package Manager** โดยใช้ Git URL:
 `git@github.com:GenKogetsu/GenoverreiLibary6.git`
 
+### ⚙️ ความต้องการของระบบ
+* **Unity:** 6000.0 or higher.
+* **C# Version:** Internal enforcement of **C# 10.0** via `csc.rsp`.
+* **Dependencies:** `com.unity.textmeshpro` is required and automatically resolved.
+
 ### 📄 สัญญาอนุญาตสิทธิ์ (License)
 อยู่ภายใต้สัญญาอนุญาตแบบ **CC BY-NC 4.0** (แสดงที่มา-ไม่ใช้เพื่อการค้า) **ห้ามใช้ในเชิงพาณิชย์โดยไม่ได้รับอนุญาตจาก Genoverrei**
 
