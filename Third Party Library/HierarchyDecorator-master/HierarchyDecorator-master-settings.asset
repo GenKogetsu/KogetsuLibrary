@@ -301,7 +301,7 @@ MonoBehaviour:
     enableIcons: 1
     clickToToggleComponent: 1
     showMissingScriptWarning: 1
-    showAll: 3
+    showAll: 1
     stackDuplicateIcons: 0
     unityGroups:
     - name: General
@@ -5131,6 +5131,19 @@ MonoBehaviour:
         excluded: 0
         isBuiltIn: 0
         script: {fileID: 11500000, guid: 76b009f9d1be08f42a278d3353443bb1, type: 3}
+        hasToggle: 1
+      - displayName: AudioManager
+        name: Genoverrei.Library.Core.AudioManager, GenoverreiLibrary, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: AudioManager
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: AudioManager
+          m_TextWithWhitespace: "AudioManager\u200B"
+        shown: 0
+        excluded: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: 91a72f5ac4a08fc479f9546e2a48e3f9, type: 3}
         hasToggle: 1
     unityVersion: 6000.3.8f1
     unityCount: 365
