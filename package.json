@@ -1,0 +1,13 @@
+{
+  "name": "com.genoverrei.library",
+  "version": "0.1.0",
+  "displayName": "Genoverrei Library",
+  "description": "Core Utilities and Design Patterns",
+  "unity": "6000.0",
+  "author": {
+    "name": "Genoverrei"
+  },
+  "dependencies": {
+    "com.unity.textmeshpro": "3.0.9"
+  }
+}
