@@ -301,7 +301,7 @@ MonoBehaviour:
     enableIcons: 1
     clickToToggleComponent: 1
     showMissingScriptWarning: 1
-    showAll: 1
+    showAll: 3
     stackDuplicateIcons: 0
     unityGroups:
     - name: General
