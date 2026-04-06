@@ -2,7 +2,7 @@ using System;
 using Genoverrei.Library.Core;
 
 [Serializable]
-public struct VNConversationNode
+public class VNConversationNode
 {
     public VNConversationMode ConversationMode;
 

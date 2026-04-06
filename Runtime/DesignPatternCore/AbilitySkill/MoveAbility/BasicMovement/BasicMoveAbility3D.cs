@@ -1,10 +1,11 @@
 using System;
+using UnityEditorInternal;
 using UnityEngine;
 
 namespace Genoverrei.Library.DesignPatternCore
 {
     [Serializable]
-    public class BasicMoveAbility3D : BaseMoveAbility3D, IFixedUpdateState
+    public class BasicMoveAbility3D : BaseMoveAbility3D, IEnterState , IFixedUpdateState , IExitState
     {
         [Header("Movement Settings")]
         [SerializeField] private bool _enableRotation = true;
@@ -13,6 +14,18 @@ namespace Genoverrei.Library.DesignPatternCore
         [Header("Ball Settings (Physics Rolling)")]
         [SerializeField] private bool _isBallRolling = false;
         [SerializeField] private float _rollTorque = 10f;
+
+        public void OnEnter()
+        {
+            if (InputObserverChannel != null) InputObserverChannel.OnMoveChannel += SetInput;
+            if (InputObserverChannel != null) InputObserverChannel.OnJumpChannel += ExecuteJump;
+        }
+
+        public void OnExit()
+        {
+            if (InputObserverChannel != null) InputObserverChannel.OnMoveChannel -= SetInput;
+            if (InputObserverChannel != null) InputObserverChannel.OnJumpChannel -= ExecuteJump;
+        }
 
         public void OnFixedUpdate()
         {
@@ -53,7 +66,7 @@ namespace Genoverrei.Library.DesignPatternCore
             }
         }
 
-        public override void ExecuteJump()
+        public void ExecuteJump()
         {
             if (Context?.Stats != null)
                 Context.Rigidbody.AddForce(Vector3.up * Context.Stats.GetJumpForce(), ForceMode.Impulse);

@@ -282,7 +282,8 @@ namespace Genoverrei.Library.Editor
 
             while (!SerializedProperty.EqualContents(child, endProperty))
             {
-                if (isNoneMode && child.name != "DialogueMode" && child.name != "OverrideBmgClip" && child.name != "BmgClip" && child.name != "UseAmbientEvent" && child.name != "AmbientEventName" && child.name != "AmbientEventType")
+                // [แก้ไข] เพิ่มเงื่อนไขอนุญาตให้วาดตัวแปรที่มีคำว่า Background ในโหมด None
+                if (isNoneMode && child.name != "DialogueMode" && !child.name.Contains("Ambient") && !child.name.Contains("Bmg") && !child.name.Contains("Background"))
                 {
                     if (!child.NextVisible(false)) break;
                     continue;
@@ -303,53 +304,7 @@ namespace Genoverrei.Library.Editor
                 }
                 else if (child.name == "UseDialogueText")
                 {
-                    // ข้าม
-                }
-                else if (child.name == "OverrideDialogueAnimation" || child.name == "UseAmbientEvent" || child.name == "UseVoiceoverClip" || child.name == "OverrideBmgClip")
-                {
-                    float indentOffset = EditorGUI.indentLevel * 15f;
-                    float labelWidth = 210f;
-
-                    var toggleRect = new Rect(pos.x + indentOffset, currentY, labelWidth, EditorGUIUtility.singleLineHeight);
-
-                    string lblText = child.name == "OverrideDialogueAnimation" ? "Override Dialogue Animation" :
-                                     child.name == "UseAmbientEvent" ? "Use Ambient Event" :
-                                     child.name == "UseVoiceoverClip" ? "Use Voiceover Clip" : "Override Bmg Clip";
-
-                    child.boolValue = EditorGUI.ToggleLeft(toggleRect, lblText, child.boolValue);
-
-                    if (child.boolValue)
-                    {
-                        string clipName = child.name == "OverrideDialogueAnimation" ? "DialogueBoxAnimation" :
-                                          child.name == "UseAmbientEvent" ? "AmbientEventType" :
-                                          child.name == "UseVoiceoverClip" ? "VoiceoverClip" : "BmgClip";
-
-                        var clipProp = phaseProp.FindPropertyRelative(clipName);
-
-                        if (clipProp == null && child.name == "UseAmbientEvent")
-                        {
-                            clipProp = phaseProp.FindPropertyRelative("AmbientEventName");
-                        }
-
-                        if (clipProp != null)
-                        {
-                            float fieldStartX = toggleRect.xMax + 5f;
-                            float fieldWidth = pos.width - (fieldStartX - pos.x) - 10f;
-
-                            int oldIndent = EditorGUI.indentLevel;
-                            EditorGUI.indentLevel = 0;
-
-                            EditorGUI.PropertyField(new Rect(fieldStartX, currentY, fieldWidth, EditorGUIUtility.singleLineHeight), clipProp, GUIContent.none);
-
-                            EditorGUI.indentLevel = oldIndent;
-                        }
-                    }
-
-                    currentY += EditorGUIUtility.singleLineHeight + 2f;
-                }
-                else if (child.name == "DialogueBoxAnimation" || child.name == "AmbientEventName" || child.name == "AmbientEventType" || child.name == "VoiceoverClip" || child.name == "BmgClip")
-                {
-                    // ข้ามการวาดบรรทัดใหม่
+                    // ข้ามการวาด
                 }
                 else if (child.name == "TextSettings")
                 {
@@ -419,6 +374,51 @@ namespace Genoverrei.Library.Editor
                         }
 
                         EditorGUI.indentLevel--;
+                    }
+                }
+                else if (child.propertyType == SerializedPropertyType.Boolean)
+                {
+                    var nextProp = child.Copy();
+                    bool hasNext = nextProp.NextVisible(false) && !SerializedProperty.EqualContents(nextProp, endProperty);
+
+                    bool isPair = hasNext && (child.name.Contains(nextProp.name) || nextProp.name.Contains(child.name.Replace("Use", "").Replace("Override", "").Replace("Change", "")));
+
+                    if (isPair)
+                    {
+                        float indentOffset = EditorGUI.indentLevel * 15f;
+                        float availableWidth = pos.width - indentOffset;
+
+                        float labelWidth = availableWidth * 0.5f;
+
+                        var toggleRect = new Rect(pos.x + indentOffset, currentY, labelWidth, EditorGUIUtility.singleLineHeight);
+
+                        child.boolValue = EditorGUI.ToggleLeft(toggleRect, child.displayName, child.boolValue);
+
+                        if (child.boolValue)
+                        {
+                            float fieldStartX = toggleRect.xMax;
+                            float fieldWidth = availableWidth - labelWidth;
+
+                            int oldIndent = EditorGUI.indentLevel;
+                            EditorGUI.indentLevel = 0;
+
+                            float oldLabelWidth = EditorGUIUtility.labelWidth;
+                            EditorGUIUtility.labelWidth = 0.1f;
+
+                            EditorGUI.PropertyField(new Rect(fieldStartX, currentY, fieldWidth, EditorGUIUtility.singleLineHeight), nextProp, GUIContent.none);
+
+                            EditorGUIUtility.labelWidth = oldLabelWidth;
+                            EditorGUI.indentLevel = oldIndent;
+                        }
+
+                        currentY += EditorGUIUtility.singleLineHeight + 2f;
+                        child.NextVisible(false);
+                    }
+                    else
+                    {
+                        float h = EditorGUI.GetPropertyHeight(child, true);
+                        EditorGUI.PropertyField(new Rect(pos.x, currentY, pos.width, h), child, true);
+                        currentY += h + 2f;
                     }
                 }
                 else
@@ -769,63 +769,60 @@ namespace Genoverrei.Library.Editor
         {
             if (phaseProp == null) return;
 
-            var dialogueTextProp = phaseProp.FindPropertyRelative("DialogueText");
-            if (dialogueTextProp != null) dialogueTextProp.stringValue = "";
+            var endProperty = phaseProp.GetEndProperty();
+            var child = phaseProp.Copy();
 
-            var pOverrideDialogueAnim = phaseProp.FindPropertyRelative("OverrideDialogueAnimation");
-            if (pOverrideDialogueAnim != null) pOverrideDialogueAnim.boolValue = false;
-
-            var pDialogueBoxAnim = phaseProp.FindPropertyRelative("DialogueBoxAnimation");
-            if (pDialogueBoxAnim != null) pDialogueBoxAnim.objectReferenceValue = null;
-
-            var pAmbient = phaseProp.FindPropertyRelative("UseAmbientEvent");
-            if (pAmbient != null) pAmbient.boolValue = false;
-
-            var pAmbientName = phaseProp.FindPropertyRelative("AmbientEventName");
-            if (pAmbientName != null) pAmbientName.stringValue = "";
-
-            var pAmbientType = phaseProp.FindPropertyRelative("AmbientEventType");
-            if (pAmbientType != null) pAmbientType.enumValueIndex = 0;
-
-            var pVoice = phaseProp.FindPropertyRelative("UseVoiceoverClip");
-            if (pVoice != null) pVoice.boolValue = false;
-
-            var pVoiceClip = phaseProp.FindPropertyRelative("VoiceoverClip");
-            if (pVoiceClip != null) pVoiceClip.objectReferenceValue = null;
-
-            var pBmg = phaseProp.FindPropertyRelative("OverrideBmgClip");
-            if (pBmg != null) pBmg.boolValue = false;
-
-            var pBmgClip = phaseProp.FindPropertyRelative("BmgClip");
-            if (pBmgClip != null) pBmgClip.objectReferenceValue = null;
-
-            var textSettings = phaseProp.FindPropertyRelative("TextSettings");
-            if (textSettings != null)
+            if (child.NextVisible(true))
             {
-                var pOverride = textSettings.FindPropertyRelative("OverrideGlobalSettings");
-                if (pOverride != null) pOverride.boolValue = false;
+                do
+                {
+                    if (SerializedProperty.EqualContents(child, endProperty)) break;
 
-                var pFont = textSettings.FindPropertyRelative("CustomFont");
-                if (pFont != null) pFont.objectReferenceValue = null;
+                    if (child.name == "Speakers")
+                    {
+                        child.ClearArray();
+                        child.arraySize = 0;
+                    }
+                    else if (child.name == "TextSettings")
+                    {
+                        // Reset Text Settings สู่ค่า Default
+                        var pOverride = child.FindPropertyRelative("OverrideGlobalSettings");
+                        if (pOverride != null) pOverride.boolValue = false;
 
-                var pSize = textSettings.FindPropertyRelative("FontSize");
-                if (pSize != null) pSize.floatValue = 36f;
+                        var pFont = child.FindPropertyRelative("CustomFont");
+                        if (pFont != null) pFont.objectReferenceValue = null;
 
-                var pColor = textSettings.FindPropertyRelative("FontColor");
-                if (pColor != null) pColor.colorValue = Color.white;
+                        var pSize = child.FindPropertyRelative("FontSize");
+                        if (pSize != null) pSize.floatValue = 36f;
 
-                var pAlign = textSettings.FindPropertyRelative("Alignment");
-                if (pAlign != null) pAlign.enumValueIndex = 0;
+                        var pColor = child.FindPropertyRelative("FontColor");
+                        if (pColor != null) pColor.colorValue = Color.white;
 
-                var pSpeed = textSettings.FindPropertyRelative("TypingSpeed");
-                if (pSpeed != null) pSpeed.floatValue = 30f;
-            }
+                        var pAlign = child.FindPropertyRelative("Alignment");
+                        if (pAlign != null) pAlign.enumValueIndex = 0;
 
-            var speakersProp = phaseProp.FindPropertyRelative("Speakers");
-            if (speakersProp != null)
-            {
-                speakersProp.ClearArray();
-                speakersProp.arraySize = 0;
+                        var pSpeed = child.FindPropertyRelative("TypingSpeed");
+                        if (pSpeed != null) pSpeed.floatValue = 30f;
+                    }
+                    else if (child.name == "DialogueMode")
+                    {
+                        child.enumValueIndex = 0; // คืนค่าเป็นโหมด None
+                    }
+                    else
+                    {
+                        // สั่ง Reset ค่าแบบ Dynamic สำหรับตัวแปรที่เหลือทั้งหมด
+                        switch (child.propertyType)
+                        {
+                            case SerializedPropertyType.Integer: child.intValue = 0; break;
+                            case SerializedPropertyType.Float: child.floatValue = 0f; break;
+                            case SerializedPropertyType.Boolean: child.boolValue = false; break;
+                            case SerializedPropertyType.String: child.stringValue = ""; break;
+                            case SerializedPropertyType.ObjectReference: child.objectReferenceValue = null; break;
+                            case SerializedPropertyType.Enum: child.enumValueIndex = 0; break;
+                        }
+                    }
+
+                } while (child.NextVisible(false));
             }
         }
 
@@ -904,7 +901,8 @@ namespace Genoverrei.Library.Editor
 
             while (!SerializedProperty.EqualContents(child, end))
             {
-                if (isNoneMode && child.name != "DialogueMode" && child.name != "OverrideBmgClip" && child.name != "BmgClip" && child.name != "UseAmbientEvent" && child.name != "AmbientEventName" && child.name != "AmbientEventType")
+                // [แก้ไข] เพิ่มเงื่อนไขอนุญาตให้คำนวณความสูงตัวแปรที่มีคำว่า Background ในโหมด None
+                if (isNoneMode && child.name != "DialogueMode" && !child.name.Contains("Ambient") && !child.name.Contains("Bmg") && !child.name.Contains("Background"))
                 {
                     if (!child.NextVisible(false)) break;
                     continue;
@@ -949,14 +947,6 @@ namespace Genoverrei.Library.Editor
                 {
                     // ข้าม
                 }
-                else if (child.name == "OverrideDialogueAnimation" || child.name == "UseAmbientEvent" || child.name == "UseVoiceoverClip" || child.name == "OverrideBmgClip")
-                {
-                    currentHeight += EditorGUIUtility.singleLineHeight + 2f;
-                }
-                else if (child.name == "DialogueBoxAnimation" || child.name == "AmbientEventName" || child.name == "AmbientEventType" || child.name == "VoiceoverClip" || child.name == "BmgClip")
-                {
-                    // ข้าม
-                }
                 else if (child.name == "TextSettings")
                 {
                     currentHeight += EditorGUIUtility.singleLineHeight + 4f;
@@ -976,6 +966,22 @@ namespace Genoverrei.Library.Editor
                                 currentHeight += EditorGUI.GetPropertyHeight(subChild, true) + 2f;
                             } while (subChild.NextVisible(false));
                         }
+                    }
+                }
+                else if (child.propertyType == SerializedPropertyType.Boolean)
+                {
+                    var nextProp = child.Copy();
+                    bool hasNext = nextProp.NextVisible(false) && !SerializedProperty.EqualContents(nextProp, end);
+                    bool isPair = hasNext && (child.name.Contains(nextProp.name) || nextProp.name.Contains(child.name.Replace("Use", "").Replace("Override", "").Replace("Change", "")));
+
+                    if (isPair)
+                    {
+                        currentHeight += EditorGUIUtility.singleLineHeight + 2f;
+                        child.NextVisible(false);
+                    }
+                    else
+                    {
+                        currentHeight += EditorGUI.GetPropertyHeight(child, true) + 2f;
                     }
                 }
                 else

@@ -1,10 +1,13 @@
-﻿namespace Genoverrei.Library.DesignPatternCore
+﻿using Genoverrei.Library.Attribute;
+
+namespace Genoverrei.Library.DesignPatternCore
 {
     /// <summary>
     /// <para> Summary : </para>
     /// <para> (TH) : ศูนย์กลางจัดการ Object Pool ทั้งหมดในเกม คอยเริ่มการทำงานและกระจายคำสั่ง Get/Release </para>
     /// <para> (EN) : Central Object Pool manager handling initialization and Get/Release requests. </para>
     /// </summary>
+    [CreateHierarchyMenu("GenoverreiLibrary/DesignPattern")]
     public sealed class ObjectPoolManager : Singleton<ObjectPoolManager>
     {
         [Header("Pool Data Configuration")]

@@ -5,10 +5,10 @@ namespace Genoverrei.Library.Core
     /// <para> (TH) : ไฟล์ข้อมูลบทสนทนาที่เก็บรวบรวมโหนดเนื้อเรื่องทั้งหมดในบทนั้น </para>
     /// <para> (EN) : Conversation data file storing all story nodes for the chapter. </para>
     /// </summary>
-    [CreateAssetMenu(fileName = "Chapter_01", menuName = "GenoverreiLibrary/Core/VN/Chapter")]
-    public class VNChapterSO : ScriptableObject
+    [CreateAssetMenu(fileName = "Scene_0", menuName = "GenoverreiLibrary/Core/VN/Scene")]
+    public class VNSceneSO : ScriptableObject
     {
-        public string ChapterName;
+        public string SceneName;
         public ushort Index;
 
         public List<VNConversationNode> Conversations = new();

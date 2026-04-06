@@ -302,7 +302,7 @@ MonoBehaviour:
     clickToToggleComponent: 1
     showMissingScriptWarning: 1
     showAll: 1
-    stackDuplicateIcons: 0
+    stackDuplicateIcons: 1
     unityGroups:
     - name: General
       components:
@@ -5144,6 +5144,19 @@ MonoBehaviour:
         excluded: 0
         isBuiltIn: 0
         script: {fileID: 11500000, guid: 91a72f5ac4a08fc479f9546e2a48e3f9, type: 3}
+        hasToggle: 1
+      - displayName: MoveController2D
+        name: Genoverrei.Library.DesignPatternCore.MoveController2D, GenoverreiLibrary,
+          Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: MoveController2D
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: MoveController2D
+          m_TextWithWhitespace: "MoveController2D\u200B"
+        shown: 0
+        excluded: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: 3174224110c82a1499b7ee37873d6a28, type: 3}
         hasToggle: 1
     unityVersion: 6000.3.8f1
     unityCount: 365

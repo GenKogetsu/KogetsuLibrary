@@ -3,12 +3,16 @@ using System;
 namespace Genoverrei.Library.Core
 {
     [Serializable]
-    public class VNInteractState : VNQuestionState
+    public class VNInteractState
     {
-        public bool UseExitPhase;
-        public VNChoicePhaseData ExitPhase;
-
-        [Min(1)]
+        [MinValue(1)]
         public int TargetAnswerNumber;
+
+        public float ReturnValue;
+
+        public bool ReturnToChoicePhase;
+
+        [SerializeReference]
+        public List<VNConversationNode> SubConversation;
     }
 }

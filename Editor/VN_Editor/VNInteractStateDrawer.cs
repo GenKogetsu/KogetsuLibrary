@@ -1,5 +1,6 @@
 #if UNITY_EDITOR
 using UnityEditor;
+using UnityEngine;
 using Genoverrei.Library.Core;
 
 namespace Genoverrei.Library.Editor
@@ -35,6 +36,7 @@ namespace Genoverrei.Library.Editor
                 ResetInteract(property);
                 GUIUtility.keyboardControl = 0;
             }
+
             GUI.enabled = VNCacheHelper.ElementCache.ContainsKey(property.propertyPath);
             if (GUI.Button(recallBtnRect, "Recall", EditorStyles.miniButtonRight))
             {
@@ -49,11 +51,17 @@ namespace Genoverrei.Library.Editor
                 var y = position.y + EditorGUIUtility.singleLineHeight + 6f;
 
                 EditorGUI.PropertyField(new Rect(position.x, y, position.width, EditorGUIUtility.singleLineHeight), property.FindPropertyRelative("TargetAnswerNumber"));
+                y += EditorGUIUtility.singleLineHeight + 2f;
+
+                EditorGUI.PropertyField(new Rect(position.x, y, position.width, EditorGUIUtility.singleLineHeight), property.FindPropertyRelative("ReturnValue"));
+                y += EditorGUIUtility.singleLineHeight + 2f;
+
+                EditorGUI.PropertyField(new Rect(position.x, y, position.width, EditorGUIUtility.singleLineHeight), property.FindPropertyRelative("ReturnToChoicePhase"));
                 y += EditorGUIUtility.singleLineHeight + 6f;
 
-                VNConversationNodeDrawer.DrawPhase(ref y, position, property.FindPropertyRelative("UseEnterPhase"), property.FindPropertyRelative("EnterPhase"), "Interact Enter Phase", false, VNConversationNodeDrawer._enterColor);
-                VNConversationNodeDrawer.DrawPhase(ref y, position, null, property.FindPropertyRelative("MainPhase"), "Interact Main Phase", true, VNConversationNodeDrawer._mainColor);
-                VNConversationNodeDrawer.DrawPhase(ref y, position, property.FindPropertyRelative("UseExitPhase"), property.FindPropertyRelative("ExitPhase"), "Interact Exit Phase", false, VNConversationNodeDrawer._exitColor);
+                // วาด SubConversation ด้วย Helper ตัวเดียวกับโหนดหลัก รองรับการ Cache อย่างสมบูรณ์
+                var subConvProp = property.FindPropertyRelative("SubConversation");
+                VNConversationNodeDrawer.DrawArrayWithCache(ref y, position, subConvProp, "Sub Conversation List", "Node");
 
                 EditorGUI.indentLevel--;
             }
@@ -63,11 +71,16 @@ namespace Genoverrei.Library.Editor
         private void ResetInteract(SerializedProperty prop)
         {
             prop.FindPropertyRelative("TargetAnswerNumber").intValue = 0;
-            prop.FindPropertyRelative("UseEnterPhase").boolValue = false;
-            prop.FindPropertyRelative("UseExitPhase").boolValue = false;
-            VNConversationNodeDrawer.ResetPhaseData(prop.FindPropertyRelative("EnterPhase"));
-            VNConversationNodeDrawer.ResetPhaseData(prop.FindPropertyRelative("MainPhase"));
-            VNConversationNodeDrawer.ResetPhaseData(prop.FindPropertyRelative("ExitPhase"));
+            prop.FindPropertyRelative("ReturnValue").floatValue = 0f;
+            prop.FindPropertyRelative("ReturnToChoicePhase").boolValue = false;
+
+            var subConvProp = prop.FindPropertyRelative("SubConversation");
+            if (subConvProp != null)
+            {
+                subConvProp.ClearArray();
+                subConvProp.arraySize = 0;
+            }
+
             prop.serializedObject.ApplyModifiedProperties();
         }
 
@@ -75,10 +88,14 @@ namespace Genoverrei.Library.Editor
         {
             if (!property.isExpanded) return EditorGUIUtility.singleLineHeight + 4f;
 
-            float h = EditorGUIUtility.singleLineHeight + 6f + EditorGUIUtility.singleLineHeight + 6f;
-            h += VNConversationNodeDrawer.GetPhaseHeight(property.FindPropertyRelative("UseEnterPhase"), property.FindPropertyRelative("EnterPhase"), false);
-            h += VNConversationNodeDrawer.GetPhaseHeight(null, property.FindPropertyRelative("MainPhase"), true);
-            h += VNConversationNodeDrawer.GetPhaseHeight(property.FindPropertyRelative("UseExitPhase"), property.FindPropertyRelative("ExitPhase"), false);
+            float h = EditorGUIUtility.singleLineHeight + 6f; // Header
+            h += EditorGUIUtility.singleLineHeight + 2f; // TargetAnswerNumber
+            h += EditorGUIUtility.singleLineHeight + 2f; // ReturnValue
+            h += EditorGUIUtility.singleLineHeight + 6f; // ReturnToChoicePhase
+
+            var subConvProp = property.FindPropertyRelative("SubConversation");
+            h += VNConversationNodeDrawer.GetArrayWithCacheHeight(subConvProp); // รวมความสูงของ SubConversation List
+
             return h + 4f;
         }
 

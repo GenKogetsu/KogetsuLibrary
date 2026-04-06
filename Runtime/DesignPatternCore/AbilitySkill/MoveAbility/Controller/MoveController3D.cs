@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace Genoverrei.Library.DesignPatternCore
 {
     [RequireComponent(typeof(Rigidbody))]
@@ -12,5 +14,15 @@ namespace Genoverrei.Library.DesignPatternCore
             base.Awake();
             if (this.TryGetComponent<Rigidbody>(out var rigidbody)) Rigidbody = rigidbody;
         }
+
+#if UNITY_EDITOR
+        protected virtual void OnDrawGizmosSelected()
+        {
+            if (StartingAbility is ClickMoveAbility3D clickAbility)
+            {
+                clickAbility.DrawGizmos(transform);
+            }
+        }
+#endif
     }
 }

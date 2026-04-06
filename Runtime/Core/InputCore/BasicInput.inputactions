@@ -115,6 +115,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "HUD",
+                    "type": "Button",
+                    "id": "a352c87a-3771-4d39-abab-a7fe825624d9",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Num1",
                     "type": "Button",
                     "id": "3925a23c-5059-46fb-91f7-a317036827bc",
@@ -205,18 +214,36 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "HUD",
+                    "name": "UseItem",
                     "type": "Button",
-                    "id": "a352c87a-3771-4d39-abab-a7fe825624d9",
+                    "id": "840735fd-4bdb-4d6b-b9f3-aa19772c6e2a",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "UseItem",
+                    "name": "LeftClick",
                     "type": "Button",
-                    "id": "840735fd-4bdb-4d6b-b9f3-aa19772c6e2a",
+                    "id": "be508ad1-aa01-4fec-bccc-f01531b0997d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "MidClick",
+                    "type": "Button",
+                    "id": "84f97815-19f9-4d9c-b18d-00b81d8cd27b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RightClick",
+                    "type": "Button",
+                    "id": "98cc9f4c-2c37-4aa4-b20b-8689cb85ca36",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -586,6 +613,39 @@
                     "action": "UseItem",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fe9ba54c-d1ff-4647-9ced-a5f8a0253feb",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RightClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e4d61421-da1f-4aed-8f7e-c159e9db7ec8",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LeftClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1c3a2558-cac9-4961-886d-78d81878e329",
+                    "path": "<Mouse>/middleButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MidClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -603,180 +663,9 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "UseItem",
+                    "name": "Interaction",
                     "type": "Button",
-                    "id": "66044306-3db6-4a57-8c2c-74a4ff6a02df",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "HUD",
-                    "type": "Button",
-                    "id": "276d30a5-b6a2-4d2d-88e6-fabbb6bacbe7",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Num0",
-                    "type": "Button",
-                    "id": "bb8ebe37-67d6-42c6-a939-19378ba25727",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Num9",
-                    "type": "Button",
-                    "id": "02ae1686-51aa-47e2-8485-baf5accdbfd3",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Num8",
-                    "type": "Button",
-                    "id": "c07fc7c2-8f57-4109-85ed-f919f9d1b5c7",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Num7",
-                    "type": "Button",
-                    "id": "28c2f9a6-33b5-4313-81a2-6ec7cec28c2f",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Num6",
-                    "type": "Button",
-                    "id": "51118519-cdcf-49e5-aa99-24d8f0a5515d",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Num5",
-                    "type": "Button",
-                    "id": "545b231d-3533-416c-a814-fd6562757e15",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Num4",
-                    "type": "Button",
-                    "id": "faf40f33-9e56-475b-a18c-89de144ed532",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Num3",
-                    "type": "Button",
-                    "id": "099b2346-970c-4855-a221-076df9302b86",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Num2",
-                    "type": "Button",
-                    "id": "009e8385-67e7-4c5a-894e-b13167c8dcbb",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Num1",
-                    "type": "Button",
-                    "id": "206b127d-819a-4b85-960a-e8171ddbef33",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "SkillR",
-                    "type": "Button",
-                    "id": "81a06de1-bdbf-46b0-b6f6-5aca1e05ecff",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "SkillE",
-                    "type": "Button",
-                    "id": "027e9900-12e4-4345-97cd-f8a8417dec82",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "SkillQ",
-                    "type": "Button",
-                    "id": "0bdc4520-aab3-4a25-800c-66a6a94d6ad3",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Qust",
-                    "type": "Button",
-                    "id": "8908cef7-2897-4f39-984b-20dcf551baa9",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Navigate",
-                    "type": "Button",
-                    "id": "6d5fe177-ec7c-4f82-91e1-37b1d5c1997e",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Map",
-                    "type": "Button",
-                    "id": "51d8c283-084d-4e54-b8ad-182ea89d6387",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Bag",
-                    "type": "Button",
-                    "id": "deba7a20-7201-4889-811c-b6920208b549",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Crawl",
-                    "type": "Button",
-                    "id": "8041fad7-3c17-425b-ad1e-603406ea72e9",
+                    "id": "21b53cb7-e074-4748-a79c-124229f654da",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -792,9 +681,207 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Interaction",
+                    "name": "Crawl",
                     "type": "Button",
-                    "id": "21b53cb7-e074-4748-a79c-124229f654da",
+                    "id": "8041fad7-3c17-425b-ad1e-603406ea72e9",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Bag",
+                    "type": "Button",
+                    "id": "deba7a20-7201-4889-811c-b6920208b549",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Map",
+                    "type": "Button",
+                    "id": "51d8c283-084d-4e54-b8ad-182ea89d6387",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "UseItem",
+                    "type": "Button",
+                    "id": "66044306-3db6-4a57-8c2c-74a4ff6a02df",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Navigate",
+                    "type": "Button",
+                    "id": "6d5fe177-ec7c-4f82-91e1-37b1d5c1997e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Qust",
+                    "type": "Button",
+                    "id": "8908cef7-2897-4f39-984b-20dcf551baa9",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SkillQ",
+                    "type": "Button",
+                    "id": "0bdc4520-aab3-4a25-800c-66a6a94d6ad3",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SkillE",
+                    "type": "Button",
+                    "id": "027e9900-12e4-4345-97cd-f8a8417dec82",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SkillR",
+                    "type": "Button",
+                    "id": "81a06de1-bdbf-46b0-b6f6-5aca1e05ecff",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "HUD",
+                    "type": "Button",
+                    "id": "276d30a5-b6a2-4d2d-88e6-fabbb6bacbe7",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Num1",
+                    "type": "Button",
+                    "id": "206b127d-819a-4b85-960a-e8171ddbef33",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Num2",
+                    "type": "Button",
+                    "id": "009e8385-67e7-4c5a-894e-b13167c8dcbb",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Num3",
+                    "type": "Button",
+                    "id": "099b2346-970c-4855-a221-076df9302b86",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Num4",
+                    "type": "Button",
+                    "id": "faf40f33-9e56-475b-a18c-89de144ed532",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Num5",
+                    "type": "Button",
+                    "id": "545b231d-3533-416c-a814-fd6562757e15",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Num6",
+                    "type": "Button",
+                    "id": "51118519-cdcf-49e5-aa99-24d8f0a5515d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Num7",
+                    "type": "Button",
+                    "id": "28c2f9a6-33b5-4313-81a2-6ec7cec28c2f",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Num8",
+                    "type": "Button",
+                    "id": "c07fc7c2-8f57-4109-85ed-f919f9d1b5c7",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Num9",
+                    "type": "Button",
+                    "id": "02ae1686-51aa-47e2-8485-baf5accdbfd3",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Num0",
+                    "type": "Button",
+                    "id": "bb8ebe37-67d6-42c6-a939-19378ba25727",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "LeftClick",
+                    "type": "Button",
+                    "id": "92374f30-062a-47d6-b380-92a4f38596ca",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "MidClick",
+                    "type": "Button",
+                    "id": "fa9621f4-f889-4f29-b60e-49819b7d9d7d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RightClick",
+                    "type": "Button",
+                    "id": "6bfc4df0-6a34-431d-80d3-f1c61a070e3f",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -859,12 +946,45 @@
                 },
                 {
                     "name": "",
+                    "id": "5486d878-1392-4283-9882-fd430e9d8eeb",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RightClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "facb5c7c-5e45-491a-8f32-f5867b6188ec",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LeftClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "be2f5610-f471-4540-90ba-8dd06b949213",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "UseItem",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "db788c95-9994-441e-b5b5-b42317aa133d",
+                    "path": "<Mouse>/middleButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MidClick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

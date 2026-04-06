@@ -138,7 +138,7 @@ namespace HierarchyDecorator
 
         private static bool TryGetValidInstance(int id, out HierarchyItem item)
         {
-            GameObject instance = EditorUtility.InstanceIDToObject(id) as GameObject;
+            GameObject instance = EditorUtility.EntityIdToObject(id) as GameObject;
 
             if (instance == null)
             {

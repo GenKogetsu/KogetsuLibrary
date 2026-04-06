@@ -553,12 +553,12 @@ GameObject:
   - component: {fileID: 7096578930156938858}
   - component: {fileID: 6878977204105980681}
   m_Layer: 5
-  m_Name: VN_Driver
+  m_Name: VNSceneReader
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1412992594154406287
 RectTransform:
   m_ObjectHideFlags: 0
@@ -677,8 +677,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b0a39dc3c96590498944b9c8c903a24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Genoverrei-CoreAD::Genoverrei.Library.Core.VNController
-  _currentChapter: {fileID: 11400000, guid: 23eb1d5a5dfbf6344b01f3e1dc3a1f0c, type: 2}
-  _inputObserverChannel: {fileID: 11400000, guid: c0d221c124409de48bd4b9fb75a4b3b1, type: 2}
+  _currentScene: {fileID: 11400000, guid: 23eb1d5a5dfbf6344b01f3e1dc3a1f0c, type: 2}
+  _basicObserverChannel: {fileID: 0}
   _audioChannel: {fileID: 11400000, guid: c99b30f36e5bf0949b291d22cd5d3d59, type: 2}
   _hideDialogueClip: {fileID: 7400000, guid: bd24dbabe968aef40962dde746e2e3c6, type: 2}
   _showDialogueClip: {fileID: 7400000, guid: bd24dbabe968aef40962dde746e2e3c6, type: 2}
@@ -700,6 +700,7 @@ MonoBehaviour:
     DialogueAnimator: {fileID: 0}
     SpeakerNameTMP: {fileID: 0}
     DialogueTMP: {fileID: 0}
+  _backgroundImage: {fileID: 0}
   _currentConversationIndex: 0
   _currentDialogueBox: {fileID: 0}
   _currentDialogueAnimator: {fileID: 0}

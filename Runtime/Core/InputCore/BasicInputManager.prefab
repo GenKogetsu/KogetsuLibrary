@@ -314,6 +314,30 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: d658c162-4f67-4ace-942e-6d2466c17ef6
     m_ActionName: '3D/Run[/Keyboard/leftShift]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: be508ad1-aa01-4fec-bccc-f01531b0997d
+    m_ActionName: '2D/LeftClick[/Mouse/leftButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 84f97815-19f9-4d9c-b18d-00b81d8cd27b
+    m_ActionName: '2D/MidClick[/Mouse/middleButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 98cc9f4c-2c37-4aa4-b20b-8689cb85ca36
+    m_ActionName: '2D/RightClick[/Mouse/rightButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 92374f30-062a-47d6-b380-92a4f38596ca
+    m_ActionName: '3D/LeftClick[/Mouse/leftButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: fa9621f4-f889-4f29-b60e-49819b7d9d7d
+    m_ActionName: '3D/MidClick[/Mouse/middleButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6bfc4df0-6a34-431d-80d3-f1c61a070e3f
+    m_ActionName: '3D/RightClick[/Mouse/rightButton]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: 2D
@@ -331,4 +355,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76b009f9d1be08f42a278d3353443bb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Genoverrei-DesignPatternCoreAD::Genoverrei.Library.DesignPatternCore.InputManager
-  InputObserverChannel: {fileID: 11400000, guid: c0d221c124409de48bd4b9fb75a4b3b1, type: 2}
+  BasicObserverChannel: {fileID: 11400000, guid: c0d221c124409de48bd4b9fb75a4b3b1, type: 2}

@@ -1,7 +1,9 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Genoverrei.Library.Attribute;
 using Genoverrei.Library.DesignPatternCore;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -9,6 +11,7 @@ using UnityEditor;
 namespace Genoverrei.Library.Core
 {
     [RequireComponent(typeof(PlayerInput))]
+    [CreateHierarchyMenu("GenoverreiLibrary/Core")]
     public class GeneralInputManager : Singleton<GeneralInputManager>
     {
         public void OnPlayerInput(InputAction.CallbackContext context)
