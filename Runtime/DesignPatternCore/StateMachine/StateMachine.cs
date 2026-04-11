@@ -1,5 +1,8 @@
-﻿namespace Genoverrei.Library.DesignPatternCore
+﻿using System;
+
+namespace Genoverrei.Library.DesignPatternCore
 {
+    [Serializable]
     public class StateMachine<TContext>
     {
         public BaseState<TContext> CurrentState { get; private set; }

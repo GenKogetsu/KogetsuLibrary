@@ -8,7 +8,7 @@ namespace Genoverrei.Library.DesignPatternCore
     /// <para>(TH) : ระบบจัดการ Event ส่วนกลางที่ใช้ IEvent เป็นตัวกลางในการสื่อสารแบบ Decoupled</para>
     /// <para>(EN) : Centralized event system using IEvent for decoupled communication.</para>
     /// </summary>
-    [CreateHierarchyMenu("GenoverreiLibrary/Desig")]
+    [CreateHierarchyMenu("GenoverreiLibrary/DesignPattern")]
     public class EventBus : Singleton<EventBus>
     {
         #region Fields

@@ -7,7 +7,7 @@ namespace Genoverrei.Library.Core
     {
         [Header("Obsever Channels")]
         [Required]
-        [SerializeField] private AudioChannelSO _audioChannel;
+        [SerializeField] private AudioObserverSO _audioObserver;
 
         [Header("Audio Source")]
 
@@ -22,9 +22,9 @@ namespace Genoverrei.Library.Core
 
         private void OnEnable()
         {
-            _audioChannel.OnSfxChannel += OnSfxSignal;
-            _audioChannel.OnBmgChannel += OnBmgSignal;
-            _audioChannel.OnVoiceoverChannel += OnVoiceoverSignal;
+            _audioObserver.OnSfxChannel += OnSfxSignal;
+            _audioObserver.OnBmgChannel += OnBmgSignal;
+            _audioObserver.OnVoiceoverChannel += OnVoiceoverSignal;
         }
 
         public void OnSfxSignal(AudioClip sound)

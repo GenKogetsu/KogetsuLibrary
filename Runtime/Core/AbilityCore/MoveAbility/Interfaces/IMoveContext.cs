@@ -1,0 +1,30 @@
+using Genoverrei.Library.DesignPatternCore;
+
+namespace Genoverrei.Library.Core;
+
+public interface IMoveContext
+{
+    Transform Transform { get; }
+    StatsController Stats { get; }
+    BasicMovementInputObserverSO InputObserverChannel { get; }
+    Vector3 CurrentDirection { get; set; }
+    Vector3 LastFacingDirection { get; set; }
+    bool IsGrounded { get; set; }
+    float VerticalVelocity { get; }
+    Vector3 SnapDirection(Vector3 rawInput);
+
+    /// <summary>
+    /// Transform raw input before applying velocity. Used for perspective-mode diagonal walking.
+    /// </summary>
+    Vector3 TransformInput(Vector3 input);
+}
+
+public interface IMoveContext2D : IMoveContext
+{
+    Rigidbody2D Rb2 { get; }
+}
+
+public interface IMoveContext3D : IMoveContext
+{
+    Rigidbody Rb { get; }
+}

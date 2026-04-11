@@ -10,7 +10,7 @@ namespace Genoverrei.Library.Core
     {
         [Header("ObserverChannels")]
         [Required]
-        [SerializeField] protected BasicObserverChannelSO BasicObserverChannel;
+        [SerializeField] protected BasicMovementInputObserverSO BasicObserverChannel;
 
         public void OnMoveInput(InputAction.CallbackContext context)
         {

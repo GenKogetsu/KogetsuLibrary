@@ -14,7 +14,7 @@ namespace Genoverrei.Library.Editor
         {
             if (property.propertyType != SerializedPropertyType.ManagedReference)
             {
-                EditorGUI.LabelField(position, label.text, "Use [SubclassSelector] with [SerializeReference] only.");
+                EditorGUI.LabelField(position, label.text, "Use [MoveAbilitySelector] with [SerializeReference] only.");
                 return;
             }
 
@@ -23,54 +23,71 @@ namespace Genoverrei.Library.Editor
             var foldoutRect = new Rect(position.x, position.y, EditorGUIUtility.labelWidth, EditorGUIUtility.singleLineHeight);
             property.isExpanded = EditorGUI.Foldout(foldoutRect, property.isExpanded, label, true);
 
-            var dropdownRect = new Rect(position.x + EditorGUIUtility.labelWidth, position.y, position.width - EditorGUIUtility.labelWidth, EditorGUIUtility.singleLineHeight);
+            var dropdownRect = new Rect(position.x + EditorGUIUtility.labelWidth, position.y,
+                position.width - EditorGUIUtility.labelWidth, EditorGUIUtility.singleLineHeight);
 
             string fullTypeName = property.managedReferenceFullTypename;
-            string displayTypeName = string.IsNullOrEmpty(fullTypeName) ? "None (Null)" : fullTypeName.Split('.').Last();
+            string displayName = string.IsNullOrEmpty(fullTypeName) ? "None (Null)" : fullTypeName.Split('.').Last();
 
-            if (EditorGUI.DropdownButton(dropdownRect, new GUIContent(displayTypeName), FocusType.Keyboard, EditorStyles.popup))
-            {
+            if (EditorGUI.DropdownButton(dropdownRect, new GUIContent(displayName), FocusType.Keyboard, EditorStyles.popup))
                 ShowTypeMenu(property);
-            }
 
             if (property.isExpanded && !string.IsNullOrEmpty(fullTypeName))
             {
                 EditorGUI.indentLevel++;
-                float currentY = position.y + EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+                float y = position.y + EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
 
                 SerializedProperty child = property.Copy();
-                SerializedProperty endProperty = property.GetEndProperty();
-
+                SerializedProperty end = property.GetEndProperty();
                 bool hasNext = child.NextVisible(true);
                 bool hasFields = false;
 
-                while (hasNext && !SerializedProperty.EqualContents(child, endProperty))
+                while (hasNext && !SerializedProperty.EqualContents(child, end))
                 {
                     hasFields = true;
-                    float childHeight = EditorGUI.GetPropertyHeight(child, true);
-                    var childRect = new Rect(position.x, currentY, position.width, childHeight);
-
-                    EditorGUI.PropertyField(childRect, child, true);
-                    currentY += childHeight + EditorGUIUtility.standardVerticalSpacing;
-
-                    hasNext = child.NextVisible(false); 
+                    float h = EditorGUI.GetPropertyHeight(child, true);
+                    EditorGUI.PropertyField(new Rect(position.x, y, position.width, h), child, true);
+                    y += h + EditorGUIUtility.standardVerticalSpacing;
+                    hasNext = child.NextVisible(false);
                 }
 
                 if (!hasFields)
-                {
-                    var emptyRect = new Rect(position.x, currentY, position.width, EditorGUIUtility.singleLineHeight);
-                    EditorGUI.LabelField(emptyRect, "No Settings", EditorStyles.miniLabel);
-                }
+                    EditorGUI.LabelField(new Rect(position.x, y, position.width, EditorGUIUtility.singleLineHeight), "No Settings", EditorStyles.miniLabel);
+
                 EditorGUI.indentLevel--;
             }
 
             EditorGUI.EndProperty();
         }
 
+        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        {
+            float total = EditorGUIUtility.singleLineHeight;
+
+            if (!property.isExpanded || string.IsNullOrEmpty(property.managedReferenceFullTypename))
+                return total;
+
+            SerializedProperty child = property.Copy();
+            SerializedProperty end = property.GetEndProperty();
+            bool hasNext = child.NextVisible(true);
+            bool hasFields = false;
+
+            while (hasNext && !SerializedProperty.EqualContents(child, end))
+            {
+                hasFields = true;
+                total += EditorGUI.GetPropertyHeight(child, true) + EditorGUIUtility.standardVerticalSpacing;
+                hasNext = child.NextVisible(false);
+            }
+
+            if (!hasFields)
+                total += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+
+            return total;
+        }
+
         private void ShowTypeMenu(SerializedProperty property)
         {
-            GenericMenu menu = new();
-
+            var menu = new GenericMenu();
             Type baseType = GetBaseType(property);
 
             menu.AddItem(new GUIContent("None"), string.IsNullOrEmpty(property.managedReferenceFullTypename), () =>
@@ -79,69 +96,36 @@ namespace Genoverrei.Library.Editor
                 property.serializedObject.ApplyModifiedProperties();
             });
 
-            if (baseType == null)
-            {
-                menu.ShowAsContext();
-                return;
-            }
+            if (baseType == null) { menu.ShowAsContext(); return; }
 
             menu.AddSeparator("");
 
-            var types = TypeCache.GetTypesDerivedFrom(baseType)
-                .Where(t => !t.IsAbstract && !t.IsInterface);
-
-            foreach (var type in types)
+            foreach (var type in TypeCache.GetTypesDerivedFrom(baseType).Where(t => !t.IsAbstract && !t.IsInterface))
             {
-                menu.AddItem(new GUIContent(type.Name), false, () =>
+                var captured = type;
+                menu.AddItem(new GUIContent(captured.Name), false, () =>
                 {
-                    property.managedReferenceValue = Activator.CreateInstance(type);
+                    property.managedReferenceValue = Activator.CreateInstance(captured);
                     property.isExpanded = true;
                     property.serializedObject.ApplyModifiedProperties();
                 });
             }
+
             menu.ShowAsContext();
         }
 
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
-        {
-            float totalHeight = EditorGUIUtility.singleLineHeight;
-
-            if (property.isExpanded && !string.IsNullOrEmpty(property.managedReferenceFullTypename))
-            {
-                SerializedProperty child = property.Copy();
-                SerializedProperty endProperty = property.GetEndProperty();
-
-                bool hasNext = child.NextVisible(true);
-                bool hasFields = false;
-
-                while (hasNext && !SerializedProperty.EqualContents(child, endProperty))
-                {
-                    hasFields = true;
-                    totalHeight += EditorGUI.GetPropertyHeight(child, true) + EditorGUIUtility.standardVerticalSpacing;
-                    hasNext = child.NextVisible(false);
-                }
-
-                if (!hasFields)
-                {
-                    totalHeight += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
-                }
-            }
-
-            return totalHeight;
-        }
-
-        private Type GetBaseType(SerializedProperty property)
+        private static Type GetBaseType(SerializedProperty property)
         {
             string typeName = property.managedReferenceFieldTypename;
             if (string.IsNullOrEmpty(typeName)) return null;
 
             string[] parts = typeName.Split(' ');
-            if (parts.Length == 2)
-            {
-                var assembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.GetName().Name == parts[0]);
-                if (assembly != null) return assembly.GetType(parts[1]);
-            }
-            return null;
+            if (parts.Length != 2) return null;
+
+            var assembly = AppDomain.CurrentDomain.GetAssemblies()
+                .FirstOrDefault(a => a.GetName().Name == parts[0]);
+
+            return assembly?.GetType(parts[1]);
         }
     }
 }

@@ -22,10 +22,10 @@ namespace Genoverrei.Library.Core
 
         [Header("Obsever Channels")]
         [Required]
-        [SerializeField] private BasicObserverChannelSO _basicObserverChannel;
+        [SerializeField] private BasicMovementInputObserverSO _basicObserverChannel;
 
         [Required]
-        [SerializeField] private AudioChannelSO _audioChannel;
+        [SerializeField] private AudioObserverSO _audioObserver;
 
         [Required]
         [SerializeField] private AnimationClip _hideDialogueClip, _showDialogueClip;
@@ -211,7 +211,7 @@ namespace Genoverrei.Library.Core
 
             if (phase.OverrideBmgClip)
             {
-                if (phase.BmgClip != null) _audioChannel.SendBmgSignal(phase.BmgClip);
+                if (phase.BmgClip != null) _audioObserver.SendBmgSignal(phase.BmgClip);
 #if UNITY_EDITOR
                 else Debug.LogWarning($"<b><color=yellow>[Skiped BmgClip]</color></b> BmgClip is null at Conversation {_currentConversationIndex + 1}");
 #endif
@@ -219,7 +219,7 @@ namespace Genoverrei.Library.Core
 
             if (_currentDialogueType != VNDialogueMode.None && phase.UseVoiceoverClip)
             {
-                if (phase.VoiceoverClip != null) _audioChannel.SendVoiceoverSignal(phase.VoiceoverClip);
+                if (phase.VoiceoverClip != null) _audioObserver.SendVoiceoverSignal(phase.VoiceoverClip);
 #if UNITY_EDITOR
                 else Debug.LogWarning($"<b><color=yellow>[Skiped VoiceoverClip]</color></b> VoiceoverClip is null at Conversation {_currentConversationIndex + 1}");
 #endif
@@ -543,8 +543,8 @@ namespace Genoverrei.Library.Core
                 if (_skipTyping)
                 {
                     _currentDialogueTMP.maxVisibleCharacters = totalVisibleCharacters;
-                    _audioChannel.SendSfxSignal(null);
-                    _audioChannel.SendVoiceoverSignal(null);
+                    _audioObserver.SendSfxSignal(null);
+                    _audioObserver.SendVoiceoverSignal(null);
                     EventBus.Instance.Publish(new VNTypingSkipEvent(_currentConversationIndex, _currentPhase));
                     break;
                 }
