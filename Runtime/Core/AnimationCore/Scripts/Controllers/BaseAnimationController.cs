@@ -79,5 +79,7 @@ namespace Genoverrei.Library.Core
             Array.Resize(ref JumpAnimationArray, expected);
             Array.Resize(ref FallAnimationArray, expected);
         }
+
+        
     }
 }

@@ -39,8 +39,8 @@ namespace Genoverrei.Library.Core
 #endif
         protected override void Awake()
         {
-            if (!Rb2) TryGetComponent(out Rb2);
             base.Awake();
+            if (!Rb2) TryGetComponent(out Rb2);
         }
 
         public override float VerticalVelocity => Rb2 != null ? Rb2.linearVelocity.y : 0f;
@@ -49,7 +49,7 @@ namespace Genoverrei.Library.Core
         /// <para>TH: หมุน Vector ของ Input ตามองศาของ PerspectiveQuaternion</para>
         /// <para>EN: Rotates the input vector by PerspectiveQuaternion using Euler angles.</para>
         /// </summary>
-        public override Vector3 TransformInput(Vector3 input)
+        protected override Vector3 TransformInput(Vector3 input)
         {
             if (!PerspectiveMode || input == Vector3.zero) return input;
 

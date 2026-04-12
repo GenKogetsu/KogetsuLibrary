@@ -1,6 +1,7 @@
 using System;
 using Genoverrei.Library.Attribute;
 using Genoverrei.Library.DesignPatternCore;
+using Genoverrei.Library.Extension;
 using UnityEngine;
 
 namespace Genoverrei.Library.Core
@@ -17,16 +18,11 @@ namespace Genoverrei.Library.Core
         [Required]
         [SerializeField] protected BasicMovementInputObserverSO InputObserverChannel;
 
-        [Required]
-        [SerializeField] protected DirectionModeObserverSO DirectionModeObserver;
-
         [Space(10f)]
         [MoveAbilitySelector]
         [SerializeReference] protected TAbility MoveAbility;
 
         [SerializeField] protected DirectionMode DirectionMode;
-
-        private DirectionMode _lastDirectionMode;
 
         [Header("Debug")]
         [ReadOnly]
@@ -61,6 +57,11 @@ namespace Genoverrei.Library.Core
             get => this.IsGrounded; 
             set => this.IsGrounded = value; 
         }
+
+        Vector3 IMoveContext.SnapDirection(Vector3 rawInput) => this.SnapDirection(rawInput);
+
+        Vector3 IMoveContext.TransformInput(Vector3 input) => this.TransformInput(input);
+
         #endregion //implements interface
 
 
@@ -91,22 +92,13 @@ namespace Genoverrei.Library.Core
         protected virtual void AssignComponent()
         {
             if (!Stats) TryGetComponent(out Stats);
-
-            if (_lastDirectionMode != DirectionMode)
-            {
-                _lastDirectionMode = DirectionMode;
-
-                if (!DirectionModeObserver) return;
-
-                DirectionModeObserver.SendDirectionModeSignal(_lastDirectionMode);
-            }
         }
 
-        public Vector3 SnapDirection(Vector3 rawInput)
+        protected Vector3 SnapDirection(Vector3 rawInput)
         {
             if (rawInput == Vector3.zero || DirectionMode == DirectionMode.None) return rawInput;
 
-            byte dirs = DirectionModeObserver.ConvertDirectionModeToByte(DirectionMode);
+            byte dirs = DirectionMode.ToByte();
             if (dirs <= 1) return rawInput;
 
             bool is3D = Mathf.Abs(rawInput.y) < 0.001f && Mathf.Abs(rawInput.z) > 0.001f;
@@ -125,10 +117,12 @@ namespace Genoverrei.Library.Core
                 : new Vector3(sh, sv, rawInput.z).normalized * mag;
         }
 
+        protected virtual Vector3 TransformInput(Vector3 input) => input;
+
+
         protected abstract TContext GetContext();
 
-        public virtual Vector3 TransformInput(Vector3 input) => input;
-
         public DirectionMode GetDirectionMode() => DirectionMode;
+
     }
 }

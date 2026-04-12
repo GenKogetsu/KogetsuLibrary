@@ -2,6 +2,7 @@ using UnityEngine.Playables;
 using UnityEngine.Animations;
 using Genoverrei.Library.DesignPatternCore;
 using UnityEngine.Accessibility;
+using Genoverrei.Library.Extension;
 
 namespace Genoverrei.Library.Core
 {
@@ -11,15 +12,12 @@ namespace Genoverrei.Library.Core
         [SerializeField] protected MoveController2D MoveController;
         [SerializeField] protected Animator AnimatorControl;
 
-        [Header("Observer")]
-        [Required]
-        [SerializeField] protected DirectionModeObserverSO DirectionModeObserver;
-
         [Header("Settings")]
         [SerializeField] protected Animation2DMode AnimationMode;
+        [SerializeField] protected DirectionMode DirectionMode;
 
         [Space(10)]
-        [SerializeField] protected List<Transform> VanishingPoints = new();
+        [SerializeField] protected List<Transform> VanishingPoints;
         [SerializeField] protected float MinScale = 0.5f;
         [SerializeField] protected float MaxScale = 1.0f;
         [SerializeField] protected float MaxDistance = 10f;
@@ -33,20 +31,9 @@ namespace Genoverrei.Library.Core
             if (Application.isPlaying) return;
 
             AssignComponent();
+            ResizeArray(DirectionMode.ToByte());
         }
 #endif
-
-        protected override void OnEnable()
-        {
-            base.OnEnable();
-            if (DirectionModeObserver) DirectionModeObserver.OnDirectionModeObserver += ResizeArray;
-        }
-
-        protected override void OnDisable()
-        {
-            base.OnDisable();
-            if (DirectionModeObserver) DirectionModeObserver.OnDirectionModeObserver -= ResizeArray;
-        }
 
         protected override void Awake()
         {
@@ -100,13 +87,6 @@ namespace Genoverrei.Library.Core
 
                 MoveController.transform.localScale = new(currentScale, currentScale, currentScale);
             }
-        }
-
-        protected virtual void ResizeArray(DirectionMode mode)
-        {
-            var directionModeValue = DirectionModeObserver.ConvertDirectionModeToByte(mode);
-
-            ResizeArray(directionModeValue);
         }
 
         protected virtual void SetupAnimator()

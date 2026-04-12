@@ -8,28 +8,28 @@ namespace Genoverrei.Library.Editor
     {
         // BasicInputManager → BasicInputManager
         [MenuItem("GameObject/GenoverreiLibrary/Core/BasicInputManager", false, 0)]
-        static void Spawn_BasicInputManager_60ad4a5d5ed444a68f57ddb443155c8a()
+        static void Spawn_BasicInputManager_4db8ffdb84734cc2a63abbd03ccce90b()
             => HierarchyMenuBuilder.Spawn("Packages/com.genoverrei.library/Runtime/Core/InputCore/BasicInputManager.prefab");
 
         // VNSceneReader → VNSceneReader
         [MenuItem("GameObject/GenoverreiLibrary/Core/VNSceneReader", false, 0)]
-        static void Spawn_VNSceneReader_0ed5e10f89484de4939af62c5960ad74()
+        static void Spawn_VNSceneReader_a468744f84c64504944772c28544da77()
             => HierarchyMenuBuilder.Spawn("Packages/com.genoverrei.library/Runtime/Core/VN_Core/VNSceneReader.prefab");
 
         // GeneralInputManager → GeneralInputManager
         [MenuItem("GameObject/GenoverreiLibrary/Core/GeneralInputManager", false, 0)]
-        static void Spawn_GeneralInputManager_7081f69ed550465cbd3dc2160fd3bb4b()
+        static void Spawn_GeneralInputManager_aa7a7bccc3384398aff80df38cae18d0()
             => HierarchyMenuBuilder.Spawn("Packages/com.genoverrei.library/Runtime/Core/InputCore/GeneralInputManager.prefab");
-
-        // EventBus → EventBus
-        [MenuItem("GameObject/GenoverreiLibrary/DesignPattern/EventBus", false, 0)]
-        static void Spawn_EventBus_5b2bded9e5b54345a12e2217e9b76b88()
-            => HierarchyMenuBuilder.Spawn("Packages/com.genoverrei.library/Runtime/DesignPatternCore/EventBus/EventBus.prefab");
 
         // ObjectPoolManager → ObjectPoolManager
         [MenuItem("GameObject/GenoverreiLibrary/DesignPattern/ObjectPoolManager", false, 0)]
-        static void Spawn_ObjectPoolManager_325f2ddeff5743bbb50a075d6c12ada1()
+        static void Spawn_ObjectPoolManager_4bad8d621def4ffcaa9f9ab99af13e06()
             => HierarchyMenuBuilder.Spawn("Packages/com.genoverrei.library/Runtime/DesignPatternCore/ObjectPool/ObjectPoolManager.prefab");
+
+        // EventBus → EventBus
+        [MenuItem("GameObject/GenoverreiLibrary/DesignPattern/EventBus", false, 0)]
+        static void Spawn_EventBus_dafa5fb71bce4f9ab9d608bf9b4f4f3a()
+            => HierarchyMenuBuilder.Spawn("Packages/com.genoverrei.library/Runtime/DesignPatternCore/EventBus/EventBus.prefab");
 
     }
 }
