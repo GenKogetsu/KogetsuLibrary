@@ -11,7 +11,7 @@ using UnityEditor;
 namespace Genoverrei.Library.Core
 {
     [RequireComponent(typeof(PlayerInput))]
-    [CreateHierarchyMenu("GenoverreiLibrary/Core")]
+    [CreateHierarchyMenu("GenoverreiLibrary/Core/Manager")]
     public class GeneralInputManager : Singleton<GeneralInputManager>
     {
         public void OnPlayerInput(InputAction.CallbackContext context)

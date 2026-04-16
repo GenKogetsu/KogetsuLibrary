@@ -1,10 +1,12 @@
 using System;
 using UnityEngine.SceneManagement;
+using Genoverrei.Library.Attribute;
 using Genoverrei.Library.DesignPatternCore;
 
 namespace Genoverrei.Library.Core
 {
     [RequireComponent(typeof(Animator))]
+    [CreateHierarchyMenu("GenoverreiLibrary/Core/Controller")]
     public class BasicSceneEffectController : Singleton<BasicSceneEffectController>
     {
         [ReadOnly]

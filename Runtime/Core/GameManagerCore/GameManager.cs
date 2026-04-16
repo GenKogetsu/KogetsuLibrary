@@ -1,7 +1,9 @@
+using Genoverrei.Library.Attribute;
 using Genoverrei.Library.DesignPatternCore;
 
 namespace Genoverrei.Library.Core
 {
+    [CreateHierarchyMenu("GenoverreiLibrary/Core/Manager")]
     public class GameManager : Singleton<GameManager>
     {
         [ReadOnly]

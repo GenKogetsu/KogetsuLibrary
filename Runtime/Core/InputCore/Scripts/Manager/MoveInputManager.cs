@@ -5,7 +5,7 @@ using Genoverrei.Library.DesignPatternCore;
 namespace Genoverrei.Library.Core
 {
     [RequireComponent(typeof(PlayerInput))]
-    [CreateHierarchyMenu("GenoverreiLibrary/Core")]
+    [CreateHierarchyMenu("GenoverreiLibrary/Core/Manager")]
     public class BasicInputManager : MonoBehaviour, IAbility
     {
         [Header("ObserverChannels")]

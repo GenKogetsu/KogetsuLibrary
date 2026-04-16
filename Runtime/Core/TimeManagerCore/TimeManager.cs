@@ -1,10 +1,12 @@
 using System;
 using System.Text;
 using System.Globalization;
+using Genoverrei.Library.Attribute;
 using Genoverrei.Library.DesignPatternCore;
 
 namespace Genoverrei.Library.Core
 {
+    [CreateHierarchyMenu("GenoverreiLibrary/Core/Manager")]
     public class TimeManager : Singleton<TimeManager>
     {
 
