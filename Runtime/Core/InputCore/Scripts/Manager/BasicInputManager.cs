@@ -35,6 +35,8 @@ namespace Genoverrei.Library.Core
                 return;
             }
 
+            if (!context.performed) return;
+
             BasicObserverChannel.SendJumpSignal();
         }
 
@@ -47,6 +49,8 @@ namespace Genoverrei.Library.Core
 #endif
                 return;
             }
+
+            if (!context.performed) return;
 
             BasicObserverChannel.SendInteractionSignal();
         }

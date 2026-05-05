@@ -8,43 +8,43 @@ namespace Genoverrei.Library.Editor
     {
         // BasicSceneEffectController → BasicSceneEffectController
         [MenuItem("GameObject/GenoverreiLibrary/Core/Controller/BasicSceneEffectController", false, 0)]
-        static void Spawn_BasicSceneEffectController_3200f98ccaa54701acce8ef132d6e0c3()
-            => HierarchyMenuBuilder.Spawn("Packages/com.genoverrei.library/Runtime/Core/SceneEffectCore/BasicSceneEffectController.prefab");
-
-        // VNSceneReader → VNSceneReader
-        [MenuItem("GameObject/GenoverreiLibrary/Core/VNSceneReader", false, 0)]
-        static void Spawn_VNSceneReader_3edc669a44df445bbaf9b19d8c764b64()
-            => HierarchyMenuBuilder.Spawn("Packages/com.genoverrei.library/Runtime/Core/VN_Core/VNSceneReader.prefab");
-
-        // ObjectPoolManager → ObjectPoolManager
-        [MenuItem("GameObject/GenoverreiLibrary/DesignPattern/ObjectPoolManager", false, 0)]
-        static void Spawn_ObjectPoolManager_dd30f701296e48b0a79c4a9338acb893()
-            => HierarchyMenuBuilder.Spawn("Packages/com.genoverrei.library/Runtime/DesignPatternCore/ObjectPool/ObjectPoolManager.prefab");
+        static void Spawn_BasicSceneEffectController_1a9cb5fc6a1343d599e0ed92452fe172()
+            => HierarchyMenuBuilder.Spawn("Packages/com.genoverrei.library/Runtime/Core/SceneCore/SceneEffect/BasicSceneEffectController.prefab");
 
         // TimeManager → TimeManager
         [MenuItem("GameObject/GenoverreiLibrary/Core/Manager/TimeManager", false, 0)]
-        static void Spawn_TimeManager_7affccf4c80c4f4994cb213e2ad1f3dd()
+        static void Spawn_TimeManager_59c55ddc10fa47428a020525cd879c8e()
             => HierarchyMenuBuilder.Spawn("Packages/com.genoverrei.library/Runtime/Core/TimeManagerCore/TimeManager.prefab");
+
+        // ObjectPoolManager → ObjectPoolManager
+        [MenuItem("GameObject/GenoverreiLibrary/DesignPattern/ObjectPoolManager", false, 0)]
+        static void Spawn_ObjectPoolManager_b8d624783f0e47918fef67349e1128fe()
+            => HierarchyMenuBuilder.Spawn("Packages/com.genoverrei.library/Runtime/DesignPatternCore/ObjectPool/ObjectPoolManager.prefab");
+
+        // GeneralInputManager → GeneralInputManager
+        [MenuItem("GameObject/GenoverreiLibrary/Core/Manager/GeneralInputManager", false, 0)]
+        static void Spawn_GeneralInputManager_7e97903b48e34b6a81ae449dac200197()
+            => HierarchyMenuBuilder.Spawn("Packages/com.genoverrei.library/Runtime/Core/InputCore/GeneralInputManager.prefab");
+
+        // EventBus → EventBus
+        [MenuItem("GameObject/GenoverreiLibrary/DesignPattern/EventBus", false, 0)]
+        static void Spawn_EventBus_8eb670b5e36b469e893667fa4fa8df67()
+            => HierarchyMenuBuilder.Spawn("Packages/com.genoverrei.library/Runtime/DesignPatternCore/EventBus/EventBus.prefab");
 
         // GameManager → GameManager
         [MenuItem("GameObject/GenoverreiLibrary/Core/Manager/GameManager", false, 0)]
-        static void Spawn_GameManager_2339e820398c4f1ab3ef3396f1d08de8()
+        static void Spawn_GameManager_a180df626c8c42519ab73ffc6dacd26f()
             => HierarchyMenuBuilder.Spawn("Packages/com.genoverrei.library/Runtime/Core/GameManagerCore/GameManager.prefab");
 
         // BasicInputManager → BasicInputManager
         [MenuItem("GameObject/GenoverreiLibrary/Core/Manager/BasicInputManager", false, 0)]
-        static void Spawn_BasicInputManager_92529aee18ee4fad8c261657949c6964()
+        static void Spawn_BasicInputManager_66d7facf3f4240b88c1089253a916bd0()
             => HierarchyMenuBuilder.Spawn("Packages/com.genoverrei.library/Runtime/Core/InputCore/BasicInputManager.prefab");
 
-        // EventBus → EventBus
-        [MenuItem("GameObject/GenoverreiLibrary/DesignPattern/EventBus", false, 0)]
-        static void Spawn_EventBus_4606793d07314736bd8a3a2a50abf847()
-            => HierarchyMenuBuilder.Spawn("Packages/com.genoverrei.library/Runtime/DesignPatternCore/EventBus/EventBus.prefab");
-
-        // GeneralInputManager → GeneralInputManager
-        [MenuItem("GameObject/GenoverreiLibrary/Core/Manager/GeneralInputManager", false, 0)]
-        static void Spawn_GeneralInputManager_043bc99de7ed432da02f53a1d165808a()
-            => HierarchyMenuBuilder.Spawn("Packages/com.genoverrei.library/Runtime/Core/InputCore/GeneralInputManager.prefab");
+        // VNSceneReader → VNSceneReader
+        [MenuItem("GameObject/GenoverreiLibrary/Core/VNSceneReader", false, 0)]
+        static void Spawn_VNSceneReader_48bf0644306d40a9af0a986a8b9be57c()
+            => HierarchyMenuBuilder.Spawn("Packages/com.genoverrei.library/Runtime/Core/VN_Core/VNSceneReader.prefab");
 
     }
 }
