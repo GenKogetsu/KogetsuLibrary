@@ -23,7 +23,6 @@ namespace Genoverrei.Library.Core
         public bool OverrideDialogueBoxAnimation;
         public AnimationClip DialogueBoxAnimation;
 
-        [SerializeReference]
-        public List<VNSpeakerData> Speakers;
+        public List<VNSpeakerData> Speakers = new();
     }
 }

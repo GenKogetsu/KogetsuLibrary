@@ -1,8 +1,8 @@
 #if UNITY_EDITOR
+using Genoverrei.Library.Core;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using System.Collections.Generic;
-using Genoverrei.Library.Core;
 
 namespace Genoverrei.Library.Editor
 {
@@ -66,6 +66,7 @@ namespace Genoverrei.Library.Editor
                 VNCacheHelper.CacheNode(property);
                 ResetNodeData(property);
                 GUIUtility.keyboardControl = 0;
+                GUIUtility.ExitGUI(); // หยุดการวาดเพื่อป้องกัน Layout พัง
             }
 
             GUI.enabled = VNCacheHelper.NodeCache.ContainsKey(property.propertyPath);
@@ -73,6 +74,7 @@ namespace Genoverrei.Library.Editor
             {
                 VNCacheHelper.RecallNode(property);
                 GUIUtility.keyboardControl = 0;
+                GUIUtility.ExitGUI();
             }
             GUI.enabled = true;
 
@@ -91,9 +93,12 @@ namespace Genoverrei.Library.Editor
             if (typeProp.enumValueIndex == (int)VNConversationMode.DialogueMode)
             {
                 var dialogueProp = property.FindPropertyRelative("DialogueNode");
-                DrawPhase(ref currentY, position, dialogueProp.FindPropertyRelative("UseEnterPhase"), dialogueProp.FindPropertyRelative("EnterPhase"), "Enter Phase Effect", false, _enterColor);
-                DrawPhase(ref currentY, position, null, dialogueProp.FindPropertyRelative("MainPhase"), "Main Phase", true, _mainColor);
-                DrawPhase(ref currentY, position, dialogueProp.FindPropertyRelative("UseExitPhase"), dialogueProp.FindPropertyRelative("ExitPhase"), "Exit Phase Effect", false, _exitColor);
+                if (dialogueProp != null)
+                {
+                    DrawPhase(ref currentY, position, dialogueProp.FindPropertyRelative("UseEnterPhase"), dialogueProp.FindPropertyRelative("EnterPhase"), "Enter Phase Effect", false, _enterColor);
+                    DrawPhase(ref currentY, position, null, dialogueProp.FindPropertyRelative("MainPhase"), "Main Phase", true, _mainColor);
+                    DrawPhase(ref currentY, position, dialogueProp.FindPropertyRelative("UseExitPhase"), dialogueProp.FindPropertyRelative("ExitPhase"), "Exit Phase Effect", false, _exitColor);
+                }
             }
             else if (typeProp.enumValueIndex == (int)VNConversationMode.ChoiceMode)
             {
@@ -106,6 +111,8 @@ namespace Genoverrei.Library.Editor
 
         private void DrawChoiceNode(ref float currentY, Rect pos, SerializedProperty choiceProp)
         {
+            if (choiceProp == null) return;
+
             var questionState = choiceProp.FindPropertyRelative("QuestionState");
             var answerState = choiceProp.FindPropertyRelative("AnswerState");
             var interactStates = choiceProp.FindPropertyRelative("InteractStates");
@@ -113,45 +120,51 @@ namespace Genoverrei.Library.Editor
             GUIStyle stateHeaderStyle = new GUIStyle(EditorStyles.boldLabel) { fontSize = 14 };
             Color prevContentColor = GUI.contentColor;
 
-            GUI.contentColor = _questionStateColor;
-            EditorGUI.LabelField(new Rect(pos.x, currentY, pos.width, EditorGUIUtility.singleLineHeight), "Question State", stateHeaderStyle);
-            GUI.contentColor = prevContentColor;
-            currentY += EditorGUIUtility.singleLineHeight + 4f;
-            DrawPhase(ref currentY, pos, questionState.FindPropertyRelative("UseEnterPhase"), questionState.FindPropertyRelative("EnterPhase"), "Question Enter Phase", false, _enterColor);
-            DrawPhase(ref currentY, pos, null, questionState.FindPropertyRelative("MainPhase"), "Question Main Phase", true, _mainColor);
+            if (questionState != null)
+            {
+                GUI.contentColor = _questionStateColor;
+                EditorGUI.LabelField(new Rect(pos.x, currentY, pos.width, EditorGUIUtility.singleLineHeight), "Question State", stateHeaderStyle);
+                GUI.contentColor = prevContentColor;
+                currentY += EditorGUIUtility.singleLineHeight + 4f;
+                DrawPhase(ref currentY, pos, questionState.FindPropertyRelative("UseEnterPhase"), questionState.FindPropertyRelative("EnterPhase"), "Question Enter Phase", false, _enterColor);
+                DrawPhase(ref currentY, pos, null, questionState.FindPropertyRelative("MainPhase"), "Question Main Phase", true, _mainColor);
+                currentY += 8f;
+            }
 
-            currentY += 8f;
-            GUI.contentColor = _answerStateColor;
-            EditorGUI.LabelField(new Rect(pos.x, currentY, pos.width, EditorGUIUtility.singleLineHeight), "Answer State", stateHeaderStyle);
-            GUI.contentColor = prevContentColor;
-            currentY += EditorGUIUtility.singleLineHeight + 4f;
-            DrawPhase(ref currentY, pos, answerState.FindPropertyRelative("UseEnterPhase"), answerState.FindPropertyRelative("EnterPhase"), "Answer Enter Phase", false, _enterColor);
-            DrawPhase(ref currentY, pos, null, answerState.FindPropertyRelative("MainPhase"), "Answer Main Phase", true, _mainColor);
-            DrawArrayWithCache(ref currentY, pos, answerState.FindPropertyRelative("Choices"), "Choices List", "Choice");
-            DrawPhase(ref currentY, pos, answerState.FindPropertyRelative("UseExitPhase"), answerState.FindPropertyRelative("ExitPhase"), "Answer Exit Phase", false, _exitColor);
+            if (answerState != null)
+            {
+                GUI.contentColor = _answerStateColor;
+                EditorGUI.LabelField(new Rect(pos.x, currentY, pos.width, EditorGUIUtility.singleLineHeight), "Answer State", stateHeaderStyle);
+                GUI.contentColor = prevContentColor;
+                currentY += EditorGUIUtility.singleLineHeight + 4f;
+                DrawPhase(ref currentY, pos, answerState.FindPropertyRelative("UseEnterPhase"), answerState.FindPropertyRelative("EnterPhase"), "Answer Enter Phase", false, _enterColor);
+                DrawPhase(ref currentY, pos, null, answerState.FindPropertyRelative("MainPhase"), "Answer Main Phase", true, _mainColor);
+                DrawArrayWithCache(ref currentY, pos, answerState.FindPropertyRelative("Choices"), "Choices List", "Choice");
+                DrawPhase(ref currentY, pos, answerState.FindPropertyRelative("UseExitPhase"), answerState.FindPropertyRelative("ExitPhase"), "Answer Exit Phase", false, _exitColor);
+                currentY += 8f;
+            }
 
-            currentY += 8f;
-            GUI.contentColor = _interactStateColor;
-            EditorGUI.LabelField(new Rect(pos.x, currentY, pos.width, EditorGUIUtility.singleLineHeight), "Interact State", stateHeaderStyle);
-            GUI.contentColor = prevContentColor;
-            currentY += EditorGUIUtility.singleLineHeight + 4f;
-            DrawArrayWithCache(ref currentY, pos, interactStates, "Interact States List", "Interact");
+            if (interactStates != null)
+            {
+                GUI.contentColor = _interactStateColor;
+                EditorGUI.LabelField(new Rect(pos.x, currentY, pos.width, EditorGUIUtility.singleLineHeight), "Interact State", stateHeaderStyle);
+                GUI.contentColor = prevContentColor;
+                currentY += EditorGUIUtility.singleLineHeight + 4f;
+                DrawArrayWithCache(ref currentY, pos, interactStates, "Interact States List", "Interact");
+            }
         }
 
         public static void DrawArrayWithCache(ref float currentY, Rect pos, SerializedProperty arrayProp, string label, string elementPrefix = null)
         {
             if (arrayProp == null) return;
 
-            float listHeight = EditorGUI.GetPropertyHeight(arrayProp, true);
-
-            // เลื่อนกรอบของ Array ไปทางขวาเพิ่มเป็น 10 หน่วย เพื่อเพิ่ม padding ให้ = และ สามเหลี่ยม
+            float listHeight = GetArrayWithCacheHeight(arrayProp) - 4f;
             Rect arrayRect = new Rect(pos.x + 10f, currentY, pos.width - 10f, listHeight);
 
-            // คำนวณความกว้างของข้อความ Label เพื่อให้ปุ่มมาต่อท้ายข้อความเลย ป้องกันการทับตัวเลข Size ทางขวาสุด
             GUIStyle labelStyle = EditorStyles.foldout;
             float foldoutWidth = labelStyle.CalcSize(new GUIContent(label)).x;
             float indentSpace = EditorGUI.indentLevel * 15f;
-            float buttonsStartX = pos.x + indentSpace + foldoutWidth + 25f; // เว้นระยะห่างจากชื่อ List เล็กน้อย
+            float buttonsStartX = pos.x + indentSpace + foldoutWidth + 25f;
 
             float buttonWidth = 50f;
             float headerHeight = EditorGUIUtility.singleLineHeight;
@@ -161,7 +174,6 @@ namespace Genoverrei.Library.Editor
 
             bool canRecall = VNCacheHelper.ArrayCache.ContainsKey(arrayProp.propertyPath);
 
-            // ดักจับ Event เมาส์คลิก "ก่อน" ที่ EditorGUI.PropertyField จะขโมย Event ไป
             Event e = Event.current;
             bool doClear = false;
             bool doRecall = false;
@@ -171,29 +183,37 @@ namespace Genoverrei.Library.Editor
                 if (clearRect.Contains(e.mousePosition))
                 {
                     doClear = true;
-                    e.Use(); // กิน Event ไว้ไม่ให้กล่อง Array แย่งไป
+                    e.Use();
                 }
                 else if (canRecall && recallRect.Contains(e.mousePosition))
                 {
                     doRecall = true;
-                    e.Use(); // กิน Event ไว้ไม่ให้กล่อง Array แย่งไป
+                    e.Use();
                 }
             }
 
-            // วาดตัว Array
-            EditorGUI.PropertyField(arrayRect, arrayProp, new GUIContent(label), true);
+            // เพิ่ม Try-Catch ครอบไว้กัน Array วาดพังจากข้อมูลโครงสร้างเก่า
+            try
+            {
+                EditorGUI.PropertyField(arrayRect, arrayProp, new GUIContent(label), true);
+            }
+            catch (System.Exception ex)
+            {
+                if (ex is ExitGUIException) throw;
+                EditorGUI.HelpBox(new Rect(arrayRect.x, arrayRect.y, arrayRect.width, EditorGUIUtility.singleLineHeight * 2), "Array render error. Try clearing.", MessageType.Error);
+            }
 
             int oldGUIIndent = EditorGUI.indentLevel;
             EditorGUI.indentLevel = 0;
 
-            // วาดปุ่ม (ใช้ Event ที่เราดักมาสั่งการทำงาน)
             if (GUI.Button(clearRect, "Clear", EditorStyles.miniButtonLeft) || doClear)
             {
                 VNCacheHelper.CacheArray(arrayProp);
-                arrayProp.ClearArray(); // ล้างข้อมูลภายใน
-                arrayProp.arraySize = 0; // ลบขนาดสมาชิกให้เป็น 0
+                arrayProp.ClearArray();
+                arrayProp.arraySize = 0;
                 arrayProp.serializedObject.ApplyModifiedProperties();
                 GUIUtility.keyboardControl = 0;
+                GUIUtility.ExitGUI(); // หยุดการวาดทันทีเมื่อเปลี่ยนขนาด Array
             }
 
             GUI.enabled = canRecall;
@@ -202,6 +222,7 @@ namespace Genoverrei.Library.Editor
                 VNCacheHelper.RecallArray(arrayProp);
                 arrayProp.serializedObject.ApplyModifiedProperties();
                 GUIUtility.keyboardControl = 0;
+                GUIUtility.ExitGUI();
             }
             GUI.enabled = true;
             EditorGUI.indentLevel = oldGUIIndent;
@@ -255,6 +276,7 @@ namespace Genoverrei.Library.Editor
                 if (toggleProp != null) toggleProp.boolValue = false;
                 phaseProp.serializedObject.ApplyModifiedProperties();
                 GUIUtility.keyboardControl = 0;
+                GUIUtility.ExitGUI();
             }
 
             currentY += EditorGUIUtility.singleLineHeight + 4f;
@@ -282,7 +304,6 @@ namespace Genoverrei.Library.Editor
 
             while (!SerializedProperty.EqualContents(child, endProperty))
             {
-                // [แก้ไข] เพิ่มเงื่อนไขอนุญาตให้วาดตัวแปรที่มีคำว่า Background ในโหมด None
                 if (isNoneMode && child.name != "DialogueMode" && !child.name.Contains("Ambient") && !child.name.Contains("Bmg") && !child.name.Contains("Background"))
                 {
                     if (!child.NextVisible(false)) break;
@@ -299,7 +320,6 @@ namespace Genoverrei.Library.Editor
                     float headerHeight = EditorGUIUtility.singleLineHeight;
 
                     EditorGUI.LabelField(new Rect(pos.x + indentOffset, currentY, pos.width - indentOffset, headerHeight), "Dialogue Text", EditorStyles.boldLabel);
-
                     DrawRichTextEditorControls(ref currentY, pos, child, phaseProp, false);
                 }
                 else if (child.name == "UseDialogueText")
@@ -380,14 +400,12 @@ namespace Genoverrei.Library.Editor
                 {
                     var nextProp = child.Copy();
                     bool hasNext = nextProp.NextVisible(false) && !SerializedProperty.EqualContents(nextProp, endProperty);
-
                     bool isPair = hasNext && (child.name.Contains(nextProp.name) || nextProp.name.Contains(child.name.Replace("Use", "").Replace("Override", "").Replace("Change", "")));
 
                     if (isPair)
                     {
                         float indentOffset = EditorGUI.indentLevel * 15f;
                         float availableWidth = pos.width - indentOffset;
-
                         float labelWidth = availableWidth * 0.5f;
 
                         var toggleRect = new Rect(pos.x + indentOffset, currentY, labelWidth, EditorGUIUtility.singleLineHeight);
@@ -449,6 +467,7 @@ namespace Genoverrei.Library.Editor
                 VNCacheHelper.TextCache[property.propertyPath] = property.stringValue;
                 property.stringValue = "";
                 GUIUtility.keyboardControl = 0;
+                GUIUtility.ExitGUI();
             }
 
             GUI.enabled = VNCacheHelper.TextCache.ContainsKey(property.propertyPath);
@@ -456,6 +475,7 @@ namespace Genoverrei.Library.Editor
             {
                 property.stringValue = VNCacheHelper.TextCache[property.propertyPath];
                 GUIUtility.keyboardControl = 0;
+                GUIUtility.ExitGUI();
             }
             GUI.enabled = true;
             EditorGUI.indentLevel = oldGUIIndent;
@@ -626,11 +646,11 @@ namespace Genoverrei.Library.Editor
                 ApplyMenuFormat(property.serializedObject, property.propertyPath, min, max, $"color=#{hex}", "color", editor);
             }
 
-            float previewWidth = 40f; // ขยายขนาดปุ่มเพื่อรองรับข้อความ "View"
+            float previewWidth = 40f;
             var previewRect = new Rect(pos.x + pos.width - previewWidth, pos.y, previewWidth, 20);
 
             bool currentPreviewState = GetPreviewState(property.propertyPath);
-            bool newPreviewState = GUI.Toggle(previewRect, currentPreviewState, "View", EditorStyles.miniButton); // ลบ Emoji ออก
+            bool newPreviewState = GUI.Toggle(previewRect, currentPreviewState, "View", EditorStyles.miniButton);
 
             if (newPreviewState != currentPreviewState)
             {
@@ -710,6 +730,7 @@ namespace Genoverrei.Library.Editor
                     if (currentSize > prevSize && currentIndex == currentSize - 1)
                     {
                         ResetNodeData(property);
+                        GUIUtility.ExitGUI(); // หยุดการทำงานถ้าเพิ่ง Reset ข้อมูล Layout จะได้ไม่พัง
                     }
                 }
 
@@ -725,8 +746,12 @@ namespace Genoverrei.Library.Editor
             var dialogueProp = nodeProp.FindPropertyRelative("DialogueNode");
             if (dialogueProp != null)
             {
-                dialogueProp.FindPropertyRelative("UseEnterPhase").boolValue = false;
-                dialogueProp.FindPropertyRelative("UseExitPhase").boolValue = false;
+                var uEnter = dialogueProp.FindPropertyRelative("UseEnterPhase");
+                if (uEnter != null) uEnter.boolValue = false;
+
+                var uExit = dialogueProp.FindPropertyRelative("UseExitPhase");
+                if (uExit != null) uExit.boolValue = false;
+
                 ResetPhaseData(dialogueProp.FindPropertyRelative("EnterPhase"));
                 ResetPhaseData(dialogueProp.FindPropertyRelative("MainPhase"));
                 ResetPhaseData(dialogueProp.FindPropertyRelative("ExitPhase"));
@@ -736,22 +761,34 @@ namespace Genoverrei.Library.Editor
             if (choiceProp != null)
             {
                 var qState = choiceProp.FindPropertyRelative("QuestionState");
-                qState.FindPropertyRelative("UseEnterPhase").boolValue = false;
-                ResetPhaseData(qState.FindPropertyRelative("EnterPhase"));
-                ResetPhaseData(qState.FindPropertyRelative("MainPhase"));
+                if (qState != null)
+                {
+                    var qEnter = qState.FindPropertyRelative("UseEnterPhase");
+                    if (qEnter != null) qEnter.boolValue = false;
+
+                    ResetPhaseData(qState.FindPropertyRelative("EnterPhase"));
+                    ResetPhaseData(qState.FindPropertyRelative("MainPhase"));
+                }
 
                 var aState = choiceProp.FindPropertyRelative("AnswerState");
-                aState.FindPropertyRelative("UseEnterPhase").boolValue = false;
-                aState.FindPropertyRelative("UseExitPhase").boolValue = false;
-                ResetPhaseData(aState.FindPropertyRelative("EnterPhase"));
-                ResetPhaseData(aState.FindPropertyRelative("MainPhase"));
-                ResetPhaseData(aState.FindPropertyRelative("ExitPhase"));
-
-                var choicesProp = aState.FindPropertyRelative("Choices");
-                if (choicesProp != null)
+                if (aState != null)
                 {
-                    choicesProp.ClearArray();
-                    choicesProp.arraySize = 0;
+                    var aEnter = aState.FindPropertyRelative("UseEnterPhase");
+                    if (aEnter != null) aEnter.boolValue = false;
+
+                    var aExit = aState.FindPropertyRelative("UseExitPhase");
+                    if (aExit != null) aExit.boolValue = false;
+
+                    ResetPhaseData(aState.FindPropertyRelative("EnterPhase"));
+                    ResetPhaseData(aState.FindPropertyRelative("MainPhase"));
+                    ResetPhaseData(aState.FindPropertyRelative("ExitPhase"));
+
+                    var choicesProp = aState.FindPropertyRelative("Choices");
+                    if (choicesProp != null)
+                    {
+                        choicesProp.ClearArray();
+                        choicesProp.arraySize = 0;
+                    }
                 }
 
                 var interactStatesProp = choiceProp.FindPropertyRelative("InteractStates");
@@ -785,7 +822,6 @@ namespace Genoverrei.Library.Editor
                     }
                     else if (child.name == "TextSettings")
                     {
-                        // Reset Text Settings สู่ค่า Default
                         var pOverride = child.FindPropertyRelative("OverrideGlobalSettings");
                         if (pOverride != null) pOverride.boolValue = false;
 
@@ -806,11 +842,10 @@ namespace Genoverrei.Library.Editor
                     }
                     else if (child.name == "DialogueMode")
                     {
-                        child.enumValueIndex = 0; // คืนค่าเป็นโหมด None
+                        child.enumValueIndex = 0;
                     }
                     else
                     {
-                        // สั่ง Reset ค่าแบบ Dynamic สำหรับตัวแปรที่เหลือทั้งหมด
                         switch (child.propertyType)
                         {
                             case SerializedPropertyType.Integer: child.intValue = 0; break;
@@ -845,29 +880,43 @@ namespace Genoverrei.Library.Editor
             if (typeProp.enumValueIndex == (int)VNConversationMode.DialogueMode)
             {
                 var dialogueProp = property.FindPropertyRelative("DialogueNode");
-                h += GetPhaseHeight(dialogueProp.FindPropertyRelative("UseEnterPhase"), dialogueProp.FindPropertyRelative("EnterPhase"), false);
-                h += GetPhaseHeight(null, dialogueProp.FindPropertyRelative("MainPhase"), true);
-                h += GetPhaseHeight(dialogueProp.FindPropertyRelative("UseExitPhase"), dialogueProp.FindPropertyRelative("ExitPhase"), false);
+                if (dialogueProp != null)
+                {
+                    h += GetPhaseHeight(dialogueProp.FindPropertyRelative("UseEnterPhase"), dialogueProp.FindPropertyRelative("EnterPhase"), false);
+                    h += GetPhaseHeight(null, dialogueProp.FindPropertyRelative("MainPhase"), true);
+                    h += GetPhaseHeight(dialogueProp.FindPropertyRelative("UseExitPhase"), dialogueProp.FindPropertyRelative("ExitPhase"), false);
+                }
             }
             else if (typeProp.enumValueIndex == (int)VNConversationMode.ChoiceMode)
             {
                 var choiceProp = property.FindPropertyRelative("ChoiceNode");
+                if (choiceProp != null)
+                {
+                    var qState = choiceProp.FindPropertyRelative("QuestionState");
+                    if (qState != null)
+                    {
+                        h += EditorGUIUtility.singleLineHeight + 4f;
+                        h += GetPhaseHeight(qState.FindPropertyRelative("UseEnterPhase"), qState.FindPropertyRelative("EnterPhase"), false);
+                        h += GetPhaseHeight(null, qState.FindPropertyRelative("MainPhase"), true);
+                    }
 
-                var qState = choiceProp.FindPropertyRelative("QuestionState");
-                h += EditorGUIUtility.singleLineHeight + 4f;
-                h += GetPhaseHeight(qState.FindPropertyRelative("UseEnterPhase"), qState.FindPropertyRelative("EnterPhase"), false);
-                h += GetPhaseHeight(null, qState.FindPropertyRelative("MainPhase"), true);
+                    var aState = choiceProp.FindPropertyRelative("AnswerState");
+                    if (aState != null)
+                    {
+                        h += EditorGUIUtility.singleLineHeight + 12f;
+                        h += GetPhaseHeight(aState.FindPropertyRelative("UseEnterPhase"), aState.FindPropertyRelative("EnterPhase"), false);
+                        h += GetPhaseHeight(null, aState.FindPropertyRelative("MainPhase"), true);
+                        h += GetArrayWithCacheHeight(aState.FindPropertyRelative("Choices"));
+                        h += GetPhaseHeight(aState.FindPropertyRelative("UseExitPhase"), aState.FindPropertyRelative("ExitPhase"), false);
+                    }
 
-                var aState = choiceProp.FindPropertyRelative("AnswerState");
-                h += EditorGUIUtility.singleLineHeight + 12f;
-                h += GetPhaseHeight(aState.FindPropertyRelative("UseEnterPhase"), aState.FindPropertyRelative("EnterPhase"), false);
-                h += GetPhaseHeight(null, aState.FindPropertyRelative("MainPhase"), true);
-                h += GetArrayWithCacheHeight(aState.FindPropertyRelative("Choices"));
-                h += GetPhaseHeight(aState.FindPropertyRelative("UseExitPhase"), aState.FindPropertyRelative("ExitPhase"), false);
-
-                var iStates = choiceProp.FindPropertyRelative("InteractStates");
-                h += EditorGUIUtility.singleLineHeight + 12f;
-                h += GetArrayWithCacheHeight(iStates);
+                    var iStates = choiceProp.FindPropertyRelative("InteractStates");
+                    if (iStates != null)
+                    {
+                        h += EditorGUIUtility.singleLineHeight + 12f;
+                        h += GetArrayWithCacheHeight(iStates);
+                    }
+                }
             }
 
             return h + 6f;
@@ -876,7 +925,14 @@ namespace Genoverrei.Library.Editor
         internal static float GetArrayWithCacheHeight(SerializedProperty arrayProp)
         {
             if (arrayProp == null) return 0f;
-            return EditorGUI.GetPropertyHeight(arrayProp, true) + 4f;
+            try
+            {
+                return EditorGUI.GetPropertyHeight(arrayProp, true) + 4f;
+            }
+            catch
+            {
+                return EditorGUIUtility.singleLineHeight + 4f;
+            }
         }
 
         internal static float GetPhaseHeight(SerializedProperty toggle, SerializedProperty phase, bool isMainPhase)
@@ -901,7 +957,6 @@ namespace Genoverrei.Library.Editor
 
             while (!SerializedProperty.EqualContents(child, end))
             {
-                // [แก้ไข] เพิ่มเงื่อนไขอนุญาตให้คำนวณความสูงตัวแปรที่มีคำว่า Background ในโหมด None
                 if (isNoneMode && child.name != "DialogueMode" && !child.name.Contains("Ambient") && !child.name.Contains("Bmg") && !child.name.Contains("Background"))
                 {
                     if (!child.NextVisible(false)) break;

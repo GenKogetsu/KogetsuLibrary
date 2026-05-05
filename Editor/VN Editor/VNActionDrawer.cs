@@ -15,7 +15,7 @@ namespace Genoverrei.Library.Editor
             GUI.color = bgColor;
             // ดันพื้นหลังมาทางซ้าย 5 หน่วย และขยายความกว้างชดเชยเพื่อไม่ให้ขอบขวาหด
             GUI.Box(new Rect(pos.x - 5f, pos.y, pos.width + 5f, GetPropertyHeight(prop, label)), "", EditorStyles.helpBox);
-            GUI.color = Color.white; 
+            GUI.color = Color.white;
 
             var index = GetIndex(prop.propertyPath);
 
@@ -64,9 +64,26 @@ namespace Genoverrei.Library.Editor
                 }
                 else
                 {
-                    var idx = Mathf.Max(0, Array.IndexOf(opt, val.stringValue));
-                    int selectedIdx = EditorGUI.Popup(fieldRect, idx, opt);
-                    val.stringValue = opt[selectedIdx];
+                    string current = val.stringValue;
+                    if (string.IsNullOrEmpty(current) || Array.IndexOf(opt, current) < 0)
+                        current = opt[0];
+
+                    if (GUI.Button(fieldRect, current, EditorStyles.popup))
+                    {
+                        var menu = new GenericMenu();
+                        var capturedProp = val;
+                        foreach (string option in opt)
+                        {
+                            string o = option;
+                            menu.AddItem(new GUIContent(o), current == o, () =>
+                            {
+                                capturedProp.serializedObject.Update();
+                                capturedProp.stringValue = o;
+                                capturedProp.serializedObject.ApplyModifiedProperties();
+                            });
+                        }
+                        menu.ShowAsContext();
+                    }
                 }
             }
             y += EditorGUIUtility.singleLineHeight + 4f;

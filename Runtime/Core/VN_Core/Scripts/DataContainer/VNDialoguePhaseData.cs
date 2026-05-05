@@ -9,7 +9,6 @@ namespace Genoverrei.Library.Core
         [TextArea(3, 5)]
         public string DialogueText;
 
-        [SerializeReference]
-        public VNTextSettings TextSettings;
+        public VNTextSettings TextSettings = new();
     }
 }

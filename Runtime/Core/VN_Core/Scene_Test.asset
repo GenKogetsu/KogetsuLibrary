@@ -40,170 +40,6 @@ MonoBehaviour:
           Alignment: 257
           TypingSpeed: 30
       MainPhase:
-        DialogueMode: 3
-        ChangeBackground: 1
-        BackgroundSprite: {fileID: 0}
-        OverrideBmgClip: 1
-        BmgClip: {fileID: 0}
-        UseAmbientEvent: 1
-        AmbientEventType: 0
-        UseVoiceoverClip: 1
-        VoiceoverClip: {fileID: 0}
-        OverrideDialogueBoxAnimation: 1
-        DialogueBoxAnimation: {fileID: 0}
-        Speakers: []
-        DialogueText: 
-        TextSettings:
-          OverrideGlobalSettings: 0
-          CustomFont: {fileID: 0}
-          FontSize: 36
-          FontColor: {r: 1, g: 1, b: 1, a: 1}
-          Alignment: 257
-          TypingSpeed: 30
-      UseExitPhase: 0
-      ExitPhase:
-        DialogueMode: 0
-        ChangeBackground: 0
-        BackgroundSprite: {fileID: 0}
-        OverrideBmgClip: 0
-        BmgClip: {fileID: 0}
-        UseAmbientEvent: 0
-        AmbientEventType: 0
-        UseVoiceoverClip: 0
-        VoiceoverClip: {fileID: 0}
-        OverrideDialogueBoxAnimation: 0
-        DialogueBoxAnimation: {fileID: 0}
-        Speakers: []
-        DialogueText: 
-        TextSettings:
-          OverrideGlobalSettings: 0
-          CustomFont: {fileID: 0}
-          FontSize: 36
-          FontColor: {r: 1, g: 1, b: 1, a: 1}
-          Alignment: 257
-          TypingSpeed: 30
-    ChoiceNode:
-      QuestionState:
-        UseEnterPhase: 0
-        EnterPhase:
-          DialogueMode: 0
-          ChangeBackground: 0
-          BackgroundSprite: {fileID: 0}
-          OverrideBmgClip: 0
-          BmgClip: {fileID: 0}
-          UseAmbientEvent: 0
-          AmbientEventType: 0
-          UseVoiceoverClip: 0
-          VoiceoverClip: {fileID: 0}
-          OverrideDialogueBoxAnimation: 0
-          DialogueBoxAnimation: {fileID: 0}
-          Speakers: []
-          DialogueText: 
-          TextSettings:
-            OverrideGlobalSettings: 0
-            CustomFont: {fileID: 0}
-            FontSize: 36
-            FontColor: {r: 1, g: 1, b: 1, a: 1}
-            Alignment: 257
-            TypingSpeed: 30
-        MainPhase:
-          DialogueMode: 0
-          ChangeBackground: 0
-          BackgroundSprite: {fileID: 0}
-          OverrideBmgClip: 0
-          BmgClip: {fileID: 0}
-          UseAmbientEvent: 0
-          AmbientEventType: 0
-          UseVoiceoverClip: 0
-          VoiceoverClip: {fileID: 0}
-          OverrideDialogueBoxAnimation: 0
-          DialogueBoxAnimation: {fileID: 0}
-          Speakers: []
-          DialogueText: 
-          TextSettings:
-            OverrideGlobalSettings: 0
-            CustomFont: {fileID: 0}
-            FontSize: 36
-            FontColor: {r: 1, g: 1, b: 1, a: 1}
-            Alignment: 257
-            TypingSpeed: 30
-      AnswerState:
-        UseEnterPhase: 0
-        EnterPhase:
-          DialogueMode: 0
-          ChangeBackground: 0
-          BackgroundSprite: {fileID: 0}
-          OverrideBmgClip: 0
-          BmgClip: {fileID: 0}
-          UseAmbientEvent: 0
-          AmbientEventType: 0
-          UseVoiceoverClip: 0
-          VoiceoverClip: {fileID: 0}
-          OverrideDialogueBoxAnimation: 0
-          DialogueBoxAnimation: {fileID: 0}
-          Speakers: []
-          DialogueText: 
-          TextSettings:
-            OverrideGlobalSettings: 0
-            CustomFont: {fileID: 0}
-            FontSize: 36
-            FontColor: {r: 1, g: 1, b: 1, a: 1}
-            Alignment: 257
-            TypingSpeed: 30
-        MainPhase:
-          DialogueMode: 0
-          ChangeBackground: 0
-          BackgroundSprite: {fileID: 0}
-          OverrideBmgClip: 0
-          BmgClip: {fileID: 0}
-          UseAmbientEvent: 0
-          AmbientEventType: 0
-          UseVoiceoverClip: 0
-          VoiceoverClip: {fileID: 0}
-          OverrideDialogueBoxAnimation: 0
-          DialogueBoxAnimation: {fileID: 0}
-          Speakers: []
-        UseExitPhase: 0
-        ExitPhase:
-          DialogueMode: 0
-          ChangeBackground: 0
-          BackgroundSprite: {fileID: 0}
-          OverrideBmgClip: 0
-          BmgClip: {fileID: 0}
-          UseAmbientEvent: 0
-          AmbientEventType: 0
-          UseVoiceoverClip: 0
-          VoiceoverClip: {fileID: 0}
-          OverrideDialogueBoxAnimation: 0
-          DialogueBoxAnimation: {fileID: 0}
-          Speakers: []
-        Choices: []
-      InteractStates: []
-  - ConversationMode: 2
-    DialogueNode:
-      UseEnterPhase: 0
-      EnterPhase:
-        DialogueMode: 0
-        ChangeBackground: 0
-        BackgroundSprite: {fileID: 0}
-        OverrideBmgClip: 0
-        BmgClip: {fileID: 0}
-        UseAmbientEvent: 0
-        AmbientEventType: 0
-        UseVoiceoverClip: 0
-        VoiceoverClip: {fileID: 0}
-        OverrideDialogueBoxAnimation: 0
-        DialogueBoxAnimation: {fileID: 0}
-        Speakers: []
-        DialogueText: 
-        TextSettings:
-          OverrideGlobalSettings: 0
-          CustomFont: {fileID: 0}
-          FontSize: 36
-          FontColor: {r: 1, g: 1, b: 1, a: 1}
-          Alignment: 257
-          TypingSpeed: 30
-      MainPhase:
         DialogueMode: 0
         ChangeBackground: 0
         BackgroundSprite: {fileID: 0}
@@ -326,7 +162,13 @@ MonoBehaviour:
           VoiceoverClip: {fileID: 0}
           OverrideDialogueBoxAnimation: 0
           DialogueBoxAnimation: {fileID: 0}
-          Speakers: []
+          Speakers:
+          - Character: {fileID: 0}
+            ShowName: 1
+            Actions: []
+          - Character: {fileID: 0}
+            ShowName: 1
+            Actions: []
         UseExitPhase: 0
         ExitPhase:
           DialogueMode: 0
@@ -347,7 +189,7 @@ MonoBehaviour:
         ReturnValue: 0
         ReturnToChoicePhase: 0
         SubConversation:
-        - ConversationMode: 1
+        - ConversationMode: 0
           DialogueNode:
             UseEnterPhase: 0
             EnterPhase:
@@ -367,17 +209,17 @@ MonoBehaviour:
               TextSettings:
                 OverrideGlobalSettings: 0
                 CustomFont: {fileID: 0}
-                FontSize: 0
-                FontColor: {r: 0, g: 0, b: 0, a: 0}
-                Alignment: 0
-                TypingSpeed: 0
+                FontSize: 36
+                FontColor: {r: 1, g: 1, b: 1, a: 1}
+                Alignment: 257
+                TypingSpeed: 30
             MainPhase:
-              DialogueMode: 3
+              DialogueMode: 0
               ChangeBackground: 0
               BackgroundSprite: {fileID: 0}
               OverrideBmgClip: 0
               BmgClip: {fileID: 0}
-              UseAmbientEvent: 1
+              UseAmbientEvent: 0
               AmbientEventType: 0
               UseVoiceoverClip: 0
               VoiceoverClip: {fileID: 0}
@@ -388,10 +230,10 @@ MonoBehaviour:
               TextSettings:
                 OverrideGlobalSettings: 0
                 CustomFont: {fileID: 0}
-                FontSize: 0
-                FontColor: {r: 0, g: 0, b: 0, a: 0}
-                Alignment: 0
-                TypingSpeed: 0
+                FontSize: 36
+                FontColor: {r: 1, g: 1, b: 1, a: 1}
+                Alignment: 257
+                TypingSpeed: 30
             UseExitPhase: 0
             ExitPhase:
               DialogueMode: 0
@@ -410,10 +252,10 @@ MonoBehaviour:
               TextSettings:
                 OverrideGlobalSettings: 0
                 CustomFont: {fileID: 0}
-                FontSize: 0
-                FontColor: {r: 0, g: 0, b: 0, a: 0}
-                Alignment: 0
-                TypingSpeed: 0
+                FontSize: 36
+                FontColor: {r: 1, g: 1, b: 1, a: 1}
+                Alignment: 257
+                TypingSpeed: 30
           ChoiceNode:
             QuestionState:
               UseEnterPhase: 0
@@ -434,10 +276,10 @@ MonoBehaviour:
                 TextSettings:
                   OverrideGlobalSettings: 0
                   CustomFont: {fileID: 0}
-                  FontSize: 0
-                  FontColor: {r: 0, g: 0, b: 0, a: 0}
-                  Alignment: 0
-                  TypingSpeed: 0
+                  FontSize: 36
+                  FontColor: {r: 1, g: 1, b: 1, a: 1}
+                  Alignment: 257
+                  TypingSpeed: 30
               MainPhase:
                 DialogueMode: 0
                 ChangeBackground: 0
@@ -455,10 +297,10 @@ MonoBehaviour:
                 TextSettings:
                   OverrideGlobalSettings: 0
                   CustomFont: {fileID: 0}
-                  FontSize: 0
-                  FontColor: {r: 0, g: 0, b: 0, a: 0}
-                  Alignment: 0
-                  TypingSpeed: 0
+                  FontSize: 36
+                  FontColor: {r: 1, g: 1, b: 1, a: 1}
+                  Alignment: 257
+                  TypingSpeed: 30
             AnswerState:
               UseEnterPhase: 0
               EnterPhase:
@@ -478,10 +320,10 @@ MonoBehaviour:
                 TextSettings:
                   OverrideGlobalSettings: 0
                   CustomFont: {fileID: 0}
-                  FontSize: 0
-                  FontColor: {r: 0, g: 0, b: 0, a: 0}
-                  Alignment: 0
-                  TypingSpeed: 0
+                  FontSize: 36
+                  FontColor: {r: 1, g: 1, b: 1, a: 1}
+                  Alignment: 257
+                  TypingSpeed: 30
               MainPhase:
                 DialogueMode: 0
                 ChangeBackground: 0
@@ -515,7 +357,7 @@ MonoBehaviour:
         ReturnValue: 0
         ReturnToChoicePhase: 0
         SubConversation:
-        - ConversationMode: 1
+        - ConversationMode: 0
           DialogueNode:
             UseEnterPhase: 0
             EnterPhase:
@@ -535,17 +377,17 @@ MonoBehaviour:
               TextSettings:
                 OverrideGlobalSettings: 0
                 CustomFont: {fileID: 0}
-                FontSize: 0
-                FontColor: {r: 0, g: 0, b: 0, a: 0}
-                Alignment: 0
-                TypingSpeed: 0
+                FontSize: 36
+                FontColor: {r: 1, g: 1, b: 1, a: 1}
+                Alignment: 257
+                TypingSpeed: 30
             MainPhase:
-              DialogueMode: 3
+              DialogueMode: 0
               ChangeBackground: 0
               BackgroundSprite: {fileID: 0}
               OverrideBmgClip: 0
               BmgClip: {fileID: 0}
-              UseAmbientEvent: 1
+              UseAmbientEvent: 0
               AmbientEventType: 0
               UseVoiceoverClip: 0
               VoiceoverClip: {fileID: 0}
@@ -556,10 +398,10 @@ MonoBehaviour:
               TextSettings:
                 OverrideGlobalSettings: 0
                 CustomFont: {fileID: 0}
-                FontSize: 0
-                FontColor: {r: 0, g: 0, b: 0, a: 0}
-                Alignment: 0
-                TypingSpeed: 0
+                FontSize: 36
+                FontColor: {r: 1, g: 1, b: 1, a: 1}
+                Alignment: 257
+                TypingSpeed: 30
             UseExitPhase: 0
             ExitPhase:
               DialogueMode: 0
@@ -578,10 +420,10 @@ MonoBehaviour:
               TextSettings:
                 OverrideGlobalSettings: 0
                 CustomFont: {fileID: 0}
-                FontSize: 0
-                FontColor: {r: 0, g: 0, b: 0, a: 0}
-                Alignment: 0
-                TypingSpeed: 0
+                FontSize: 36
+                FontColor: {r: 1, g: 1, b: 1, a: 1}
+                Alignment: 257
+                TypingSpeed: 30
           ChoiceNode:
             QuestionState:
               UseEnterPhase: 0
@@ -602,10 +444,10 @@ MonoBehaviour:
                 TextSettings:
                   OverrideGlobalSettings: 0
                   CustomFont: {fileID: 0}
-                  FontSize: 0
-                  FontColor: {r: 0, g: 0, b: 0, a: 0}
-                  Alignment: 0
-                  TypingSpeed: 0
+                  FontSize: 36
+                  FontColor: {r: 1, g: 1, b: 1, a: 1}
+                  Alignment: 257
+                  TypingSpeed: 30
               MainPhase:
                 DialogueMode: 0
                 ChangeBackground: 0
@@ -623,10 +465,10 @@ MonoBehaviour:
                 TextSettings:
                   OverrideGlobalSettings: 0
                   CustomFont: {fileID: 0}
-                  FontSize: 0
-                  FontColor: {r: 0, g: 0, b: 0, a: 0}
-                  Alignment: 0
-                  TypingSpeed: 0
+                  FontSize: 36
+                  FontColor: {r: 1, g: 1, b: 1, a: 1}
+                  Alignment: 257
+                  TypingSpeed: 30
             AnswerState:
               UseEnterPhase: 0
               EnterPhase:
@@ -646,10 +488,10 @@ MonoBehaviour:
                 TextSettings:
                   OverrideGlobalSettings: 0
                   CustomFont: {fileID: 0}
-                  FontSize: 0
-                  FontColor: {r: 0, g: 0, b: 0, a: 0}
-                  Alignment: 0
-                  TypingSpeed: 0
+                  FontSize: 36
+                  FontColor: {r: 1, g: 1, b: 1, a: 1}
+                  Alignment: 257
+                  TypingSpeed: 30
               MainPhase:
                 DialogueMode: 0
                 ChangeBackground: 0

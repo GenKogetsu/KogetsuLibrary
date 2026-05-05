@@ -12,7 +12,6 @@ namespace Genoverrei.Library.Core
 
         public bool ReturnToChoicePhase;
 
-        [SerializeReference]
-        public List<VNConversationNode> SubConversation;
+        public List<VNConversationNode> SubConversation = new();
     }
 }
