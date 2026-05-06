@@ -475,7 +475,10 @@ namespace Genoverrei.Library.Core
                     ? phase.DialogueBoxAnimation.name
                     : _hideDialogueClip?.name;
 
-                if (clipName != null) _currentDialogueAnimator.Play(clipName);
+                // new: only play if the animator's GO is actually active in hierarchy
+                if (clipName != null && _currentDialogueAnimator.gameObject.activeInHierarchy)
+                    _currentDialogueAnimator.Play(clipName);
+
                 yield return new WaitForSeconds(1.2f);
             }
 
@@ -511,6 +514,12 @@ namespace Genoverrei.Library.Core
             if (_currentSpeakerNameTMP != null) _currentSpeakerNameTMP.text = string.Empty;
             if (_currentSpeakerIcon != null) { _currentSpeakerIcon.sprite = null; _currentSpeakerIcon.gameObject.SetActive(false); }
             if (_currentSpeakerNameIcon != null) { _currentSpeakerNameIcon.sprite = null; _currentSpeakerNameIcon.gameObject.SetActive(false); } //new
+
+            // new: activate animator's GO first — it may be on a parent that is still inactive
+            // (activating only the DialogueBox child does NOT activate an inactive parent)
+            if (_currentDialogueAnimator != null && !_currentDialogueAnimator.gameObject.activeSelf)
+                _currentDialogueAnimator.gameObject.SetActive(true);
+
             if (_currentDialogueBox != null) _currentDialogueBox.gameObject.SetActive(true);
 
             if (isModeChanged && _currentDialogueAnimator != null)
