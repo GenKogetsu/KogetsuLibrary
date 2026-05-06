@@ -434,7 +434,10 @@ namespace Genoverrei.Library.Core
 
             // --- เล่น SubConversation ตามคำตอบที่เลือก ---
             foreach (var subNode in matchedInteract.SubConversation)
+            {
+                if (subNode == null) continue; //new: null guard for [SerializeReference] managed refs
                 yield return PlayNodeRoutine(subNode);
+            }
 
             // --- วนกลับไปถามใหม่ถ้าตั้งค่าไว้ ---
             if (matchedInteract.ReturnToChoicePhase)

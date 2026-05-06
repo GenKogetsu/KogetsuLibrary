@@ -29,38 +29,45 @@ namespace Genoverrei.Library.DesignPatternCore
 
         private void OnEmotionSignel(string emotionName)
         {
-            var emotion = string.IsNullOrEmpty(emotionName) ? _characterData.GetEmotion(emotionName): null;
+            if (string.IsNullOrEmpty(emotionName)) return; //new: guard (ternary was inverted)
+            var emotion = _characterData.GetEmotion(emotionName); //new: fix — was using wrong branch
 
             if (emotion == null) return;
 
-            var spriteTarget = emotion.Value.EmoteSprite;
-
-            var clipName = emotion.Value.EmoteClip.name;
-
-            _characterSprite.sprite = spriteTarget;
-
-            _characterSpriteAnimator.Play(clipName);
+            _characterSprite.sprite = emotion.Value.EmoteSprite;
+            _characterSpriteAnimator.Play(emotion.Value.EmoteClip.name);
         }
 
         private void OnAnimationSignel(string animationName)
         {
-            var animation = string.IsNullOrEmpty(animationName) ? _characterData.GetAnimation(animationName) : null;
+            if (string.IsNullOrEmpty(animationName)) return; //new: guard (ternary was inverted)
+            var animation = _characterData.GetAnimation(animationName); //new: fix — was using wrong branch
 
             if (animation == null) return;
 
-            _characterBehaviorAniamtor.Play(animationName);
+            _characterBehaviorAniamtor.Play(animation.Value.BehaviorAnimationClip.name);
+        }
+
+        private void OnSoundEffectSignel(string soundEffectName) //new: was missing entirely
+        {
+            if (string.IsNullOrEmpty(soundEffectName)) return;
+            var soundEffect = _characterData.GetSoundEffect(soundEffectName);
+            if (soundEffect == null) return;
+            // ส่ง clip ออกไปผ่าน audio observer ถ้ามีการเชื่อมต่อในอนาคต — ตอนนี้ stub ไว้
         }
 
         private void OnEnable()
         {
-            _characterData.OnVNEmotionChannel += OnEmotionSignel;
-            _characterData.OnVNAnimationChannel += OnAnimationSignel;
+            _characterData.OnVNEmotionChannel     += OnEmotionSignel;
+            _characterData.OnVNAnimationChannel   += OnAnimationSignel;
+            _characterData.OnVNSoundEffectChannel += OnSoundEffectSignel; //new
         }
 
         private void OnDisable()
         {
-            _characterData.OnVNEmotionChannel -= OnEmotionSignel;
-            _characterData.OnVNAnimationChannel -= OnAnimationSignel;
+            _characterData.OnVNEmotionChannel     -= OnEmotionSignel;
+            _characterData.OnVNAnimationChannel   -= OnAnimationSignel;
+            _characterData.OnVNSoundEffectChannel -= OnSoundEffectSignel; //new
         }
     }
 }
