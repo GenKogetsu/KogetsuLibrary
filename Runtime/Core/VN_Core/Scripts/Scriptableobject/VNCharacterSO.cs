@@ -70,7 +70,11 @@ namespace Genoverrei.Library.Core
         /// <para> Return : </para>
         /// <para> (TH) : ข้อมูล Emotion ที่พบ หรือ null หากไม่พบ </para>
         /// </summary>
-        public VNEmotionData? GetEmotion(string name) => _dicEmotions.TryGetValue(name, out var data) ? data : null;
+        public VNEmotionData? GetEmotion(string name)
+        {
+            if (_dicEmotions == null) InitializeDictionaries();
+            return _dicEmotions.TryGetValue(name, out var data) ? data : null;
+        }
 
         /// <summary>
         /// <para> Summary : </para>
@@ -79,12 +83,29 @@ namespace Genoverrei.Library.Core
         /// <para> Return : </para>
         /// <para> (TH) : ข้อมูล Animation ที่พบ หรือ null หากไม่พบ </para>
         /// </summary>
-        public VNBehaviorAnimationData? GetAnimation(string name) => _dicAnimations.TryGetValue(name, out var data) ? data : null;
-
-        public VNSoundEffectData? GetSoundEffect(string name) => _dicSoundEffects.TryGetValue(name, out var data) ? data : null;
-
-        private void Awake()
+        public VNBehaviorAnimationData? GetAnimation(string name)
         {
+            if (_dicAnimations == null) InitializeDictionaries();
+            return _dicAnimations.TryGetValue(name, out var data) ? data : null;
+        }
+
+        public VNSoundEffectData? GetSoundEffect(string name)
+        {
+            if (_dicSoundEffects == null) InitializeDictionaries();
+            return _dicSoundEffects.TryGetValue(name, out var data) ? data : null;
+        }
+
+        private void OnEnable()
+        {
+            InitializeDictionaries();
+        }
+
+        private void InitializeDictionaries()
+        {
+            // ป้องกันการสร้างซ้ำซ้อนถ้า Dictionary มีการ Initialize ไว้แล้ว
+            if (_dicEmotions != null && _dicAnimations != null && _dicSoundEffects != null)
+                return;
+
             _dicEmotions = InitializeDictionary(Emotions, emote => emote.EmoteClip, "Emotion");
             _dicAnimations = InitializeDictionary(BehaviorAnimations, anime => anime.BehaviorAnimationClip, "Animation");
             _dicSoundEffects = InitializeDictionary(SoundEffects, effect => effect.SoundEffectClip, "SoundEffect");

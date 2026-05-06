@@ -21,7 +21,7 @@ namespace Genoverrei.Library.Core
         [ReadOnly]
         [SerializeField] protected double TimePerFrame;
 
-        [field: SerializeField , ReadOnly]
+        [field: SerializeField, ReadOnly]
         public double CurrentTimeScale { get; protected set; }
 
         [field: SerializeField]
@@ -104,7 +104,7 @@ namespace Genoverrei.Library.Core
             LocalGameTimeDisplay = LocalGameTime.ToString("HH:mm:ss , ddd dd MMM yyyy", CultureInfo.InvariantCulture);
             AcceleratorScale = ScaleData.BaseAcceleratorScale;
             AccelerationMultiplier = ScaleData.BaseAccelerationMultiplier;
-            
+
             CalculateAcceleratorScale();
         }
 
@@ -123,7 +123,7 @@ namespace Genoverrei.Library.Core
                 AcceleratorScale = CacheAcceleratorScale;
                 CacheAcceleratorScale = 0f;
             }
-           
+
 
             CalculateAcceleratorScale();
         }
@@ -169,6 +169,11 @@ namespace Genoverrei.Library.Core
             }
 
             display = TimeBuilder.ToString().Trim();
+        }
+
+        public virtual void SetAccelerationMultiplier(float multiplier)
+        {
+            AccelerationMultiplier = multiplier;
         }
     }
 }

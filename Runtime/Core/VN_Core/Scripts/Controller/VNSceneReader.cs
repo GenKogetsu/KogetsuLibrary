@@ -6,13 +6,13 @@ using Genoverrei.Library.DesignPatternCore;
 
 namespace Genoverrei.Library.Core
 {
-	/// <summary>
-	/// <para> Summary : </para>
-	/// <para> (TH) : ตัวควบคุมหลักสำหรับระบบ Visual Novel ทำหน้าที่ประมวลผลโหนดเนื้อเรื่อง, จัดการ UI, ตัวละคร และเหตุการณ์ต่างๆ </para>
-	/// <para> (EN) : Main controller for the Visual Novel system. Processes story nodes, manages UI, characters, and events. </para>
-	/// </summary>
-	[CreateHierarchyMenu("GenoverreiLibrary/Core")]
-	public class VNSceneReader : MonoBehaviour
+    /// <summary>
+    /// <para> Summary : </para>
+    /// <para> (TH) : ตัวควบคุมหลักสำหรับระบบ Visual Novel ทำหน้าที่ประมวลผลโหนดเนื้อเรื่อง, จัดการ UI, ตัวละคร และเหตุการณ์ต่างๆ </para>
+    /// <para> (EN) : Main controller for the Visual Novel system. Processes story nodes, manages UI, characters, and events. </para>
+    /// </summary>
+    [CreateHierarchyMenu("GenoverreiLibrary/Core")]
+    public class VNSceneReader : MonoBehaviour
     {
         #region Field Region
 
@@ -29,6 +29,8 @@ namespace Genoverrei.Library.Core
 
         [Required]
         [SerializeField] private AnimationClip _hideDialogueClip, _showDialogueClip;
+
+        public AudioClip TypingSfx;
 
         [Header("UI References")]
         [SerializeField] private VNDialogueArea _standardDialogueArea;
@@ -65,8 +67,8 @@ namespace Genoverrei.Library.Core
 
         #endregion //End Field Region
 
-        private void OnEnable() => _basicObserverChannel.OnLeftClickChannel += HandleInput;
-        private void OnDisable() => _basicObserverChannel.OnLeftClickChannel -= HandleInput;
+        private void OnEnable() => _basicObserverChannel.OnInteractionChannel += HandleInput;
+        private void OnDisable() => _basicObserverChannel.OnInteractionChannel -= HandleInput;
 
         private void Start()
         {
@@ -107,7 +109,7 @@ namespace Genoverrei.Library.Core
             StartCoroutine(PlayNodeRoutine(_currentScene.Conversations[_currentConversationIndex]));
         }
 
-        private void HandleInput(ClickData data)
+        private void HandleInput()
         {
             if (_isTyping) { _skipTyping = true; return; }
             if (!_waitForInput) return;
@@ -384,6 +386,8 @@ namespace Genoverrei.Library.Core
 #if UNITY_EDITOR
                 Debug.Log("<b><color=#A5D6A7>[VN Engine]</color></b> VNScene Finished!");
 #endif
+                BasicSceneEffectController.Instance.LoadNextScene(1);
+
                 yield break;
             }
         }
@@ -472,9 +476,14 @@ namespace Genoverrei.Library.Core
                 yield return new WaitForSeconds(1.2f);
             }
 
-            _standardDialogueArea?.DialogueBox?.gameObject.SetActive(false);
-            _logViewDialogueArea?.DialogueBox?.gameObject.SetActive(false);
-            _cinematicDialogueArea?.DialogueBox?.gameObject.SetActive(false);
+            if (_standardDialogueArea != null && _standardDialogueArea.DialogueBox != null)
+                _standardDialogueArea.DialogueBox.gameObject.SetActive(false);
+
+            if (_logViewDialogueArea != null && _logViewDialogueArea.DialogueBox != null)
+                _logViewDialogueArea.DialogueBox.gameObject.SetActive(false);
+
+            if (_cinematicDialogueArea != null && _cinematicDialogueArea.DialogueBox != null)
+                _cinematicDialogueArea.DialogueBox.gameObject.SetActive(false);
 
             var dialogueArea = GetDialogueArea(phase.DialogueMode);
 
