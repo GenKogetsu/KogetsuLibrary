@@ -1,5 +1,6 @@
 using System;
 using TMPro;
+using UnityEngine.UI;
 
 namespace Genoverrei.Library.Core
 {
@@ -15,6 +16,7 @@ namespace Genoverrei.Library.Core
         public Animator DialogueAnimator;
 
         public TextMeshProUGUI SpeakerNameTMP;
+        public Image SpeakerNameIcon; //new: shown when VNNameDisplayMode.Icon
 
         public TextMeshProUGUI DialogueTMP;
     }

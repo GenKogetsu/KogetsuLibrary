@@ -2,9 +2,8 @@
 using UnityEditor;
 using UnityEngine;
 using Genoverrei.Library.Core;
-using Genoverrei.Library.Editor;
 
-namespace UIEditor
+namespace Genoverrei.Library.Editor //new: fixed namespace (was UIEditor)
 {
     [CustomPropertyDrawer(typeof(VNSpeakerData))]
     public class VNSpeakerDataDrawer : PropertyDrawer
@@ -14,16 +13,14 @@ namespace UIEditor
             EditorGUI.BeginProperty(position, label, property);
 
             var characterProp = property.FindPropertyRelative("Character");
-            var showNameProp = property.FindPropertyRelative("ShowName");
+            var nameModeProp = property.FindPropertyRelative("NameDisplayMode"); //new: replaces ShowName
             var actionsProp = property.FindPropertyRelative("Actions");
 
             Rect foldoutRect = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
 
             string displayName = "Speaker [Empty]";
             if (characterProp != null && characterProp.objectReferenceValue != null)
-            {
                 displayName = $"Speaker [{characterProp.objectReferenceValue.name}]";
-            }
 
             property.isExpanded = EditorGUI.Foldout(foldoutRect, property.isExpanded, displayName, true);
 
@@ -39,17 +36,15 @@ namespace UIEditor
                     y += h + 2f;
                 }
 
-                if (showNameProp != null)
+                if (nameModeProp != null) //new: enum dropdown instead of bool toggle
                 {
-                    float h = EditorGUI.GetPropertyHeight(showNameProp, true);
-                    EditorGUI.PropertyField(new Rect(position.x, y, position.width, h), showNameProp, new GUIContent("Show Name"), true);
+                    float h = EditorGUI.GetPropertyHeight(nameModeProp, true);
+                    EditorGUI.PropertyField(new Rect(position.x, y, position.width, h), nameModeProp, new GUIContent("Name Display Mode"), true);
                     y += h + 2f;
                 }
 
                 if (actionsProp != null)
-                {
                     VNConversationNodeDrawer.DrawArrayWithCache(ref y, position, actionsProp, "Actions List", "Action");
-                }
 
                 EditorGUI.indentLevel--;
             }
@@ -64,11 +59,11 @@ namespace UIEditor
             float totalHeight = EditorGUIUtility.singleLineHeight + 2f;
 
             var characterProp = property.FindPropertyRelative("Character");
-            var showNameProp = property.FindPropertyRelative("ShowName");
+            var nameModeProp = property.FindPropertyRelative("NameDisplayMode"); //new
             var actionsProp = property.FindPropertyRelative("Actions");
 
             if (characterProp != null) totalHeight += EditorGUI.GetPropertyHeight(characterProp, true) + 2f;
-            if (showNameProp != null) totalHeight += EditorGUI.GetPropertyHeight(showNameProp, true) + 2f;
+            if (nameModeProp != null) totalHeight += EditorGUI.GetPropertyHeight(nameModeProp, true) + 2f;
             if (actionsProp != null) totalHeight += VNConversationNodeDrawer.GetArrayWithCacheHeight(actionsProp);
 
             return totalHeight;

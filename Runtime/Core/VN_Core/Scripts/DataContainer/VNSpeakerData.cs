@@ -13,7 +13,7 @@ namespace Genoverrei.Library.Core
         [Required]
         public VNCharacterSO Character;
 
-        public bool ShowName = true;
-        public List<VNAction> Actions;
+        public VNNameDisplayMode NameDisplayMode = VNNameDisplayMode.Text; //new: replaces ShowName bool
+        public List<VNAction> Actions = new();
     }
 }

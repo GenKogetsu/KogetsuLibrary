@@ -35,6 +35,7 @@ namespace Genoverrei.Library.Core
         [SerializeField] private VNDialogueArea _logViewDialogueArea;
         [SerializeField] private VNDialogueArea _cinematicDialogueArea;
         [SerializeField] private Image _backgroundImage;
+        [SerializeField] private VNChoicePanel _choicePanel; //new: choice button popup panel
 
         private readonly Queue<string> _logViewQueue = new();
 
@@ -45,6 +46,7 @@ namespace Genoverrei.Library.Core
         [SerializeField] private Animator _currentDialogueAnimator;
         [SerializeField] private TextMeshProUGUI _currentDialogueTMP, _currentSpeakerNameTMP;
         [SerializeField] private Image _currentSpeakerIcon;
+        [SerializeField] private Image _currentSpeakerNameIcon; //new: runtime-assigned name icon (Icon mode)
 
         [ReadOnly]
         [SerializeField] private VNDialogueMode _currentDialogueType = VNDialogueMode.None;
@@ -84,6 +86,7 @@ namespace Genoverrei.Library.Core
             if (_standardDialogueArea == null) return;
             _currentDialogueTMP = _standardDialogueArea.DialogueTMP;
             _currentSpeakerNameTMP = _standardDialogueArea.SpeakerNameTMP;
+            _currentSpeakerNameIcon = _standardDialogueArea.SpeakerNameIcon; //new
         }
 
         private VNDialogueArea GetDialogueArea(VNDialogueMode mode) => mode switch
@@ -181,11 +184,21 @@ namespace Genoverrei.Library.Core
             {
                 if (speakerData.Character == null) continue;
 
-                var name = speakerData.ShowName ? speakerData.Character.CharacterName : "???";
-                if (!addedNames.Add(name)) continue;
-
-                if (namesBuilder.Length > 0) namesBuilder.Append(" , ");
-                namesBuilder.Append(name);
+                if (speakerData.NameDisplayMode == VNNameDisplayMode.Text) //new: NameDisplayMode replaces ShowName
+                {
+                    var name = speakerData.Character.CharacterName;
+                    if (!addedNames.Add(name)) continue;
+                    if (namesBuilder.Length > 0) namesBuilder.Append(" , ");
+                    namesBuilder.Append(name);
+                }
+                else if (speakerData.NameDisplayMode == VNNameDisplayMode.Icon) //new: show name icon sprite
+                {
+                    if (_currentSpeakerNameIcon != null && speakerData.Character.NameIcon != null)
+                    {
+                        _currentSpeakerNameIcon.sprite = speakerData.Character.NameIcon;
+                        _currentSpeakerNameIcon.gameObject.SetActive(true);
+                    }
+                }
 
                 StartCoroutine(ExecuteActionsRoutine(speakerData, phase.Speakers.Count));
             }
@@ -255,7 +268,7 @@ namespace Genoverrei.Library.Core
                 return;
             }
 
-            if (speakersCount == 1 && speakerData.ShowName && _currentDialogueType == VNDialogueMode.Standard)
+            if (speakersCount == 1 && speakerData.NameDisplayMode != VNNameDisplayMode.None && _currentDialogueType == VNDialogueMode.Standard) //new: NameDisplayMode replaces ShowName
             {
                 if (_currentSpeakerIcon != null)
                 {
@@ -393,8 +406,10 @@ namespace Genoverrei.Library.Core
 
             yield return PlayPhaseRoutine(node.AnswerState.MainPhase, VNCurrentPhase.MainPhase);
 
+            _choicePanel?.ShowChoices(node.AnswerState.Choices, SelectChoice); //new: show choice buttons to player
             _waitForChoiceInput = true;
             while (_waitForChoiceInput) yield return null;
+            _choicePanel?.HideChoices(); //new: hide panel after selection
 
             if (node.AnswerState.UseExitPhase)
                 yield return PlayPhaseRoutine(node.AnswerState.ExitPhase, VNCurrentPhase.ExitPhase);
@@ -477,11 +492,13 @@ namespace Genoverrei.Library.Core
             _currentDialogueAnimator = dialogueArea.DialogueAnimator;
             _currentDialogueTMP = dialogueArea.DialogueTMP;
             _currentSpeakerNameTMP = dialogueArea.SpeakerNameTMP;
+            _currentSpeakerNameIcon = dialogueArea.SpeakerNameIcon; //new
             _currentDialogueType = phase.DialogueMode;
 
             if (_currentDialogueTMP != null) { _currentDialogueTMP.text = string.Empty; _currentDialogueTMP.maxVisibleCharacters = 0; }
             if (_currentSpeakerNameTMP != null) _currentSpeakerNameTMP.text = string.Empty;
             if (_currentSpeakerIcon != null) { _currentSpeakerIcon.sprite = null; _currentSpeakerIcon.gameObject.SetActive(false); }
+            if (_currentSpeakerNameIcon != null) { _currentSpeakerNameIcon.sprite = null; _currentSpeakerNameIcon.gameObject.SetActive(false); } //new
             if (_currentDialogueBox != null) _currentDialogueBox.gameObject.SetActive(true);
 
             if (isModeChanged && _currentDialogueAnimator != null)

@@ -18,14 +18,12 @@ namespace Genoverrei.Library.Editor
             GUI.color = Color.white;
 
             var index = GetIndex(property.propertyPath);
-
             var foldoutRect = new Rect(position.x + 20f, position.y + 2f, position.width - 130f, EditorGUIUtility.singleLineHeight);
             var clearBtnRect = new Rect(position.xMax - 105f, position.y + 2f, 50f, EditorGUIUtility.singleLineHeight);
             var recallBtnRect = new Rect(position.xMax - 50f, position.y + 2f, 50f, EditorGUIUtility.singleLineHeight);
 
             GUIStyle headerStyle = new GUIStyle(EditorStyles.foldout) { fontStyle = FontStyle.Bold };
             headerStyle.padding.right += 2;
-
             if (VNConversationNodeDrawer.UseTint) headerStyle.normal.textColor = new Color(0.6f, 0.2f, 0.4f);
 
             property.isExpanded = EditorGUI.Foldout(foldoutRect, property.isExpanded, $"Interact {index}", true, headerStyle);
@@ -59,10 +57,25 @@ namespace Genoverrei.Library.Editor
                 EditorGUI.PropertyField(new Rect(position.x, y, position.width, EditorGUIUtility.singleLineHeight), property.FindPropertyRelative("ReturnToChoicePhase"));
                 y += EditorGUIUtility.singleLineHeight + 6f;
 
-                // วาด SubConversation ด้วย Helper ตัวเดียวกับโหนดหลัก รองรับการ Cache อย่างสมบูรณ์
                 var subConvProp = property.FindPropertyRelative("SubConversation");
-                VNConversationNodeDrawer.DrawArrayWithCache(ref y, position, subConvProp, "Sub Conversation List", "Node");
 
+                //new: auto-init null managed reference elements (from [SerializeReference] + button)
+                if (subConvProp != null && subConvProp.isArray)
+                {
+                    bool changed = false;
+                    for (int i = 0; i < subConvProp.arraySize; i++)
+                    {
+                        var elem = subConvProp.GetArrayElementAtIndex(i);
+                        if (elem.managedReferenceValue == null)
+                        {
+                            elem.managedReferenceValue = new VNConversationNode();
+                            changed = true;
+                        }
+                    }
+                    if (changed) property.serializedObject.ApplyModifiedProperties();
+                }
+
+                VNConversationNodeDrawer.DrawArrayWithCache(ref y, position, subConvProp, "Sub Conversation List", "Node");
                 EditorGUI.indentLevel--;
             }
             EditorGUI.EndProperty();
@@ -75,11 +88,7 @@ namespace Genoverrei.Library.Editor
             prop.FindPropertyRelative("ReturnToChoicePhase").boolValue = false;
 
             var subConvProp = prop.FindPropertyRelative("SubConversation");
-            if (subConvProp != null)
-            {
-                subConvProp.ClearArray();
-                subConvProp.arraySize = 0;
-            }
+            if (subConvProp != null) { subConvProp.ClearArray(); subConvProp.arraySize = 0; }
 
             prop.serializedObject.ApplyModifiedProperties();
         }
@@ -88,14 +97,11 @@ namespace Genoverrei.Library.Editor
         {
             if (!property.isExpanded) return EditorGUIUtility.singleLineHeight + 4f;
 
-            float h = EditorGUIUtility.singleLineHeight + 6f; // Header
-            h += EditorGUIUtility.singleLineHeight + 2f; // TargetAnswerNumber
-            h += EditorGUIUtility.singleLineHeight + 2f; // ReturnValue
-            h += EditorGUIUtility.singleLineHeight + 6f; // ReturnToChoicePhase
-
-            var subConvProp = property.FindPropertyRelative("SubConversation");
-            h += VNConversationNodeDrawer.GetArrayWithCacheHeight(subConvProp); // รวมความสูงของ SubConversation List
-
+            float h = EditorGUIUtility.singleLineHeight + 6f;
+            h += EditorGUIUtility.singleLineHeight + 2f;
+            h += EditorGUIUtility.singleLineHeight + 2f;
+            h += EditorGUIUtility.singleLineHeight + 6f;
+            h += VNConversationNodeDrawer.GetArrayWithCacheHeight(property.FindPropertyRelative("SubConversation"));
             return h + 4f;
         }
 

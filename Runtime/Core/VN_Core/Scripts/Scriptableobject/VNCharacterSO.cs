@@ -7,16 +7,6 @@ namespace Genoverrei.Library.Core
 {
     /// <summary>
     /// <para> Summary : </para>
-    /// <para> (TH) : ไฟล์ข้อมูลที่เก็บรวบรวม Emotion แพ็คเกจและภาพทั้งหมดของตัวละคร </para>
-    /// <para> (EN) : Data file containing all emotion packages and sprites for a character. </para>
-    /// </summary>
-    /// <summary>
-    /// <para> Summary : </para>
-    /// <para> (TH) : ไฟล์ข้อมูลตัวละคร แยกการจัดการระหว่าง Emotion (หน้าตา/เอฟเฟกต์) และ Animation (การเคลื่อนที่) </para>
-    /// <para> (EN) : Character data file, separating Emotion (face/effects) and Animation (movement) management. </para>
-    /// </summary>
-    /// <summary>
-    /// <para> Summary : </para>
     /// <para> (TH) : ไฟล์ข้อมูลตัวละคร แยกการจัดการระหว่าง Emotion (หน้าตา) และ Animation (การเคลื่อนที่) </para>
     /// <para> (EN) : Character data file, separating Emotion (face) and Animation (movement) management. </para>
     /// </summary>
@@ -52,6 +42,7 @@ namespace Genoverrei.Library.Core
 
         public string CharacterName;
         public ushort CharacterID;
+        public Sprite NameIcon; //new: displayed when VNNameDisplayMode.Icon is set on a speaker
 
         [Header("Character Assets")]
         public List<VNEmotionData> Emotions = new();

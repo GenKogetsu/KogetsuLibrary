@@ -12,6 +12,7 @@ namespace Genoverrei.Library.Core
 
         public bool ReturnToChoicePhase;
 
+        [SerializeReference] //new: break circular serialization chain (VNConversationNode→VNChoiceNode→VNInteractState)
         public List<VNConversationNode> SubConversation = new();
     }
 }
