@@ -552,15 +552,23 @@ namespace Genoverrei.Library.Core
 
             // แสดง dialogue text เฉพาะเมื่อ phase เป็น VNDialoguePhaseData และโหมดพร้อมแสดงผล
             if (phase is VNDialoguePhaseData dialoguePhase
-                && _currentDialogueType != VNDialogueMode.None
-                && _currentDialogueTMP != null)
+                && _currentDialogueType != VNDialogueMode.None)
             {
-                int visibleCount = FormatDialogueText(dialoguePhase, namesBuilder);
-                yield return PlayTypingEffect(dialoguePhase, visibleCount);
+                if (_currentDialogueTMP != null)
+                {
+                    int visibleCount = FormatDialogueText(dialoguePhase, namesBuilder);
+                    yield return PlayTypingEffect(dialoguePhase, visibleCount);
+                }
+                else
+                {
+                    // new: TMP หายไป แต่ยังต้องรอ input ไม่งั้นบทสนทนาจะวิ่งผ่านไปเองโดยไม่รอ
+                    _waitForInput = true;
+                    while (_waitForInput) yield return null;
+                }
             }
             else
             {
-                yield return null;
+                yield return null; // ChoicePhaseData หรือ None mode → ไม่รอ input
             }
         }
 
@@ -576,20 +584,26 @@ namespace Genoverrei.Library.Core
             _currentDialogueTMP.ForceMeshUpdate();
             int totalVisibleCharacters = _currentDialogueTMP.textInfo.characterCount;
 
+            // new: guard TypingSpeed ≤ 0 → instant (ป้องกัน 1f/0 = Infinity → WaitForSeconds ค้างตลอดไป)
+            float speed = (phase.TextSettings != null && phase.TextSettings.TypingSpeed > 0f)
+                ? phase.TextSettings.TypingSpeed
+                : 30f;
+            float interval = 1f / speed;
+
             while (visibleCount < totalVisibleCharacters)
             {
                 if (_skipTyping)
                 {
                     _currentDialogueTMP.maxVisibleCharacters = totalVisibleCharacters;
-                    _audioObserver.SendSfxSignal(null);
-                    _audioObserver.SendVoiceoverSignal(null);
+                    _audioObserver?.SendSfxSignal(null);       //new: null-safe
+                    _audioObserver?.SendVoiceoverSignal(null);  //new: null-safe
                     EventBus.Instance.Publish(new VNTypingSkipEvent(_currentConversationIndex, _currentPhase));
                     break;
                 }
 
                 visibleCount++;
                 _currentDialogueTMP.maxVisibleCharacters = visibleCount;
-                yield return new WaitForSeconds(1f / phase.TextSettings.TypingSpeed);
+                yield return new WaitForSeconds(interval);
             }
 
             _isTyping = false;

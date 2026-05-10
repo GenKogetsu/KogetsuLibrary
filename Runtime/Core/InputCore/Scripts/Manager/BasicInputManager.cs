@@ -35,9 +35,8 @@ namespace Genoverrei.Library.Core
                 return;
             }
 
-            if (!context.performed) return;
-
-            BasicObserverChannel.SendJumpSignal();
+            if (context.performed)  BasicObserverChannel.SendJumpSignal();
+            if (context.canceled)   BasicObserverChannel.SendJumpReleasedSignal();
         }
 
         public void OnInteractionInput(InputAction.CallbackContext context)

@@ -14,6 +14,7 @@ namespace Genoverrei.Library.DesignPatternCore
         public Action OnInteractionChannel;
 
         public Action OnJumpChannel;
+        public Action OnJumpReleasedChannel;
 
         public Action<ClickData> OnLeftClickChannel;
         public Action<ClickData> OnMiddleClickChannel;
@@ -25,7 +26,8 @@ namespace Genoverrei.Library.DesignPatternCore
         
         public void SendInteractionSignal() => OnInteractionChannel?.Invoke();
 
-        public void SendJumpSignal() => OnJumpChannel?.Invoke();
+        public void SendJumpSignal()         => OnJumpChannel?.Invoke();
+        public void SendJumpReleasedSignal() => OnJumpReleasedChannel?.Invoke();
 
         public void SendLeftClickSignal(ClickData clickData) => OnLeftClickChannel?.Invoke(clickData);
         public void SendMiddleClickSignal(ClickData clickData) => OnMiddleClickChannel?.Invoke(clickData);
