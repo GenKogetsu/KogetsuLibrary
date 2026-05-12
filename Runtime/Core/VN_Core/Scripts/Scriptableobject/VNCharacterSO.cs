@@ -95,6 +95,39 @@ namespace Genoverrei.Library.Core
             return _dicSoundEffects.TryGetValue(name, out var data) ? data : null;
         }
 
+        /// <summary>
+        /// <para> (TH) : คืนชื่อ Emotion แรกสุดที่มี EmoteClip — ใช้ตั้ง default ให้ action ที่ว่างเปล่า </para>
+        /// <para> (EN) : Returns the name of the first valid Emotion clip, used to default-fill empty action fields. </para>
+        /// </summary>
+        public string GetFirstEmotionName()
+        {
+            foreach (var e in Emotions)
+                if (e.EmoteClip != null) return e.EmoteClip.name;
+            return null;
+        }
+
+        /// <summary>
+        /// <para> (TH) : คืนชื่อ Animation แรกสุดที่มี BehaviorAnimationClip — ใช้ตั้ง default ให้ action ที่ว่างเปล่า </para>
+        /// <para> (EN) : Returns the name of the first valid BehaviorAnimation clip, used to default-fill empty action fields. </para>
+        /// </summary>
+        public string GetFirstAnimationName()
+        {
+            foreach (var a in BehaviorAnimations)
+                if (a.BehaviorAnimationClip != null) return a.BehaviorAnimationClip.name;
+            return null;
+        }
+
+        /// <summary>
+        /// <para> (TH) : คืนชื่อ SoundEffect แรกสุดที่มี SoundEffectClip — ใช้ตั้ง default ให้ action ที่ว่างเปล่า </para>
+        /// <para> (EN) : Returns the name of the first valid SoundEffect clip, used to default-fill empty action fields. </para>
+        /// </summary>
+        public string GetFirstSoundEffectName()
+        {
+            foreach (var s in SoundEffects)
+                if (s.SoundEffectClip != null) return s.SoundEffectClip.name;
+            return null;
+        }
+
         private void OnEnable()
         {
             InitializeDictionaries();

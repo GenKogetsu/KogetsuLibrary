@@ -66,20 +66,34 @@ namespace Genoverrei.Library.Editor
                 {
                     string current = val.stringValue;
                     if (string.IsNullOrEmpty(current) || Array.IndexOf(opt, current) < 0)
+                    {
                         current = opt[0];
+                        // new: write back to serialized property — previously only changed local var
+                        // so val.stringValue stayed "" and other classes read null
+                        val.stringValue = current;
+                        val.serializedObject.ApplyModifiedPropertiesWithoutUndo();
+                    }
 
                     if (GUI.Button(fieldRect, current, EditorStyles.popup))
                     {
                         var menu = new GenericMenu();
-                        var capturedProp = val;
+                        // new: capture path + serializedObject instead of the property itself
+                        // SerializedProperty reference goes stale after a frame (GenericMenu runs next frame)
+                        // → re-find from path inside callback to always get a fresh, valid reference
+                        var capturedSO   = val.serializedObject;
+                        var capturedPath = val.propertyPath;
                         foreach (string option in opt)
                         {
                             string o = option;
                             menu.AddItem(new GUIContent(o), current == o, () =>
                             {
-                                capturedProp.serializedObject.Update();
-                                capturedProp.stringValue = o;
-                                capturedProp.serializedObject.ApplyModifiedProperties();
+                                capturedSO.Update();
+                                var fresh = capturedSO.FindProperty(capturedPath);
+                                if (fresh != null)
+                                {
+                                    fresh.stringValue = o;
+                                    capturedSO.ApplyModifiedProperties();
+                                }
                             });
                         }
                         menu.ShowAsContext();

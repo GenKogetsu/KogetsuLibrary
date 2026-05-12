@@ -1,6 +1,7 @@
 using System;
 using NaughtyAttributes;
 using Genoverrei.Library.Core;
+using UnityEngine.UI;
 
 namespace Genoverrei.Library.DesignPatternCore
 {
@@ -21,7 +22,7 @@ namespace Genoverrei.Library.DesignPatternCore
         [SerializeField] private Animator _characterSpriteAnimator;
 
         [Required] 
-        [SerializeField] private SpriteRenderer _characterSprite;
+        [SerializeField] private Image _characterSprite;
 
         [Header("AssignData")]
         [Required]

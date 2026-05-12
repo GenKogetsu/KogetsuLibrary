@@ -70,6 +70,12 @@ namespace Genoverrei.Library.Core
         private void OnEnable() => _basicObserverChannel.OnInteractionChannel += HandleInput;
         private void OnDisable() => _basicObserverChannel.OnInteractionChannel -= HandleInput;
 
+        private void Awake()
+        {
+            if (_currentScene != null)
+                InitializeActionDefaults(_currentScene);
+        }
+
         private void Start()
         {
             if (_currentScene == null) return;
@@ -78,6 +84,83 @@ namespace Genoverrei.Library.Core
         }
 
         #region Helper Functions Region
+
+        /// <summary>
+        /// <para> (TH) : วนทุก conversation ทุก speaker ทุก action — ถ้า field ชื่อ (EmotionName ฯลฯ) ว่างเปล่า
+        ///              ให้ตั้งค่า default เป็น option แรกของ character data เพื่อกัน runtime warning </para>
+        /// <para> (EN) : Pre-fills empty action name fields (EmotionName, BehaviorAnimationName, SoundEffectName)
+        ///              with the first available option from each character's data. Runs once in Awake. </para>
+        /// </summary>
+        private void InitializeActionDefaults(VNSceneSO scene)
+        {
+            foreach (var node in scene.Conversations)
+            {
+                if (node == null) continue;
+
+                if (node.ConversationMode == VNConversationMode.DialogueMode && node.DialogueNode != null)
+                {
+                    InitializePhaseActionDefaults(node.DialogueNode.EnterPhase);
+                    InitializePhaseActionDefaults(node.DialogueNode.MainPhase);
+                    InitializePhaseActionDefaults(node.DialogueNode.ExitPhase);
+                }
+                else if (node.ConversationMode == VNConversationMode.ChoiceMode && node.ChoiceNode != null)
+                {
+                    InitializePhaseActionDefaults(node.ChoiceNode.QuestionState.EnterPhase);
+                    InitializePhaseActionDefaults(node.ChoiceNode.QuestionState.MainPhase);
+                    InitializePhaseActionDefaults(node.ChoiceNode.AnswerState.EnterPhase);
+                    InitializePhaseActionDefaults(node.ChoiceNode.AnswerState.MainPhase);
+                    InitializePhaseActionDefaults(node.ChoiceNode.AnswerState.ExitPhase);
+                    foreach (var interact in node.ChoiceNode.InteractStates)
+                        foreach (var subNode in interact.SubConversation)
+                            if (subNode != null) InitializeActionDefaults_Node(subNode);
+                }
+            }
+        }
+
+        private void InitializeActionDefaults_Node(VNConversationNode node)
+        {
+            if (node.ConversationMode == VNConversationMode.DialogueMode && node.DialogueNode != null)
+            {
+                InitializePhaseActionDefaults(node.DialogueNode.EnterPhase);
+                InitializePhaseActionDefaults(node.DialogueNode.MainPhase);
+                InitializePhaseActionDefaults(node.DialogueNode.ExitPhase);
+            }
+        }
+
+        private void InitializePhaseActionDefaults(VNChoicePhaseData phase)
+        {
+            if (phase == null) return;
+            foreach (var speakerData in phase.Speakers)
+            {
+                if (speakerData.Character == null) continue;
+
+                var actions = speakerData.Actions;
+                for (int i = 0; i < actions.Count; i++)
+                {
+                    var action = actions[i]; // struct — must reassign after modification
+
+                    if (action.UseEmotion && string.IsNullOrEmpty(action.EmotionName))
+                    {
+                        var first = speakerData.Character.GetFirstEmotionName();
+                        if (first != null) action.EmotionName = first;
+                    }
+
+                    if (action.UseBehaviorAnimation && string.IsNullOrEmpty(action.BehaviorAnimationName))
+                    {
+                        var first = speakerData.Character.GetFirstAnimationName();
+                        if (first != null) action.BehaviorAnimationName = first;
+                    }
+
+                    if (action.UseSoundEffect && string.IsNullOrEmpty(action.SoundEffectName))
+                    {
+                        var first = speakerData.Character.GetFirstSoundEffectName();
+                        if (first != null) action.SoundEffectName = first;
+                    }
+
+                    actions[i] = action;
+                }
+            }
+        }
 
         /// <summary>
         /// <para> (TH) : ตั้งค่าเริ่มต้นให้กับตัวควบคุมหลัก โดยเชื่อมโยง UI พื้นฐานของโหมด Standard </para>
@@ -253,10 +336,10 @@ namespace Genoverrei.Library.Core
 
         private void ProcessEmotionAction(VNAction action, VNSpeakerData speakerData, int speakersCount, ushort actionIndex)
         {
-            if (action.EmotionName == null)
+            if (string.IsNullOrEmpty(action.EmotionName))
             {
 #if UNITY_EDITOR
-                Debug.LogWarning($"<b><color=yellow>[Skiped EmotionAction]</color></b> EmotionName is null at [Conversation {_currentConversationIndex + 1}, {_currentPhase}, Action {actionIndex + 1}]");
+                Debug.LogWarning($"<b><color=yellow>[Skiped EmotionAction]</color></b> EmotionName is null or empty at [Conversation {_currentConversationIndex + 1}, {_currentPhase}, Action {actionIndex + 1}]");
 #endif
                 return;
             }
@@ -292,10 +375,10 @@ namespace Genoverrei.Library.Core
 
         private void ProcessAnimationAction(VNAction action, VNSpeakerData speakerData, ushort actionIndex)
         {
-            if (action.BehaviorAnimationName == null)
+            if (string.IsNullOrEmpty(action.BehaviorAnimationName))
             {
 #if UNITY_EDITOR
-                Debug.LogWarning($"<b><color=yellow>[Skiped AnimationAction]</color></b> AnimationName is null at [Conversation {_currentConversationIndex + 1}, {_currentPhase}, Action {actionIndex + 1}]");
+                Debug.LogWarning($"<b><color=yellow>[Skiped AnimationAction]</color></b> AnimationName is null or empty at [Conversation {_currentConversationIndex + 1}, {_currentPhase}, Action {actionIndex + 1}]");
 #endif
                 return;
             }
@@ -314,10 +397,10 @@ namespace Genoverrei.Library.Core
 
         private void ProcessSoundEffectAction(VNAction action, VNSpeakerData speakerData, ushort actionIndex)
         {
-            if (action.SoundEffectName == null)
+            if (string.IsNullOrEmpty(action.SoundEffectName))
             {
 #if UNITY_EDITOR
-                Debug.LogWarning($"<b><color=yellow>[Skiped ActionSoundEffect]</color></b> SoundEffectName is null at [Conversation {_currentConversationIndex + 1}, {_currentPhase}, Action {actionIndex + 1}]");
+                Debug.LogWarning($"<b><color=yellow>[Skiped ActionSoundEffect]</color></b> SoundEffectName is null or empty at [Conversation {_currentConversationIndex + 1}, {_currentPhase}, Action {actionIndex + 1}]");
 #endif
                 return;
             }
