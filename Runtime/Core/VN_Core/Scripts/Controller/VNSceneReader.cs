@@ -47,7 +47,6 @@ namespace Genoverrei.Library.Core
         [SerializeField] private RectTransform _currentDialogueBox;
         [SerializeField] private Animator _currentDialogueAnimator;
         [SerializeField] private TextMeshProUGUI _currentDialogueTMP, _currentSpeakerNameTMP;
-        [SerializeField] private Image _currentSpeakerIcon;
         [SerializeField] private Image _currentSpeakerNameIcon; //new: runtime-assigned name icon (Icon mode)
 
         [ReadOnly]
@@ -172,6 +171,9 @@ namespace Genoverrei.Library.Core
             _currentDialogueTMP = _standardDialogueArea.DialogueTMP;
             _currentSpeakerNameTMP = _standardDialogueArea.SpeakerNameTMP;
             _currentSpeakerNameIcon = _standardDialogueArea.SpeakerNameIcon; //new
+
+            if (_currentSpeakerNameTMP != null) _currentSpeakerNameTMP.text = string.Empty;
+
         }
 
         private VNDialogueArea GetDialogueArea(VNDialogueMode mode) => mode switch
@@ -285,6 +287,11 @@ namespace Genoverrei.Library.Core
                     }
                 }
 
+                else
+                {
+                    namesBuilder.Append("?");
+                }
+
                 StartCoroutine(ExecuteActionsRoutine(speakerData, phase.Speakers.Count));
             }
 
@@ -351,23 +358,6 @@ namespace Genoverrei.Library.Core
                 Debug.LogWarning($"<b><color=yellow>[Skiped EmotionAction]</color></b> Emotion '{action.EmotionName}' not found in '{speakerData.Character.CharacterName}'");
 #endif
                 return;
-            }
-
-            if (speakersCount == 1 && speakerData.NameDisplayMode != VNNameDisplayMode.None && _currentDialogueType == VNDialogueMode.Standard) //new: NameDisplayMode replaces ShowName
-            {
-                if (_currentSpeakerIcon != null)
-                {
-                    _currentSpeakerIcon.sprite = emotion.Value.EmoteIcon;
-                    _currentSpeakerIcon.gameObject.SetActive(emotion.Value.EmoteIcon != null);
-                }
-            }
-            else
-            {
-                if (_currentSpeakerIcon != null)
-                {
-                    _currentSpeakerIcon.sprite = null;
-                    _currentSpeakerIcon.gameObject.SetActive(false);
-                }
             }
 
             speakerData.Character.SendVNEmotionSignel(emotion.Value.EmoteClip.name);
@@ -594,8 +584,6 @@ namespace Genoverrei.Library.Core
             _currentDialogueType = phase.DialogueMode;
 
             if (_currentDialogueTMP != null) { _currentDialogueTMP.text = string.Empty; _currentDialogueTMP.maxVisibleCharacters = 0; }
-            if (_currentSpeakerNameTMP != null) _currentSpeakerNameTMP.text = string.Empty;
-            if (_currentSpeakerIcon != null) { _currentSpeakerIcon.sprite = null; _currentSpeakerIcon.gameObject.SetActive(false); }
             if (_currentSpeakerNameIcon != null) { _currentSpeakerNameIcon.sprite = null; _currentSpeakerNameIcon.gameObject.SetActive(false); } //new
 
             // new: activate animator's GO first — it may be on a parent that is still inactive
