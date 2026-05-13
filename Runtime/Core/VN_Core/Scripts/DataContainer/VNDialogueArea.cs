@@ -16,7 +16,6 @@ namespace Genoverrei.Library.Core
         public Animator DialogueAnimator;
 
         public TextMeshProUGUI SpeakerNameTMP;
-        public Image SpeakerNameIcon; //new: shown when VNNameDisplayMode.Icon
 
         public TextMeshProUGUI DialogueTMP;
     }
