@@ -41,7 +41,6 @@ namespace Genoverrei.Library.Core
 
         private void Start()
         {
-            _animator.Play(_hideStateName);
             _confirmButton.onClick.AddListener(OnConfirmClicked);
             _inputField.onValueChanged.AddListener(OnInputValueChanged);
         }

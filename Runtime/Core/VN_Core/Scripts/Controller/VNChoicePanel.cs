@@ -24,10 +24,7 @@ namespace Genoverrei.Library.Core
         private readonly List<VNChoiceButton> _activeButtons = new();
         private Action<int> _onSelected;
 
-        private void Start()
-        {
-            _panelAnimator?.Play(_hideStateName);
-        }
+        private void Start() { }
 
         // ── Public API ──────────────────────────────────────────────────────────
 
