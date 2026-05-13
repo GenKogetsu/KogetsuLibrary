@@ -56,12 +56,15 @@ namespace Genoverrei.Library.Core
         public Action<string> OnVNEmotionChannel;
         public Action<string> OnVNAnimationChannel;
         public Action<string> OnVNSoundEffectChannel;
+        public Action        OnVNSkipChannel; // fired เมื่อผู้เล่น skip → ให้ Animator/SFX ไปจุดสิ้นสุดทันที
 
         public void SendVNEmotionSignel(string emotionName) => OnVNEmotionChannel?.Invoke(emotionName);
 
         public void SendVNAnimationSignal(string animationName) => OnVNAnimationChannel?.Invoke(animationName);
 
         public void SendVNSoundEffectSignel(string soundEffectName) => OnVNSoundEffectChannel?.Invoke(soundEffectName);
+
+        public void SendVNSkipSignel() => OnVNSkipChannel?.Invoke();
 
         /// <summary>
         /// <para> Summary : </para>

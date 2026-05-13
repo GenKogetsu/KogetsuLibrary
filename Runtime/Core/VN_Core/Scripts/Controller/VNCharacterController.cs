@@ -23,17 +23,15 @@ namespace Genoverrei.Library.DesignPatternCore
         [Required]
         [SerializeField] private Image _characterSprite;
 
-        [SerializeField] private Color32 _speakerColor  = Color.white;
-        [SerializeField] private Color32 _listenerColor = new(160, 160, 160, 255);
-
         [Header("AssignData")]
         [Required]
         [SerializeField] private VNCharacterSO _characterData;
 
-        private void Start()
-        {
-            _characterSprite.color = _listenerColor;
-        }
+        [Header("Observer")]
+        [Required]
+        [SerializeField] private AudioObserverSO _audioObserver;
+
+        // ── Character Actions ────────────────────────────────────────────────────
 
         private void OnEmotionSignel(string emotionName)
         {
@@ -42,7 +40,6 @@ namespace Genoverrei.Library.DesignPatternCore
             var emotion = _characterData.GetEmotion(emotionName);
             if (emotion == null) return;
 
-            _characterSprite.color  = _speakerColor;
             _characterSprite.sprite = emotion.Value.EmoteSprite;
             _characterSpriteAnimator.Play(emotion.Value.EmoteClip.name);
         }
@@ -54,7 +51,6 @@ namespace Genoverrei.Library.DesignPatternCore
             var animation = _characterData.GetAnimation(animationName);
             if (animation == null) return;
 
-            _characterSprite.color = _speakerColor;
             _characterBehaviorAniamtor.Play(animation.Value.BehaviorAnimationClip.name);
         }
 
@@ -64,14 +60,40 @@ namespace Genoverrei.Library.DesignPatternCore
 
             var soundEffect = _characterData.GetSoundEffect(soundEffectName);
             if (soundEffect == null) return;
-            // ส่ง clip ออกไปผ่าน audio observer ถ้ามีการเชื่อมต่อในอนาคต — ตอนนี้ stub ไว้
+
+            _audioObserver.SendSfxSignal(soundEffect.Value.SoundEffectClip);
         }
+
+        /// <summary>
+        /// <para> (TH) : เรียกเมื่อผู้เล่น skip บทพูด — ให้ Animator ทั้งสองกระโดดไปจุดสิ้นสุดทันที และหยุด SFX </para>
+        /// <para> (EN) : Called on player skip — jumps both Animators to the end of their current state and stops SFX. </para>
+        /// </summary>
+        private void OnSkipSignel()
+        {
+            JumpToEnd(_characterSpriteAnimator);
+            JumpToEnd(_characterBehaviorAniamtor);
+            _audioObserver?.SendSfxSignal(null); // หยุด SFX ที่กำลังเล่นอยู่
+        }
+
+        /// <summary>
+        /// <para> (TH) : กระโดด Animator ไปที่ normalized time = 1f (จุดสิ้นสุดของ state ปัจจุบัน) </para>
+        /// <para> (EN) : Jumps the Animator to normalized time 1f — the end of its current state. </para>
+        /// </summary>
+        private static void JumpToEnd(Animator animator)
+        {
+            if (animator == null || !animator.gameObject.activeInHierarchy) return;
+            var state = animator.GetCurrentAnimatorStateInfo(0);
+            animator.Play(state.fullPathHash, 0, 1f);
+        }
+
+        // ── Lifecycle ────────────────────────────────────────────────────────────
 
         private void OnEnable()
         {
             _characterData.OnVNEmotionChannel     += OnEmotionSignel;
             _characterData.OnVNAnimationChannel   += OnAnimationSignel;
             _characterData.OnVNSoundEffectChannel += OnSoundEffectSignel;
+            _characterData.OnVNSkipChannel        += OnSkipSignel;
         }
 
         private void OnDisable()
@@ -79,6 +101,7 @@ namespace Genoverrei.Library.DesignPatternCore
             _characterData.OnVNEmotionChannel     -= OnEmotionSignel;
             _characterData.OnVNAnimationChannel   -= OnAnimationSignel;
             _characterData.OnVNSoundEffectChannel -= OnSoundEffectSignel;
+            _characterData.OnVNSkipChannel        -= OnSkipSignel;
         }
     }
 }

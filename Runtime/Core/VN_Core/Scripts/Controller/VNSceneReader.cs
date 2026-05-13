@@ -1,5 +1,6 @@
 using TMPro;
 using System.Text;
+using System.Collections.Generic;
 using UnityEngine.UI;
 using Genoverrei.Library.Attribute;
 using Genoverrei.Library.DesignPatternCore;
@@ -39,7 +40,9 @@ namespace Genoverrei.Library.Core
         [SerializeField] private Image _backgroundImage;
         [SerializeField] private VNChoicePanel _choicePanel; //new: choice button popup panel
 
-        private readonly Queue<string> _logViewQueue = new();
+        private readonly Queue<string>          _logViewQueue       = new();
+        private readonly HashSet<VNCharacterSO>  _previousSpeakerSOs = new(); // ติดตาม speaker phase ก่อนหน้า
+        private readonly List<Coroutine>         _actionCoroutines   = new(); // ติดตาม coroutine ของ action ที่กำลังทำ
 
         [Header("Runtime Data")]
         [ReadOnly]
@@ -196,9 +199,28 @@ namespace Genoverrei.Library.Core
 
         private void HandleInput()
         {
-            if (_isTyping) { _skipTyping = true; return; }
+            if (_isTyping)
+            {
+                _skipTyping = true;
+                SkipActiveActions(); // หยุด delay + ให้ Animator/SFX ไปจุดสิ้นสุดทันที
+                return;
+            }
             if (!_waitForInput) return;
             _waitForInput = false;
+        }
+
+        /// <summary>
+        /// <para> (TH) : หยุด coroutine ของ action ที่กำลังทำทั้งหมด และส่ง skip signal ให้ทุก speaker </para>
+        /// <para> (EN) : Stops all running action coroutines and sends a skip signal to all active speakers. </para>
+        /// </summary>
+        private void SkipActiveActions()
+        {
+            foreach (var cor in _actionCoroutines)
+                if (cor != null) StopCoroutine(cor);
+            _actionCoroutines.Clear();
+
+            foreach (var so in _previousSpeakerSOs)
+                so.SendVNSkipSignel();
         }
 
         /// <summary>
@@ -262,6 +284,21 @@ namespace Genoverrei.Library.Core
         {
             var namesBuilder = new StringBuilder();
 
+            // รวบรวม SO ของ speaker ใน phase ใหม่ (ทำก่อน early return เพื่อให้ EndConversation ทำงานทุกโหมด)
+            var newSpeakerSOs = new HashSet<VNCharacterSO>();
+            foreach (var sd in phase.Speakers)
+                if (sd.Character != null) newSpeakerSOs.Add(sd.Character);
+
+            // ส่ง EndConversation ให้ตัวละครที่หมดช่วงพูดแล้ว (ไม่อยู่ใน phase ใหม่)
+            // VNCharacterController จะ skip gracefully ถ้าตัวละครนั้นไม่มี Emotion ชื่อ "EndConversation"
+            foreach (var so in _previousSpeakerSOs)
+                if (!newSpeakerSOs.Contains(so))
+                    so.SendVNEmotionSignel("EndConversation");
+
+            _previousSpeakerSOs.Clear();
+            _previousSpeakerSOs.UnionWith(newSpeakerSOs);
+            _actionCoroutines.Clear();
+
             if (_currentDialogueType is VNDialogueMode.None or VNDialogueMode.Cinematic or VNDialogueMode.LogView)
                 return namesBuilder;
 
@@ -271,14 +308,14 @@ namespace Genoverrei.Library.Core
             {
                 if (speakerData.Character == null) continue;
 
-                if (speakerData.NameDisplayMode == VNNameDisplayMode.Text) //new: NameDisplayMode replaces ShowName
+                if (speakerData.NameDisplayMode == VNNameDisplayMode.Text)
                 {
                     var name = speakerData.Character.CharacterName;
                     if (!addedNames.Add(name)) continue;
                     if (namesBuilder.Length > 0) namesBuilder.Append(" , ");
                     namesBuilder.Append(name);
                 }
-                else if (speakerData.NameDisplayMode == VNNameDisplayMode.Icon) //new: show name icon sprite
+                else if (speakerData.NameDisplayMode == VNNameDisplayMode.Icon)
                 {
                     if (_currentSpeakerNameIcon != null && speakerData.Character.NameIcon != null)
                     {
@@ -286,13 +323,10 @@ namespace Genoverrei.Library.Core
                         _currentSpeakerNameIcon.gameObject.SetActive(true);
                     }
                 }
+                // VNNameDisplayMode.None → ไม่แสดงชื่อ แต่ยังรัน actions ปกติ
 
-                else
-                {
-                    namesBuilder.Append("?");
-                }
-
-                StartCoroutine(ExecuteActionsRoutine(speakerData, phase.Speakers.Count));
+                var cor = StartCoroutine(ExecuteActionsRoutine(speakerData, phase.Speakers.Count));
+                _actionCoroutines.Add(cor); // track เพื่อ stop เมื่อ skip
             }
 
             return namesBuilder;
@@ -340,6 +374,27 @@ namespace Genoverrei.Library.Core
             if (!phase.ChangeBackground || _backgroundImage == null || phase.BackgroundSprite == null) return;
             _backgroundImage.sprite = phase.BackgroundSprite;
         }
+        private void ProcessSoundEffectAction(VNAction action, VNSpeakerData speakerData, ushort actionIndex)
+        {
+            if (string.IsNullOrEmpty(action.SoundEffectName))
+            {
+#if UNITY_EDITOR
+                Debug.LogWarning($"<b><color=yellow>[Skiped ActionSoundEffect]</color></b> SoundEffectName is null or empty at [Conversation {_currentConversationIndex + 1}, {_currentPhase}, Action {actionIndex + 1}]");
+#endif
+                return;
+            }
+
+            var soundEffect = speakerData.Character.GetSoundEffect(action.SoundEffectName);
+            if (soundEffect == null)
+            {
+#if UNITY_EDITOR
+                Debug.LogWarning($"<b><color=yellow>[Skiped ActionSoundEffect]</color></b> SoundEffect '{action.SoundEffectName}' not found in '{speakerData.Character.CharacterName}'");
+#endif
+                return;
+            }
+
+            speakerData.Character.SendVNSoundEffectSignel(soundEffect.Value.SoundEffectClip.name);
+        }
 
         private void ProcessEmotionAction(VNAction action, VNSpeakerData speakerData, int speakersCount, ushort actionIndex)
         {
@@ -383,28 +438,6 @@ namespace Genoverrei.Library.Core
             }
 
             speakerData.Character.SendVNAnimationSignal(animation.Value.BehaviorAnimationClip.name);
-        }
-
-        private void ProcessSoundEffectAction(VNAction action, VNSpeakerData speakerData, ushort actionIndex)
-        {
-            if (string.IsNullOrEmpty(action.SoundEffectName))
-            {
-#if UNITY_EDITOR
-                Debug.LogWarning($"<b><color=yellow>[Skiped ActionSoundEffect]</color></b> SoundEffectName is null or empty at [Conversation {_currentConversationIndex + 1}, {_currentPhase}, Action {actionIndex + 1}]");
-#endif
-                return;
-            }
-
-            var soundEffect = speakerData.Character.GetSoundEffect(action.SoundEffectName);
-            if (soundEffect == null)
-            {
-#if UNITY_EDITOR
-                Debug.LogWarning($"<b><color=yellow>[Skiped ActionSoundEffect]</color></b> SoundEffect '{action.SoundEffectName}' not found in '{speakerData.Character.CharacterName}'");
-#endif
-                return;
-            }
-
-            speakerData.Character.SendVNSoundEffectSignel(soundEffect.Value.SoundEffectClip.name);
         }
 
         private void ApplyTextSettings(VNTextSettings settings)
