@@ -323,7 +323,22 @@ namespace Genoverrei.Library.Core
                         _currentSpeakerNameIcon.gameObject.SetActive(true);
                     }
                 }
-                // VNNameDisplayMode.None → ไม่แสดงชื่อ แต่ยังรัน actions ปกติ
+                else if (speakerData.NameDisplayMode == VNNameDisplayMode.None)
+                {
+                    // None: ลอง show per-speaker icon ก่อน, ถ้า null → fallback เป็น Text
+                    if (speakerData.NameIconSprite != null && _currentSpeakerNameIcon != null)
+                    {
+                        _currentSpeakerNameIcon.sprite = speakerData.NameIconSprite;
+                        _currentSpeakerNameIcon.gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        var name = speakerData.Character.CharacterName;
+                        if (!addedNames.Add(name)) continue;
+                        if (namesBuilder.Length > 0) namesBuilder.Append(" , ");
+                        namesBuilder.Append(name);
+                    }
+                }
 
                 var cor = StartCoroutine(ExecuteActionsRoutine(speakerData, phase.Speakers.Count));
                 _actionCoroutines.Add(cor); // track เพื่อ stop เมื่อ skip

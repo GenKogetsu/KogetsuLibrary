@@ -12,9 +12,10 @@ namespace Genoverrei.Library.Editor //new: fixed namespace (was UIEditor)
         {
             EditorGUI.BeginProperty(position, label, property);
 
-            var characterProp = property.FindPropertyRelative("Character");
-            var nameModeProp = property.FindPropertyRelative("NameDisplayMode"); //new: replaces ShowName
-            var actionsProp = property.FindPropertyRelative("Actions");
+            var characterProp    = property.FindPropertyRelative("Character");
+            var nameModeProp     = property.FindPropertyRelative("NameDisplayMode");
+            var nameIconSpriteProp = property.FindPropertyRelative("NameIconSprite");
+            var actionsProp      = property.FindPropertyRelative("Actions");
 
             Rect foldoutRect = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
 
@@ -36,11 +37,20 @@ namespace Genoverrei.Library.Editor //new: fixed namespace (was UIEditor)
                     y += h + 2f;
                 }
 
-                if (nameModeProp != null) //new: enum dropdown instead of bool toggle
+                if (nameModeProp != null)
                 {
                     float h = EditorGUI.GetPropertyHeight(nameModeProp, true);
                     EditorGUI.PropertyField(new Rect(position.x, y, position.width, h), nameModeProp, new GUIContent("Name Display Mode"), true);
                     y += h + 2f;
+
+                    // แสดง NameIconSprite เฉพาะเมื่อ mode = None
+                    bool isNoneMode = nameModeProp.enumValueIndex == (int)VNNameDisplayMode.None;
+                    if (isNoneMode && nameIconSpriteProp != null)
+                    {
+                        float ih = EditorGUI.GetPropertyHeight(nameIconSpriteProp, true);
+                        EditorGUI.PropertyField(new Rect(position.x, y, position.width, ih), nameIconSpriteProp, new GUIContent("Name Icon (null → Text fallback)"), true);
+                        y += ih + 2f;
+                    }
                 }
 
                 if (actionsProp != null)
@@ -58,12 +68,20 @@ namespace Genoverrei.Library.Editor //new: fixed namespace (was UIEditor)
 
             float totalHeight = EditorGUIUtility.singleLineHeight + 2f;
 
-            var characterProp = property.FindPropertyRelative("Character");
-            var nameModeProp = property.FindPropertyRelative("NameDisplayMode"); //new
-            var actionsProp = property.FindPropertyRelative("Actions");
+            var characterProp      = property.FindPropertyRelative("Character");
+            var nameModeProp       = property.FindPropertyRelative("NameDisplayMode");
+            var nameIconSpriteProp = property.FindPropertyRelative("NameIconSprite");
+            var actionsProp        = property.FindPropertyRelative("Actions");
 
-            if (characterProp != null) totalHeight += EditorGUI.GetPropertyHeight(characterProp, true) + 2f;
-            if (nameModeProp != null) totalHeight += EditorGUI.GetPropertyHeight(nameModeProp, true) + 2f;
+            if (characterProp != null)      totalHeight += EditorGUI.GetPropertyHeight(characterProp, true) + 2f;
+            if (nameModeProp != null)
+            {
+                totalHeight += EditorGUI.GetPropertyHeight(nameModeProp, true) + 2f;
+
+                bool isNoneMode = nameModeProp.enumValueIndex == (int)VNNameDisplayMode.None;
+                if (isNoneMode && nameIconSpriteProp != null)
+                    totalHeight += EditorGUI.GetPropertyHeight(nameIconSpriteProp, true) + 2f;
+            }
             if (actionsProp != null) totalHeight += VNConversationNodeDrawer.GetArrayWithCacheHeight(actionsProp);
 
             return totalHeight;
