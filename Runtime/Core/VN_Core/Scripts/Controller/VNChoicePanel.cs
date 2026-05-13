@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,26 +16,31 @@ namespace Genoverrei.Library.Core
         [SerializeField] private RectTransform _buttonContainer;
         [SerializeField] private VNChoiceButton _buttonPrefab;
 
-        [Header("Animation (optional)")]
+        [Header("Animation")]
         [SerializeField] private Animator _panelAnimator;
-        [SerializeField] private AnimationClip _showClip;
-        [SerializeField] private AnimationClip _hideClip;
+        [SerializeField] private string   _showStateName = "On";
+        [SerializeField] private string   _hideStateName = "Off";
 
         private readonly List<VNChoiceButton> _activeButtons = new();
         private Action<int> _onSelected;
 
+        private void Start()
+        {
+            _panelAnimator?.Play(_hideStateName);
+        }
+
+        // ── Public API ──────────────────────────────────────────────────────────
+
         /// <summary>
-        /// <para>(TH) : เปิดแผงและสร้างปุ่มตัวเลือกจากรายการ choices</para>
-        /// <para>(EN) : Activates the panel and instantiates a button for each choice.</para>
+        /// <para>(TH) : เล่น animation เปิดแผงและสร้างปุ่มตัวเลือกจากรายการ choices</para>
+        /// <para>(EN) : Plays show animation and instantiates a button for each choice.</para>
         /// </summary>
         public void ShowChoices(List<VNChoiceAnswer> choices, Action<int> onSelected)
         {
             _onSelected = onSelected;
             ClearButtons();
-            gameObject.SetActive(true);
 
-            if (_panelAnimator != null && _showClip != null)
-                _panelAnimator.Play(_showClip.name);
+            _panelAnimator?.Play(_showStateName);
 
             foreach (var choice in choices)
             {
@@ -45,17 +51,23 @@ namespace Genoverrei.Library.Core
         }
 
         /// <summary>
-        /// <para>(TH) : ปิดแผงและล้างปุ่มทั้งหมด</para>
-        /// <para>(EN) : Hides the panel and destroys all spawned buttons.</para>
+        /// <para>(TH) : เล่น animation ปิด รอจนจบ แล้วค่อยล้างปุ่ม — yield return จาก VNSceneReader เพื่อรอให้เสร็จก่อนดำเนินต่อ</para>
+        /// <para>(EN) : Plays hide animation, waits for it to finish, then clears buttons. Yield return this from VNSceneReader.</para>
         /// </summary>
-        public void HideChoices()
+        public IEnumerator HideChoices()
         {
-            if (_panelAnimator != null && _hideClip != null)
-                _panelAnimator.Play(_hideClip.name);
+            if (_panelAnimator != null)
+            {
+                _panelAnimator.Play(_hideStateName);
+                yield return null; // รอ 1 frame ให้ Animator เริ่ม state ใหม่ก่อน
+                var length = _panelAnimator.GetCurrentAnimatorStateInfo(0).length;
+                yield return new WaitForSeconds(length);
+            }
 
             ClearButtons();
-            gameObject.SetActive(false);
         }
+
+        // ── Internal ────────────────────────────────────────────────────────────
 
         private void OnButtonClicked(int answerNumber) => _onSelected?.Invoke(answerNumber);
 

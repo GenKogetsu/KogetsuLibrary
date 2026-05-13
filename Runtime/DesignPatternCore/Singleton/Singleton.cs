@@ -14,6 +14,12 @@ namespace Genoverrei.Library.DesignPatternCore
         private static bool _applicationIsQuitting;
 
         /// <summary>
+        /// <para> (TH) : ติ๊กใน Inspector เพื่อให้ object คงอยู่ข้าม Scene </para>
+        /// <para> (EN) : Toggle in Inspector to keep this object alive across scenes. </para>
+        /// </summary>
+        [SerializeField] protected bool UseDontDestroyOnLoad = true;
+
+        /// <summary>
         /// <para> Summary : </para>
         /// <para> (TH) : เข้าถึง Instance ของ Singleton ถ้ายังไม่มีจะพยายามหาใน Scene </para>
         /// <para> (EN) : Accesses the Singleton instance. If null, it attempts to find it in the scene. </para>
@@ -54,12 +60,13 @@ namespace Genoverrei.Library.DesignPatternCore
 
             _instance = this as T;
 
-            if (transform.parent != null)
+            if (UseDontDestroyOnLoad)
             {
-                transform.SetParent(null);
-            }
+                if (transform.parent != null)
+                    transform.SetParent(null);
 
-            DontDestroyOnLoad(gameObject);
+                DontDestroyOnLoad(gameObject);
+            }
         }
 
         /// <summary>

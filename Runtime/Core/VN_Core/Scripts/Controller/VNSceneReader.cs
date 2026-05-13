@@ -553,10 +553,10 @@ namespace Genoverrei.Library.Core
 
             yield return PlayPhaseRoutine(node.AnswerState.MainPhase, VNCurrentPhase.MainPhase);
 
-            _choicePanel?.ShowChoices(node.AnswerState.Choices, SelectChoice); //new: show choice buttons to player
+            _choicePanel?.ShowChoices(node.AnswerState.Choices, SelectChoice);
             _waitForChoiceInput = true;
             while (_waitForChoiceInput) yield return null;
-            _choicePanel?.HideChoices(); //new: hide panel after selection
+            if (_choicePanel != null) yield return _choicePanel.HideChoices();
 
             if (node.AnswerState.UseExitPhase)
                 yield return PlayPhaseRoutine(node.AnswerState.ExitPhase, VNCurrentPhase.ExitPhase);
