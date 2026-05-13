@@ -40,7 +40,11 @@ namespace Genoverrei.Library.Core
         [SerializeField] private Image _backgroundImage;
         [SerializeField] private Image  _speakerNameIcon;    // Image สำหรับแสดง icon ชื่อผู้พูด
         [SerializeField] private Sprite _unknownSpeakerIcon; // Sprite ที่ใช้เมื่อ NameDisplayMode = None (ถ้า null → แสดง "?")
-        [SerializeField] private VNChoicePanel _choicePanel;
+        [SerializeField] private VNChoicePanel    _choicePanel;
+        [SerializeField] private VNEnterNamePanel _enterNamePanel;
+
+        [Header("Player Data")]
+        [SerializeField] private VNPlayerDataSO _playerData;
 
         private readonly Queue<string>          _logViewQueue       = new();
         private readonly HashSet<VNCharacterSO>  _previousSpeakerSOs = new();
@@ -64,6 +68,9 @@ namespace Genoverrei.Library.Core
 
         [ReadOnly]
         [SerializeField] private bool _waitForChoiceInput = false;
+
+        [ReadOnly]
+        [SerializeField] private bool _waitForNameInput = false;
 
         [ReadOnly]
         [SerializeField] private int _selectedAnswerNumber = 0;
@@ -213,6 +220,18 @@ namespace Genoverrei.Library.Core
         /// <para> (TH) : หยุด coroutine ของ action ที่กำลังทำทั้งหมด และส่ง skip signal ให้ทุก speaker </para>
         /// <para> (EN) : Stops all running action coroutines and sends a skip signal to all active speakers. </para>
         /// </summary>
+        /// <summary>
+        /// <para> (TH) : เปิด panel กรอกชื่อและรอจนผู้เล่นกด Confirm </para>
+        /// <para> (EN) : Shows the name input panel and waits until the player confirms. </para>
+        /// </summary>
+        private IEnumerator WaitForNameInputRoutine()
+        {
+            if (_enterNamePanel == null) yield break;
+            _waitForNameInput = true;
+            _enterNamePanel.Show(() => _waitForNameInput = false);
+            while (_waitForNameInput) yield return null;
+        }
+
         private void SkipActiveActions()
         {
             foreach (var cor in _actionCoroutines)
@@ -242,16 +261,21 @@ namespace Genoverrei.Library.Core
         {
             int visibleCount = 0;
 
+            // แทนที่ {PlayerName} ด้วยชื่อผู้เล่นที่บันทึกไว้
+            string dialogueText = (_playerData != null)
+                ? phase.DialogueText.Replace("{PlayerName}", _playerData.PlayerName)
+                : phase.DialogueText;
+
             switch (_currentDialogueType)
             {
                 case VNDialogueMode.Standard:
                     if (_currentSpeakerNameTMP != null) _currentSpeakerNameTMP.text = namesBuilder.ToString();
-                    _currentDialogueTMP.text = phase.DialogueText;
+                    _currentDialogueTMP.text = dialogueText;
                     break;
 
                 case VNDialogueMode.LogView:
                     string speakerPrefix = namesBuilder.Length > 0 ? $"{namesBuilder} : " : "";
-                    _logViewQueue.Enqueue($"{speakerPrefix}{phase.DialogueText}");
+                    _logViewQueue.Enqueue($"{speakerPrefix}{dialogueText}");
 
                     while (_logViewQueue.Count > 3) _logViewQueue.Dequeue();
 
@@ -268,7 +292,7 @@ namespace Genoverrei.Library.Core
 
                 case VNDialogueMode.Cinematic:
                     if (_currentSpeakerNameTMP != null) _currentSpeakerNameTMP.text = string.Empty;
-                    _currentDialogueTMP.text = phase.DialogueText;
+                    _currentDialogueTMP.text = dialogueText;
                     break;
             }
 
@@ -662,6 +686,10 @@ namespace Genoverrei.Library.Core
             _currentPhase = currentPhaseEnum;
 
             yield return DialogueSetup(phase);
+
+            // เปิด panel กรอกชื่อก่อน phase นี้จะแสดงข้อความ
+            if (phase.UseEnterName)
+                yield return WaitForNameInputRoutine();
 
             var namesBuilder = SetupSpeakers(phase);
             TriggerPhaseEvents(phase);
