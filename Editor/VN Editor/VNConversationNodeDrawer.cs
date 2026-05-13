@@ -326,6 +326,12 @@ namespace Genoverrei.Library.Editor
                 {
                     // ข้ามการวาด
                 }
+                else if (child.name == "UseEnterName")
+                {
+                    float h = EditorGUI.GetPropertyHeight(child, true);
+                    EditorGUI.PropertyField(new Rect(pos.x, currentY, pos.width, h), child, true);
+                    currentY += h + 2f;
+                }
                 else if (child.name == "TextSettings")
                 {
                     int oldIndent = EditorGUI.indentLevel;
@@ -1001,6 +1007,10 @@ namespace Genoverrei.Library.Editor
                 else if (child.name == "UseDialogueText")
                 {
                     // ข้าม
+                }
+                else if (child.name == "UseEnterName")
+                {
+                    currentHeight += EditorGUI.GetPropertyHeight(child, true) + 2f;
                 }
                 else if (child.name == "TextSettings")
                 {
