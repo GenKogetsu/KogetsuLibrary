@@ -15,12 +15,6 @@ namespace Genoverrei.Library.Core
 
         public VNNameDisplayMode NameDisplayMode = VNNameDisplayMode.Text;
 
-        /// <summary>
-        /// <para> (TH) : ใช้เมื่อ NameDisplayMode = None — แสดง icon นี้แทนชื่อ, ถ้า null จะ fallback เป็น Text </para>
-        /// <para> (EN) : Used when NameDisplayMode = None. Shows this icon instead of name; falls back to Text if null. </para>
-        /// </summary>
-        public Sprite NameIconSprite;
-
         public List<VNAction> Actions = new();
     }
 }

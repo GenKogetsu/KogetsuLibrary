@@ -38,7 +38,8 @@ namespace Genoverrei.Library.Core
         [SerializeField] private VNDialogueArea _logViewDialogueArea;
         [SerializeField] private VNDialogueArea _cinematicDialogueArea;
         [SerializeField] private Image _backgroundImage;
-        [SerializeField] private Image _speakerNameIcon; // Image สำหรับแสดง icon ชื่อผู้พูด (ใส่ตรงนี้แทน VNDialogueArea)
+        [SerializeField] private Image  _speakerNameIcon;    // Image สำหรับแสดง icon ชื่อผู้พูด
+        [SerializeField] private Sprite _unknownSpeakerIcon; // Sprite ที่ใช้เมื่อ NameDisplayMode = None (ถ้า null → แสดง "?")
         [SerializeField] private VNChoicePanel _choicePanel;
 
         private readonly Queue<string>          _logViewQueue       = new();
@@ -324,10 +325,10 @@ namespace Genoverrei.Library.Core
                 }
                 else if (speakerData.NameDisplayMode == VNNameDisplayMode.None)
                 {
-                    // None: ลอง show per-speaker icon ก่อน, ถ้า null → fallback แสดง "?" แทนชื่อจริง
-                    if (speakerData.NameIconSprite != null && _speakerNameIcon != null)
+                    // None: ใช้ _unknownSpeakerIcon ที่ตั้งไว้ใน VNSceneReader, ถ้า null → แสดง "?"
+                    if (_unknownSpeakerIcon != null && _speakerNameIcon != null)
                     {
-                        _speakerNameIcon.sprite = speakerData.NameIconSprite;
+                        _speakerNameIcon.sprite = _unknownSpeakerIcon;
                         _speakerNameIcon.gameObject.SetActive(true);
                     }
                     else
