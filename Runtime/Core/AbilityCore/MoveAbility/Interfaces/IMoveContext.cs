@@ -11,6 +11,16 @@ public interface IMoveContext
     Vector3 LastFacingDirection { get; set; }
     bool IsGrounded { get; set; }
     float VerticalVelocity { get; }
+
+    /// <summary>true เมื่อยังกระโดดได้ (เช็คก่อน apply jump force เสมอ)</summary>
+    bool CanJump { get; }
+
+    /// <summary>เรียกหลัง apply jump force เพื่อนับจำนวนครั้ง</summary>
+    void ConsumeJump();
+
+    /// <summary>reset ตัวนับ — เรียกอัตโนมัติเมื่อ IsGrounded เป็น true</summary>
+    void ResetJumps();
+
     Vector3 SnapDirection(Vector3 rawInput);
 
     /// <summary>

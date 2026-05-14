@@ -34,6 +34,11 @@ namespace Genoverrei.Library.Core
         [ReadOnly]
         [SerializeField] protected bool IsGrounded = true;
 
+        [Tooltip("จำนวนครั้งที่กระโดดได้ต่อเนื่อง (1 = กระโดดครั้งเดียว, 2 = double jump)")]
+        [SerializeField] protected int MaxJumpCount = 1;
+
+        int _jumpCount;
+
         protected StateMachine<TContext> StateMachine;
 
         public virtual float VerticalVelocity => 0f;
@@ -52,11 +57,20 @@ namespace Genoverrei.Library.Core
             get => this.LastFacingDirection; 
             set => this.LastFacingDirection = value; 
         }
-        bool IMoveContext.IsGrounded 
-        { 
-            get => this.IsGrounded; 
-            set => this.IsGrounded = value; 
+        bool IMoveContext.IsGrounded
+        {
+            get => this.IsGrounded;
+            set
+            {
+                // แตะพื้น → reset ตัวนับกระโดดทันที
+                if (value && !this.IsGrounded) _jumpCount = 0;
+                this.IsGrounded = value;
+            }
         }
+
+        bool IMoveContext.CanJump      => IsGrounded || _jumpCount < MaxJumpCount;
+        void IMoveContext.ConsumeJump() => _jumpCount++;
+        void IMoveContext.ResetJumps()  => _jumpCount = 0;
 
         Vector3 IMoveContext.SnapDirection(Vector3 rawInput) => this.SnapDirection(rawInput);
 
