@@ -32,7 +32,7 @@ namespace Genoverrei.Library.Core
         [SerializeField] protected Vector3 LastFacingDirection = Vector3.down;
 
         [ReadOnly]
-        [SerializeField] protected bool IsGrounded = true;
+        [SerializeField] public bool IsGrounded = true;
 
         [Tooltip("จำนวนครั้งที่กระโดดได้ต่อเนื่อง (1 = กระโดดครั้งเดียว, 2 = double jump)")]
         [SerializeField] protected int MaxJumpCount = 1;

@@ -158,12 +158,13 @@ namespace Genoverrei.Library.Core
                 _jumpBufferTimer -= Time.fixedDeltaTime;
 
             // Execute jump when buffer + coyote both active
-            if (_jumpBufferTimer > 0f && _coyoteTimer > 0f)
+            if (_jumpBufferTimer > 0f && _coyoteTimer > 0f && Context.CanJump)
             {
                 _jumpBufferTimer   = 0f;
                 _coyoteTimer       = 0f;
                 _isJumping         = true;
                 Context.IsGrounded = false;
+                Context.ConsumeJump();
 
                 var vel = Context.Rb2.linearVelocity;
                 SetVelocity(new Vector2(vel.x, 0f));
@@ -184,7 +185,9 @@ namespace Genoverrei.Library.Core
         // ─── Top-Down Jump (instant) ────────────────────────────────────────
         private void ExecuteJumpInstant()
         {
-            if (!HasStats) return;
+            if (!HasStats)          return;
+            if (!Context.CanJump)   return;   // ป้องกันกระโดดซ้ำขณะลอยอยู่
+            Context.ConsumeJump();
             Context.Rb2.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
         }
 
