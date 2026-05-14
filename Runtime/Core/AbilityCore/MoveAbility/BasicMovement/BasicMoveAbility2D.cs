@@ -68,7 +68,7 @@ namespace Genoverrei.Library.Core
             }
             else
             {
-                Context.InputObserverChannel.OnJumpChannel += ExecuteJump;
+                Context.InputObserverChannel.OnJumpChannel += ExecuteJumpInstant;
             }
         }
 
@@ -86,14 +86,14 @@ namespace Genoverrei.Library.Core
             }
             else
             {
-                Context.InputObserverChannel.OnJumpChannel -= ExecuteJump;
+                Context.InputObserverChannel.OnJumpChannel -= ExecuteJumpInstant;
             }
         }
 
         // ─── FixedUpdate ───────────────────────────────────────────────────
         protected override void OnFixedUpdate()
         {
-            if (Context?.Stats == null) return;
+            if (!HasStats) return;
 
             if (_sideViewMode)
             {
@@ -102,38 +102,34 @@ namespace Genoverrei.Library.Core
             }
             else
             {
-                ApplyFullMovement();
+                ApplyTopDownMovement();
             }
         }
 
         // ─── Movement ──────────────────────────────────────────────────────
-        /// <summary>Top-down: sets full velocity (x + y).</summary>
-        private void ApplyFullMovement()
+
+        /// <summary>
+        /// Top-down: velocity follows the raw (pre-snap) transformed direction
+        /// so diagonal movement is smooth, while <see cref="ApplyDirection"/> uses
+        /// the snapped value for display / flip purposes.
+        /// </summary>
+        private void ApplyTopDownMovement()
         {
-            Vector2 clamped = Vector2.ClampMagnitude(CurrentInput, 1f);
-            Vector3 rawDir  = Context.TransformInput(new Vector3(clamped.x, clamped.y));
-            Vector3 snapped = Context.SnapDirection(rawDir);
-
-            Context.CurrentDirection = snapped;
-            if (snapped != Vector3.zero)
-                Context.LastFacingDirection = snapped;
-
-            Context.Rb2.linearVelocity = (Vector2)rawDir * Context.Stats.GetMoveSpeed();
+            Vector3 rawDir  = TransformInput2D(CurrentInput);          // clamp + transform
+            Vector3 snapped = Context.SnapDirection(rawDir);           // snap for display
+            ApplyDirection(snapped);
+            SetVelocity((Vector2)rawDir * MoveSpeed);
         }
 
-        /// <summary>Side-view: sets X only, preserves Y for gravity/jump.</summary>
+        /// <summary>
+        /// Side-view: X-only velocity keeps gravity intact.
+        /// Snap is applied to both velocity and display direction.
+        /// </summary>
         private void ApplySideViewMovement()
         {
-            Vector2 clamped     = Vector2.ClampMagnitude(CurrentInput, 1f);
-            Vector3 transformed = Context.TransformInput(new Vector3(clamped.x, clamped.y, 0f));
-            Vector3 snapped     = Context.SnapDirection(transformed);
-
-            float xSpeed = snapped.x * Context.Stats.GetMoveSpeed();
-            Context.Rb2.linearVelocity = new Vector2(xSpeed, Context.Rb2.linearVelocity.y);
-
-            Context.CurrentDirection = snapped;
-            if (snapped != Vector3.zero)
-                Context.LastFacingDirection = snapped;
+            Vector3 snapped = ProcessInput2D(CurrentInput);            // clamp + transform + snap
+            ApplyDirection(snapped);
+            SetVelocityX(snapped.x * MoveSpeed);
         }
 
         // ─── Jump System (Side-View) ────────────────────────────────────────
@@ -170,8 +166,8 @@ namespace Genoverrei.Library.Core
                 Context.IsGrounded = false;
 
                 var vel = Context.Rb2.linearVelocity;
-                Context.Rb2.linearVelocity = new Vector2(vel.x, 0f);
-                Context.Rb2.AddForce(Vector2.up * Context.Stats.GetJumpForce(), ForceMode2D.Impulse);
+                SetVelocity(new Vector2(vel.x, 0f));
+                Context.Rb2.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
 
                 if (EventBus.Instance)
                     EventBus.Instance.Publish(new PlayerJumpEvent());
@@ -181,15 +177,15 @@ namespace Genoverrei.Library.Core
             if (_variableJump && _isJumping && !_jumpHeld && Context.Rb2.linearVelocity.y > 0f)
             {
                 var vel = Context.Rb2.linearVelocity;
-                Context.Rb2.linearVelocity = new Vector2(vel.x, vel.y * _jumpCutMultiplier);
+                SetVelocity(new Vector2(vel.x, vel.y * _jumpCutMultiplier));
             }
         }
 
         // ─── Top-Down Jump (instant) ────────────────────────────────────────
-        private void ExecuteJump()
+        private void ExecuteJumpInstant()
         {
-            if (Context?.Stats == null) return;
-            Context.Rb2.AddForce(Vector2.up * Context.Stats.GetJumpForce(), ForceMode2D.Impulse);
+            if (!HasStats) return;
+            Context.Rb2.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
         }
 
         // ─── Input Callbacks ───────────────────────────────────────────────

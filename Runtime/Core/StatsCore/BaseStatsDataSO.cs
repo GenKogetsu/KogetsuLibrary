@@ -1,9 +1,12 @@
-    namespace Genoverrei.Library.DesignPatternCore
+namespace Genoverrei.Library.DesignPatternCore
 {
     [CreateAssetMenu(fileName = "BaseStatsData", menuName = "GenoverreiLibrary/DesignPattern/DataAssets/BaseStatsData")]
     public class BaseStatsDataSO : ScriptableObject
     {
         public float BaseMoveSpeed = 5f;
         public float BaseJumpForce = 10f;
+
+        public float BaseHp      = 100f;
+        public float BaseStamina = 100f;
     }
 }

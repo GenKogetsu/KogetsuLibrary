@@ -1,66 +1,106 @@
+using UnityEngine.UI;
 using Genoverrei.Library.DesignPatternCore;
 
 namespace Genoverrei.Library.Core
 {
     public class StatsController : MonoBehaviour
     {
+        // ─── Stats Data ────────────────────────────────────────────────────
         [Header("Stats Data")]
         [Required]
         [SerializeField] protected BaseStatsDataSO StatsData;
 
-        [SerializeField] protected float CurrentMoveSpeed;
+        [ReadOnly] [SerializeField] protected float CurrentMoveSpeed;
+        [ReadOnly] [SerializeField] protected float CurrectJumpForce;
 
-        [SerializeField] protected float CurrectJumpForce;
+        // ─── HP ────────────────────────────────────────────────────────────
+        [Header("HP")]
+        [ReadOnly] [SerializeField] protected float CurrentHp;
+        [SerializeField]            protected float MinHp;
 
-        [Header("Hp Settings")]
-        [SerializeField] protected float CurrentHp;
-        [SerializeField] protected float TotalHp;
-        [SerializeField] protected float MaxHp;
-        [SerializeField] protected float MinHp;
+        // ─── HP UI ─────────────────────────────────────────────────────────
+        [SerializeField] private StatsUIConfig _hpUIConfig = new();
 
-        // ─── Color Lerp — Single Renderer ──────────────────────────────────
-        [Header("Color Lerp — Single Renderer")]
-        [Tooltip("ใช้เมื่อตัวละครมี SpriteRenderer เดียว (Spritesheet mode)")]
-        [SerializeField] protected SpriteRenderer targetRenderer;
+        // ─── Stamina ───────────────────────────────────────────────────────
+        [Header("Stamina")]
+        [ReadOnly] [SerializeField] protected float CurrentStamina;
+        [SerializeField]            protected float MinStamina;
 
-        // ─── Color Lerp — Multi Renderer ───────────────────────────────────
-        [Header("Color Lerp — Multi Renderer (Cutout2D Rig)")]
-        [Tooltip("ถ้าใส่ array นี้จะ override targetRenderer — " +
-                 "ใช้กับ 2D rig ที่มีหลาย SpriteRenderer\n" +
-                 "ปล่อยว่างได้ถ้าใช้ Single Renderer หรือใช้ RiggedHurtFlash แทน")]
-        [SerializeField] protected SpriteRenderer[] targetRenderers;
+        // ─── Stamina UI ────────────────────────────────────────────────────
+        [SerializeField] private StatsUIConfig _staminaUIConfig = new();
 
-        // ─── Shared Lerp Settings ──────────────────────────────────────────
-        [Header("Color Lerp Settings")]
+        // ─── Color Lerp ────────────────────────────────────────────────────────
+        [Header("Color Lerp (Hit Flash)")]
+        [Tooltip("Root Transform ของตัวละคร — GetComponentsInChildren<SpriteRenderer> อัตโนมัติ\n" +
+                 "รองรับทั้ง Spritesheet (1 renderer) และ Cutout2D Rig (หลาย renderer)")]
+        [SerializeField] protected Transform colorLerpRoot;
+
         [SerializeField] protected Color startColor = Color.white;
         [SerializeField] protected Color endColor   = Color.red;
         [SerializeField] protected float lerpSpeed  = 10f;
         [SerializeField] protected int   lerpCount  = 3;
 
-        private Coroutine _lerpCoroutine;
+        // ─── Runtime ───────────────────────────────────────────────────────
+        private Coroutine        _lerpCoroutine;
+        private Coroutine        _hpBlinkCoroutine;
+        private Coroutine        _staminaBlinkCoroutine;
+        private SpriteRenderer[] _cachedRenderers;
 
-        // ─── Stats ─────────────────────────────────────────────────────────
-        public float GetBaseMoveSpeed()      => StatsData != null ? StatsData.BaseMoveSpeed  : 0f;
-        public float GetBaseJumpForce()      => StatsData != null ? StatsData.BaseJumpForce  : 0f;
-        public float GetMoveSpeed()          => CurrentMoveSpeed;
-        public float GetJumpForce()          => CurrectJumpForce;
+        private readonly List<Color> _hpBlockOrigColors      = new();
+        private readonly List<Color> _staminaBlockOrigColors = new();
+
+        // ─── Properties ────────────────────────────────────────────────────
+        public float MaxHp      => StatsData != null ? StatsData.BaseHp      : 0f;
+        public float MaxStamina => StatsData != null ? StatsData.BaseStamina : 0f;
+
+        // ─── Stats Accessors ───────────────────────────────────────────────
+        public float GetBaseMoveSpeed()       => StatsData != null ? StatsData.BaseMoveSpeed : 0f;
+        public float GetBaseJumpForce()       => StatsData != null ? StatsData.BaseJumpForce : 0f;
+        public float GetMoveSpeed()           => CurrentMoveSpeed;
+        public float GetJumpForce()           => CurrectJumpForce;
         public float GetMoveSpeedPercentage() =>
-            GetBaseMoveSpeed() > 0 ? CurrentMoveSpeed / GetBaseMoveSpeed() : 0f;
+            GetBaseMoveSpeed() > 0f ? CurrentMoveSpeed / GetBaseMoveSpeed() : 0f;
 
+        // ─── Lifecycle ─────────────────────────────────────────────────────
         protected virtual void Setup()
         {
             CurrentMoveSpeed = GetBaseMoveSpeed();
             CurrectJumpForce = GetBaseJumpForce();
 
-            TotalHp   = MaxHp;
-            CurrentHp = MaxHp;
+            CurrentHp      = MaxHp;
+            CurrentStamina = MaxStamina;
+
+            // Cache all SpriteRenderers under the root transform
+            _cachedRenderers = colorLerpRoot != null
+                ? colorLerpRoot.GetComponentsInChildren<SpriteRenderer>()
+                : System.Array.Empty<SpriteRenderer>();
+
+            CacheBlockColors(_hpUIConfig,      _hpBlockOrigColors);
+            CacheBlockColors(_staminaUIConfig, _staminaBlockOrigColors);
+
+            RefreshBarUI(_hpUIConfig,      CurrentHp,      MaxHp,      instant: true);
+            RefreshBarUI(_staminaUIConfig, CurrentStamina, MaxStamina, instant: true);
+            RefreshBlockUI(_hpUIConfig,      CurrentHp,      MaxHp,      _hpBlockOrigColors,      ref _hpBlinkCoroutine);
+            RefreshBlockUI(_staminaUIConfig, CurrentStamina, MaxStamina, _staminaBlockOrigColors, ref _staminaBlinkCoroutine);
         }
 
         protected virtual void Start() => Setup();
 
+#if UNITY_EDITOR
+        /// <summary>
+        /// Called by Unity when any serialized field changes in the Inspector (edit + play mode).
+        /// In play mode: clamps current values so they stay within updated min/max bounds.
+        /// </summary>
+        protected virtual void OnValidate()
+        {
+            if (!Application.isPlaying) return;
+            CurrentHp      = Mathf.Clamp(CurrentHp,      MinHp,      MaxHp);
+            CurrentStamina = Mathf.Clamp(CurrentStamina, MinStamina, MaxStamina);
+        }
+#endif
+
         protected void OnEnable()
         {
-            ResetHp();
             if (!EventBus.Instance) return;
             EventBus.Instance.Subscribe<DealDamageEvent>(OnTakeDamage);
         }
@@ -71,76 +111,94 @@ namespace Genoverrei.Library.Core
             EventBus.Instance.Unsubscribe<DealDamageEvent>(OnTakeDamage);
         }
 
+        protected virtual void Update()
+        {
+            // Bar back-layer lerps every frame
+            RefreshBarUI(_hpUIConfig,      CurrentHp,      MaxHp,      instant: false);
+            RefreshBarUI(_staminaUIConfig, CurrentStamina, MaxStamina, instant: false);
+        }
+
         // ─── HP ────────────────────────────────────────────────────────────
         public void TakeDamage(float damage)
         {
             CurrentHp = Mathf.Clamp(CurrentHp - damage, MinHp, MaxHp);
             TriggerColorLerp();
+            RefreshBlockUI(_hpUIConfig, CurrentHp, MaxHp, _hpBlockOrigColors, ref _hpBlinkCoroutine);
         }
 
-        public void Heal(float healAmount) =>
+        public void Heal(float healAmount)
+        {
             CurrentHp = Mathf.Clamp(CurrentHp + healAmount, MinHp, MaxHp);
+            RefreshBlockUI(_hpUIConfig, CurrentHp, MaxHp, _hpBlockOrigColors, ref _hpBlinkCoroutine);
+        }
 
-        public void SetCurrentHp(float hp) => CurrentHp = Mathf.Clamp(hp, MinHp, MaxHp);
-        public void ResetHp()              => CurrentHp = MaxHp;
+        public void SetCurrentHp(float hp)
+        {
+            CurrentHp = Mathf.Clamp(hp, MinHp, MaxHp);
+            RefreshBlockUI(_hpUIConfig, CurrentHp, MaxHp, _hpBlockOrigColors, ref _hpBlinkCoroutine);
+        }
+
+        public void ResetHp()
+        {
+            CurrentHp = MaxHp;
+            RefreshBlockUI(_hpUIConfig, CurrentHp, MaxHp, _hpBlockOrigColors, ref _hpBlinkCoroutine);
+        }
 
         public float GetCurrentHp() => CurrentHp;
-        public float GetTotalHp()   => TotalHp;
         public float GetMaxHp()     => MaxHp;
         public float GetMinHp()     => MinHp;
 
-        protected void OnTakeDamage(DealDamageEvent Data)
+        // ─── Stamina ───────────────────────────────────────────────────────
+        public void UseStamina(float amount)
         {
-            TakeDamage(Data.Damage);
+            CurrentStamina = Mathf.Clamp(CurrentStamina - amount, MinStamina, MaxStamina);
+            RefreshBlockUI(_staminaUIConfig, CurrentStamina, MaxStamina, _staminaBlockOrigColors, ref _staminaBlinkCoroutine);
+        }
+
+        public void RestoreStamina(float amount)
+        {
+            CurrentStamina = Mathf.Clamp(CurrentStamina + amount, MinStamina, MaxStamina);
+            RefreshBlockUI(_staminaUIConfig, CurrentStamina, MaxStamina, _staminaBlockOrigColors, ref _staminaBlinkCoroutine);
+        }
+
+        public void ResetStamina()
+        {
+            CurrentStamina = MaxStamina;
+            RefreshBlockUI(_staminaUIConfig, CurrentStamina, MaxStamina, _staminaBlockOrigColors, ref _staminaBlinkCoroutine);
+        }
+
+        public float GetCurrentStamina() => CurrentStamina;
+        public float GetMaxStamina()     => MaxStamina;
+
+        // ─── EventBus Handler ──────────────────────────────────────────────
+        protected void OnTakeDamage(DealDamageEvent data)
+        {
+            TakeDamage(data.Damage);
             if (EventBus.Instance)
-                EventBus.Instance.Publish(new TakeDamageEvent(Data.Damage, CurrentHp));
+                EventBus.Instance.Publish(new TakeDamageEvent(data.Damage, CurrentHp));
         }
 
         // ─── Color Lerp ────────────────────────────────────────────────────
         protected void TriggerColorLerp()
         {
-            bool hasMulti  = targetRenderers != null && targetRenderers.Length > 0;
-            bool hasSingle = targetRenderer != null;
-            if (!hasMulti && !hasSingle) return;
+            if (_cachedRenderers == null || _cachedRenderers.Length == 0) return;
 
             if (_lerpCoroutine != null) StopCoroutine(_lerpCoroutine);
-            _lerpCoroutine = StartCoroutine(hasMulti ? LerpAllColorRoutine() : LerpColorRoutine());
+            _lerpCoroutine = StartCoroutine(LerpColorRoutine());
         }
 
-        // Single renderer
         private IEnumerator LerpColorRoutine()
         {
             for (int i = 0; i < lerpCount; i++)
             {
                 for (float t = 0f; t < 1f; t += Time.deltaTime * lerpSpeed)
                 {
-                    targetRenderer.color = Color.Lerp(startColor, endColor, t);
+                    SetAllColors(Color.Lerp(startColor, endColor, Mathf.Clamp01(t)));
                     yield return null;
                 }
                 for (float t = 0f; t < 1f; t += Time.deltaTime * lerpSpeed)
                 {
-                    targetRenderer.color = Color.Lerp(endColor, startColor, t);
-                    yield return null;
-                }
-            }
-            targetRenderer.color = startColor;
-        }
-
-        // Multi renderer — flashes every SpriteRenderer in the array
-        private IEnumerator LerpAllColorRoutine()
-        {
-            for (int i = 0; i < lerpCount; i++)
-            {
-                for (float t = 0f; t < 1f; t += Time.deltaTime * lerpSpeed)
-                {
-                    Color c = Color.Lerp(startColor, endColor, Mathf.Clamp01(t));
-                    SetAllColors(c);
-                    yield return null;
-                }
-                for (float t = 0f; t < 1f; t += Time.deltaTime * lerpSpeed)
-                {
-                    Color c = Color.Lerp(endColor, startColor, Mathf.Clamp01(t));
-                    SetAllColors(c);
+                    SetAllColors(Color.Lerp(endColor, startColor, Mathf.Clamp01(t)));
                     yield return null;
                 }
             }
@@ -149,8 +207,74 @@ namespace Genoverrei.Library.Core
 
         private void SetAllColors(Color color)
         {
-            foreach (var sr in targetRenderers)
+            foreach (var sr in _cachedRenderers)
                 if (sr != null) sr.color = color;
+        }
+
+        // ─── UI — Bar ──────────────────────────────────────────────────────
+        private static void RefreshBarUI(StatsUIConfig cfg, float current, float max, bool instant)
+        {
+            if (cfg == null || !cfg.UseUI || cfg.Mode != StatsUIMode.Bar) return;
+            float fill = max > 0f ? Mathf.Clamp01(current / max) : 0f;
+
+            if (cfg.FrontBarImage != null)
+                cfg.FrontBarImage.fillAmount = fill;
+
+            if (cfg.BackBarImage != null)
+                cfg.BackBarImage.fillAmount = instant
+                    ? fill
+                    : Mathf.Lerp(cfg.BackBarImage.fillAmount, fill, Time.deltaTime * cfg.BarLerpSpeed);
+        }
+
+        // ─── UI — Block ────────────────────────────────────────────────────
+        private static void CacheBlockColors(StatsUIConfig cfg, List<Color> cache)
+        {
+            cache.Clear();
+            if (cfg?.Blocks == null) return;
+            foreach (var b in cfg.Blocks)
+                cache.Add(b != null ? b.color : Color.white);
+        }
+
+        private void RefreshBlockUI(StatsUIConfig cfg, float current, float max,
+                                     List<Color> origColors, ref Coroutine blinkRoutine)
+        {
+            if (cfg == null || !cfg.UseUI || cfg.Mode != StatsUIMode.Block || cfg.Blocks == null) return;
+
+            if (blinkRoutine != null) { StopCoroutine(blinkRoutine); blinkRoutine = null; }
+
+            float ratio    = max > 0f ? current / max : 0f;
+            bool  critical = ratio <= 0.5f;
+            int   full     = Mathf.FloorToInt(current);
+
+            for (int i = 0; i < cfg.Blocks.Count; i++)
+            {
+                if (cfg.Blocks[i] == null) continue;
+                Color baseCol = i < origColors.Count ? origColors[i] : Color.white;
+                cfg.Blocks[i].color = i < full
+                    ? Color.Lerp(baseCol, critical ? Color.black : Color.white, cfg.TintStrength)
+                    : Color.clear;
+            }
+
+            // Blink the last active block
+            int lastIdx = Mathf.CeilToInt(current) - 1;
+            if (lastIdx < 0 || lastIdx >= cfg.Blocks.Count || cfg.Blocks[lastIdx] == null) return;
+
+            Color baseColor  = lastIdx < origColors.Count ? origColors[lastIdx] : Color.white;
+            Color blinkColor = Color.Lerp(baseColor, critical ? Color.black : Color.white, cfg.TintStrength);
+            float interval   = critical ? cfg.BlinkFastInterval : cfg.BlinkSlowInterval;
+
+            blinkRoutine = StartCoroutine(BlockBlinkRoutine(cfg.Blocks[lastIdx], blinkColor, interval));
+        }
+
+        private static IEnumerator BlockBlinkRoutine(Image block, Color onColor, float interval)
+        {
+            while (true)
+            {
+                block.color = onColor;
+                yield return new WaitForSeconds(interval);
+                block.color = Color.clear;
+                yield return new WaitForSeconds(interval);
+            }
         }
     }
 }

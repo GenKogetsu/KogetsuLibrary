@@ -652,8 +652,12 @@ namespace Genoverrei.Library.Core
             _currentSpeakerNameTMP   = dialogueArea.SpeakerNameTMP;
             _currentDialogueType     = phase.DialogueMode;
 
-            if (_currentDialogueTMP != null) { _currentDialogueTMP.text = string.Empty; _currentDialogueTMP.maxVisibleCharacters = 0; }
-            if (_speakerNameIcon != null)     { _speakerNameIcon.sprite = null; _speakerNameIcon.gameObject.SetActive(false); }
+            // ChoicePhaseData (Answer Phase) — คงข้อความและชื่อจาก Q Phase ไว้ ไม่ล้าง
+            if (phase is VNDialoguePhaseData)
+            {
+                if (_currentDialogueTMP != null) { _currentDialogueTMP.text = string.Empty; _currentDialogueTMP.maxVisibleCharacters = 0; }
+                if (_speakerNameIcon != null)     { _speakerNameIcon.sprite = null; _speakerNameIcon.gameObject.SetActive(false); }
+            }
 
             // new: activate animator's GO first — it may be on a parent that is still inactive
             // (activating only the DialogueBox child does NOT activate an inactive parent)

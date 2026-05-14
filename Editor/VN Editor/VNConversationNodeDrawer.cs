@@ -137,10 +137,10 @@ namespace Genoverrei.Library.Editor
                 EditorGUI.LabelField(new Rect(pos.x, currentY, pos.width, EditorGUIUtility.singleLineHeight), "Answer State", stateHeaderStyle);
                 GUI.contentColor = prevContentColor;
                 currentY += EditorGUIUtility.singleLineHeight + 4f;
-                DrawPhase(ref currentY, pos, answerState.FindPropertyRelative("UseEnterPhase"), answerState.FindPropertyRelative("EnterPhase"), "Answer Enter Phase", false, _enterColor);
-                DrawPhase(ref currentY, pos, null, answerState.FindPropertyRelative("MainPhase"), "Answer Main Phase", true, _mainColor);
+                DrawPhase(ref currentY, pos, answerState.FindPropertyRelative("UseEnterPhase"), answerState.FindPropertyRelative("EnterPhase"), "Answer Enter Phase", false, _enterColor, showSpeakers: false);
+                DrawPhase(ref currentY, pos, null, answerState.FindPropertyRelative("MainPhase"), "Answer Main Phase", true, _mainColor, showSpeakers: false);
                 DrawArrayWithCache(ref currentY, pos, answerState.FindPropertyRelative("Choices"), "Choices List", "Choice");
-                DrawPhase(ref currentY, pos, answerState.FindPropertyRelative("UseExitPhase"), answerState.FindPropertyRelative("ExitPhase"), "Answer Exit Phase", false, _exitColor);
+                DrawPhase(ref currentY, pos, answerState.FindPropertyRelative("UseExitPhase"), answerState.FindPropertyRelative("ExitPhase"), "Answer Exit Phase", false, _exitColor, showSpeakers: false);
                 currentY += 8f;
             }
 
@@ -230,7 +230,7 @@ namespace Genoverrei.Library.Editor
             currentY += listHeight + 4f;
         }
 
-        internal static void DrawPhase(ref float currentY, Rect pos, SerializedProperty toggleProp, SerializedProperty phaseProp, string label, bool isMandatory, Color phaseColor)
+        internal static void DrawPhase(ref float currentY, Rect pos, SerializedProperty toggleProp, SerializedProperty phaseProp, string label, bool isMandatory, Color phaseColor, bool showSpeakers = true)
         {
             if (phaseProp == null) return;
 
@@ -284,7 +284,7 @@ namespace Genoverrei.Library.Editor
             if (isActive && phaseProp.isExpanded)
             {
                 EditorGUI.indentLevel++;
-                DrawPhaseContent(ref currentY, pos, phaseProp, isMandatory);
+                DrawPhaseContent(ref currentY, pos, phaseProp, isMandatory, showSpeakers);
                 currentY += 6f;
                 EditorGUI.indentLevel--;
             }
@@ -292,7 +292,7 @@ namespace Genoverrei.Library.Editor
             GUI.contentColor = originalColor;
         }
 
-        internal static void DrawPhaseContent(ref float currentY, Rect pos, SerializedProperty phaseProp, bool isMainPhase)
+        internal static void DrawPhaseContent(ref float currentY, Rect pos, SerializedProperty phaseProp, bool isMainPhase, bool showSpeakers = true)
         {
             var dialogueModeProp = phaseProp.FindPropertyRelative("DialogueMode");
             bool isNoneMode = dialogueModeProp != null && dialogueModeProp.enumValueIndex == (int)VNDialogueMode.None;
@@ -312,7 +312,8 @@ namespace Genoverrei.Library.Editor
 
                 if (child.name == "Speakers")
                 {
-                    DrawArrayWithCache(ref currentY, pos, child, "Speakers List", "Speaker");
+                    if (showSpeakers)
+                        DrawArrayWithCache(ref currentY, pos, child, "Speakers List", "Speaker");
                 }
                 else if (child.name == "DialogueText")
                 {
@@ -910,10 +911,10 @@ namespace Genoverrei.Library.Editor
                     if (aState != null)
                     {
                         h += EditorGUIUtility.singleLineHeight + 12f;
-                        h += GetPhaseHeight(aState.FindPropertyRelative("UseEnterPhase"), aState.FindPropertyRelative("EnterPhase"), false);
-                        h += GetPhaseHeight(null, aState.FindPropertyRelative("MainPhase"), true);
+                        h += GetPhaseHeight(aState.FindPropertyRelative("UseEnterPhase"), aState.FindPropertyRelative("EnterPhase"), false, showSpeakers: false);
+                        h += GetPhaseHeight(null, aState.FindPropertyRelative("MainPhase"), true, showSpeakers: false);
                         h += GetArrayWithCacheHeight(aState.FindPropertyRelative("Choices"));
-                        h += GetPhaseHeight(aState.FindPropertyRelative("UseExitPhase"), aState.FindPropertyRelative("ExitPhase"), false);
+                        h += GetPhaseHeight(aState.FindPropertyRelative("UseExitPhase"), aState.FindPropertyRelative("ExitPhase"), false, showSpeakers: false);
                     }
 
                     var iStates = choiceProp.FindPropertyRelative("InteractStates");
@@ -941,17 +942,17 @@ namespace Genoverrei.Library.Editor
             }
         }
 
-        internal static float GetPhaseHeight(SerializedProperty toggle, SerializedProperty phase, bool isMainPhase)
+        internal static float GetPhaseHeight(SerializedProperty toggle, SerializedProperty phase, bool isMainPhase, bool showSpeakers = true)
         {
             float h = EditorGUIUtility.singleLineHeight + 4f;
             if (phase != null && phase.isExpanded && (toggle == null || toggle.boolValue))
             {
-                h += CalculateActualPhaseHeight(phase, isMainPhase) + 6f;
+                h += CalculateActualPhaseHeight(phase, isMainPhase, showSpeakers) + 6f;
             }
             return h;
         }
 
-        internal static float CalculateActualPhaseHeight(SerializedProperty phase, bool isMainPhase)
+        internal static float CalculateActualPhaseHeight(SerializedProperty phase, bool isMainPhase, bool showSpeakers = true)
         {
             var dialogueModeProp = phase.FindPropertyRelative("DialogueMode");
             bool isNoneMode = dialogueModeProp != null && dialogueModeProp.enumValueIndex == (int)VNDialogueMode.None;
@@ -971,7 +972,8 @@ namespace Genoverrei.Library.Editor
 
                 if (child.name == "Speakers")
                 {
-                    currentHeight += GetArrayWithCacheHeight(child);
+                    if (showSpeakers)
+                        currentHeight += GetArrayWithCacheHeight(child);
                 }
                 else if (child.name == "DialogueText")
                 {

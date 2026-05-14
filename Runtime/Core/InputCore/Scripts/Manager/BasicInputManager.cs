@@ -79,5 +79,31 @@ namespace Genoverrei.Library.Core
             Debug.Log($"Right Click Pos : {clickPos}");
             BasicObserverChannel.SendRightClickSignal(new ClickData(clickPos));
         }
+
+        // ─── Player Actions ───────────────────────────────────────────────
+        public void OnRollInput(InputAction.CallbackContext context)
+        {
+            if (!context.performed || BasicObserverChannel == null) return;
+            BasicObserverChannel.SendRollSignal();
+        }
+
+        public void OnFlashlightInput(InputAction.CallbackContext context)
+        {
+            if (!context.performed || BasicObserverChannel == null) return;
+            BasicObserverChannel.SendFlashlightToggleSignal();
+        }
+
+        public void OnShootInput(InputAction.CallbackContext context)
+        {
+            if (!context.performed || BasicObserverChannel == null) return;
+            BasicObserverChannel.SendShootSignal();
+        }
+
+        /// <summary>Map action type: Value / Vector2 — ส่ง screen position ทุก frame ที่เมาส์ขยับ</summary>
+        public void OnMousePositionInput(InputAction.CallbackContext context)
+        {
+            if (BasicObserverChannel == null) return;
+            BasicObserverChannel.SendMousePositionSignal(context.ReadValue<Vector2>());
+        }
     }
 }

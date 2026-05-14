@@ -28,3 +28,12 @@ public interface IMoveContext3D : IMoveContext
 {
     Rigidbody Rb { get; }
 }
+
+/// <summary>
+/// Implemented by controllers that can switch back to their default movement state.
+/// Used by abilities such as RollMoveAbility2D to return control when finished.
+/// </summary>
+public interface IReturnableMovement
+{
+    void ReturnToNormalMovement();
+}

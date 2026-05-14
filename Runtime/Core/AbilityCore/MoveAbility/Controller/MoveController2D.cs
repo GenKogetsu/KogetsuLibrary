@@ -10,13 +10,12 @@ namespace Genoverrei.Library.Core
     ///   InputObserverChannel → BasicMovementInputObserverSO.asset
     ///   MoveAbility          → BasicMoveAbility2D  (top-down / platformer)
     ///   Roll Ability         → RollMoveAbility2D   (optional)
-    ///   Player Observer      → PlayerInputObserverSO.asset (ถ้าใช้ roll)
     ///   Ground Check         → Empty GO ปลายเท้า (ถ้าเปิด Jump)
     ///   Ground Layer         → Layer ของพื้น     (ถ้าเปิด Jump)
     ///   Rig Mode             → Spritesheet / Cutout2D
     /// </summary>
     [RequireComponent(typeof(Rigidbody2D))]
-    public class MoveController2D : BaseMoveController<IMoveContext2D, BaseMoveAbility2D>, IMoveContext2D
+    public class MoveController2D : BaseMoveController<IMoveContext2D, BaseMoveAbility2D>, IMoveContext2D, IReturnableMovement
     {
         [ReadOnly]
         [SerializeField] protected Rigidbody2D Rb2;
@@ -28,20 +27,14 @@ namespace Genoverrei.Library.Core
         [SerializeField] protected Vector2 PerspectiveQuaternion2D;
 
         // ─── Roll ──────────────────────────────────────────────────────────
-        [Header("Roll / Dodge")]
-        [Tooltip("PlayerInputObserverSO ที่มี OnRollChannel — ไม่จำเป็นถ้าไม่ใช้ roll")]
-        [SerializeField] private PlayerInputObserverSO _playerObserver;
-
         [SerializeReference]
         private RollMoveAbility2D _rollAbility;
 
         // ─── Jump ──────────────────────────────────────────────────────────
-        [Header("Jump")]
         [Tooltip("Disable for top-down / maps that don't need jumping.\n" +
                  "ค่านี้จะถูก push ไปยัง BasicMoveAbility2D._enableJump ก่อน OnEnter()")]
         [SerializeField] private bool _enableJump = true;
 
-        [Header("Ground Check")]
         [Tooltip("Empty GO ปลายเท้า — จุดกลาง OverlapCircle")]
         [SerializeField] private Transform _groundCheck;
 
@@ -51,23 +44,15 @@ namespace Genoverrei.Library.Core
         [Tooltip("Layer ของพื้น/platform ที่นับว่า grounded")]
         [SerializeField] private LayerMask _groundLayer;
 
-        // ─── Rig Mode ──────────────────────────────────────────────────────
-        [Header("Rig Mode")]
-        [SerializeField] private RigMode2D _rigMode = RigMode2D.Cutout2D;
+        // ─── Flip ──────────────────────────────────────────────────────
+        [Tooltip("พลิกตัวละครตามทิศที่เดิน โดย scale X = ±1")]
+        [SerializeField] private bool _enableFlip = false;
 
-        [Tooltip("[Spritesheet] SpriteRenderer เดียวของตัวละคร")]
-        [SerializeField] private SpriteRenderer _mainRenderer;
-
-        [Tooltip("[Spritesheet] RuntimeAnimatorController")]
-        [SerializeField] private RuntimeAnimatorController _animatorController;
-
-        [Tooltip("[Cutout2D] Transform root ของ rig (parent ของ bone ทั้งหมด)")]
-        [SerializeField] private Transform _rigRoot;
+        [Tooltip("Transform ที่จะ flip — ถ้าว่างใช้ transform ของ object นี้เอง")]
+        [SerializeField] private Transform _flipTarget;
 
         // ─── Runtime ───────────────────────────────────────────────────────
         private BaseMoveAbility2D _normalAbility;
-
-        public RigMode2D RigMode => _rigMode;
 
         // ─── Interface ─────────────────────────────────────────────────────
         protected override IMoveContext2D GetContext() => this;
@@ -90,8 +75,8 @@ namespace Genoverrei.Library.Core
 
             _rollAbility?.Initialize(GetContext());
 
-            if (_playerObserver != null)
-                _playerObserver.OnRollChannel += TryRoll;
+            if (InputObserverChannel != null)
+                InputObserverChannel.OnRollChannel += TryRoll;
         }
 
         protected override void Update()
@@ -104,12 +89,26 @@ namespace Genoverrei.Library.Core
         {
             UpdateGroundCheck();
             base.FixedUpdate();
+            UpdateFlip();
+        }
+
+        // ─── Flip ──────────────────────────────────────────────────────
+        private void UpdateFlip()
+        {
+            if (!_enableFlip) return;
+            float dirX = LastFacingDirection.x;
+            if (Mathf.Approximately(dirX, 0f)) return;
+
+            var target = _flipTarget != null ? _flipTarget : transform;
+            var scale  = target.localScale;
+            scale.x    = Mathf.Abs(scale.x) * (dirX < 0f ? -1f : 1f);
+            target.localScale = scale;
         }
 
         private void OnDestroy()
         {
-            if (_playerObserver != null)
-                _playerObserver.OnRollChannel -= TryRoll;
+            if (InputObserverChannel != null)
+                InputObserverChannel.OnRollChannel -= TryRoll;
         }
 
         // ─── Ground Check ──────────────────────────────────────────────────
