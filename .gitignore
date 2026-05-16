@@ -74,5 +74,5 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
-# Claude Code worktrees (temporary, should not be committed)
-.claude/worktrees/
+# Claude Code
+.claude/
