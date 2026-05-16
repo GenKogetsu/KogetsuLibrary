@@ -1,12 +1,12 @@
-using System;
+﻿using System;
 using UnityEngine.SceneManagement;
-using Genoverrei.Library.Attribute;
-using Genoverrei.Library.DesignPatternCore;
+using Kogetsu.Library.Attribute;
+using Kogetsu.Library.DesignPatternCore;
 
-namespace Genoverrei.Library.Core
+namespace Kogetsu.Library.Core
 {
     [RequireComponent(typeof(Animator))]
-    [CreateHierarchyMenu("GenoverreiLibrary/Core/Controller")]
+    [CreateHierarchyMenu("KogetsuLibrary/Core/Controller")]
     public class BasicSceneEffectController : Singleton<BasicSceneEffectController>
     {
         [ReadOnly]

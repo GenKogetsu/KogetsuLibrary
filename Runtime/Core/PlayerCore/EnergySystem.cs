@@ -1,7 +1,7 @@
-using Genoverrei.Library.Attribute;
-using Genoverrei.Library.DesignPatternCore;
+﻿using Kogetsu.Library.Attribute;
+using Kogetsu.Library.DesignPatternCore;
 
-namespace Genoverrei.Library.Core;
+namespace Kogetsu.Library.Core;
 
 /// <summary>
 /// พลังงานร่วมระหว่างปืนและไฟฉาย

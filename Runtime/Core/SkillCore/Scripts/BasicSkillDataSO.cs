@@ -1,6 +1,6 @@
-namespace Genoverrei.Library.Core
+﻿namespace Kogetsu.Library.Core
 {
-    [CreateAssetMenu(fileName = "BasicSkillData", menuName = "GenoverreiLibrary/Core/BasicSkillData")]
+    [CreateAssetMenu(fileName = "BasicSkillData", menuName = "KogetsuLibrary/Core/BasicSkillData")]
     public class BasicSkillDataSO : ScriptableObject
     {
         [SerializeField] protected ushort Id;

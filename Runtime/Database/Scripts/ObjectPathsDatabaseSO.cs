@@ -1,7 +1,7 @@
-
-namespace Genoverrei.Library.Database
+﻿
+namespace Kogetsu.Library.Database
 {
-    [CreateAssetMenu(fileName = "ObjectPathsDatabase", menuName = "GenoverreiLibrary/Database/ObjectPathsDatabase")]
+    [CreateAssetMenu(fileName = "ObjectPathsDatabase", menuName = "KogetsuLibrary/Database/ObjectPathsDatabase")]
     public class ObjectPathsDatabaseSO : ScriptableObject
     {
         public List<Object> ObjectPathsDatabase = new();

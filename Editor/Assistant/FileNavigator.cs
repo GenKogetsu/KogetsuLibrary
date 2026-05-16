@@ -1,7 +1,7 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 
 using UnityEditor;
-using Genoverrei.Library.DesignPatternCore;
+using Kogetsu.Library.DesignPatternCore;
 
 public class FileNavigator : Editor
 {
@@ -10,7 +10,7 @@ public class FileNavigator : Editor
     {
         
         // Path ของไฟล์ที่ต้องการ (ใช้ Path เดิมที่คุณให้มาได้เลย)
-        string assetPath = "Packages/com.genoverrei.library/Runtime/DesignPatternCore/EventBus/EventBus.prefab";
+        string assetPath = "Packages/com.Kogetsu.Library/Runtime/DesignPatternCore/EventBus/EventBus.prefab";
 
         // โหลด Asset จาก Path
         Object asset = AssetDatabase.LoadAssetAtPath<Object>(assetPath);

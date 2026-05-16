@@ -1,9 +1,9 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using UnityEditor;
-using Genoverrei.Library.Core;
+using Kogetsu.Library.Core;
 using System.Collections.Generic;
 
-namespace Genoverrei.Library.Editor
+namespace Kogetsu.Library.Editor
 {
     [CustomPropertyDrawer(typeof(VNCharacterSO.VNEmotionData))]
     public class VNEmotionDataDrawer : PropertyDrawer

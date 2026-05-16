@@ -1,4 +1,4 @@
-%YAML 1.1
+﻿%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &1
 MonoBehaviour:
@@ -2041,7 +2041,7 @@ MonoBehaviour:
   m_LastFolders:
   - Assets/Character/Test2/Emotion
   m_LastFoldersGridSize: 16
-  m_LastProjectPath: D:\Unity\Learning\GenoverreiLibary6
+  m_LastProjectPath: D:\Unity\Learning\kogetsuLibary6
   m_LockTracker:
     m_IsLocked: 0
   m_LastLocalAssetsSearchArea: 0

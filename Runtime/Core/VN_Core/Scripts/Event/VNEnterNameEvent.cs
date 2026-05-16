@@ -1,4 +1,4 @@
-using Genoverrei.Library.DesignPatternCore;
+﻿using Kogetsu.Library.DesignPatternCore;
 
 /// <summary>
 /// <para> (TH) : Event สำหรับสั่งเปิด panel กรอกชื่อผู้เล่น </para>

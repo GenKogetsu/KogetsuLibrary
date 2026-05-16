@@ -1,8 +1,8 @@
-using NaughtyAttributes;
-using Genoverrei.Library.Core;
+﻿using NaughtyAttributes;
+using Kogetsu.Library.Core;
 using UnityEngine.UI;
 
-namespace Genoverrei.Library.DesignPatternCore
+namespace Kogetsu.Library.DesignPatternCore
 {
     /// <summary>
     /// <para> Summary : </para>

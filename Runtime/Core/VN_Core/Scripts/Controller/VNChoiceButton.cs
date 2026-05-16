@@ -1,9 +1,9 @@
-using TMPro;
+﻿using TMPro;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Genoverrei.Library.Core
+namespace Kogetsu.Library.Core
 {
     /// <summary>
     /// <para>Summary :</para>

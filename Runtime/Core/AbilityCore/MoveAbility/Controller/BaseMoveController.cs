@@ -1,10 +1,10 @@
-using System;
-using Genoverrei.Library.Attribute;
-using Genoverrei.Library.DesignPatternCore;
-using Genoverrei.Library.Extension;
+﻿using System;
+using Kogetsu.Library.Attribute;
+using Kogetsu.Library.DesignPatternCore;
+using Kogetsu.Library.Extension;
 using UnityEngine;
 
-namespace Genoverrei.Library.Core
+namespace Kogetsu.Library.Core
 {
     [RequireComponent(typeof(StatsController))]
     public abstract class BaseMoveController<TContext, TAbility> : MonoBehaviour, IMoveContext

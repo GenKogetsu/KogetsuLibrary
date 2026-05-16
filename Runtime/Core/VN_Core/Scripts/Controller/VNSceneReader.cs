@@ -1,18 +1,18 @@
-using TMPro;
+﻿using TMPro;
 using System.Text;
 using System.Collections.Generic;
 using UnityEngine.UI;
-using Genoverrei.Library.Attribute;
-using Genoverrei.Library.DesignPatternCore;
+using Kogetsu.Library.Attribute;
+using Kogetsu.Library.DesignPatternCore;
 
-namespace Genoverrei.Library.Core
+namespace Kogetsu.Library.Core
 {
     /// <summary>
     /// <para> Summary : </para>
     /// <para> (TH) : ตัวควบคุมหลักสำหรับระบบ Visual Novel ทำหน้าที่ประมวลผลโหนดเนื้อเรื่อง, จัดการ UI, ตัวละคร และเหตุการณ์ต่างๆ </para>
     /// <para> (EN) : Main controller for the Visual Novel system. Processes story nodes, manages UI, characters, and events. </para>
     /// </summary>
-    [CreateHierarchyMenu("GenoverreiLibrary/Core")]
+    [CreateHierarchyMenu("KogetsuLibrary/Core")]
     public class VNSceneReader : MonoBehaviour
     {
         #region Field Region

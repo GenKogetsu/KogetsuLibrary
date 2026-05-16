@@ -1,4 +1,4 @@
-namespace Genoverrei.Library.Core;
+﻿namespace Kogetsu.Library.Core;
 
 /// <summary>
 /// กระสุนเดี่ยว (pellet) — เคลื่อนที่ผ่าน Transform.Translate (ไม่ใช้ Rigidbody)

@@ -1,5 +1,5 @@
-using System;
-using Genoverrei.Library.Core;
+﻿using System;
+using Kogetsu.Library.Core;
 
 [Serializable]
 public class VNConversationNode

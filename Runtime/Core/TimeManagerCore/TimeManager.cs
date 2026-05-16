@@ -1,12 +1,12 @@
-using System;
+﻿using System;
 using System.Text;
 using System.Globalization;
-using Genoverrei.Library.Attribute;
-using Genoverrei.Library.DesignPatternCore;
+using Kogetsu.Library.Attribute;
+using Kogetsu.Library.DesignPatternCore;
 
-namespace Genoverrei.Library.Core
+namespace Kogetsu.Library.Core
 {
-    [CreateHierarchyMenu("GenoverreiLibrary/Core/Manager")]
+    [CreateHierarchyMenu("KogetsuLibrary/Core/Manager")]
     public class TimeManager : Singleton<TimeManager>
     {
 

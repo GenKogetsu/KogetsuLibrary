@@ -1,8 +1,8 @@
-using System;
+﻿using System;
 using TMPro;
 using UnityEngine.UI;
 
-namespace Genoverrei.Library.Core
+namespace Kogetsu.Library.Core
 {
     [Serializable]
     public class VNDialogueArea

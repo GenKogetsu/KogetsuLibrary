@@ -1,10 +1,10 @@
-using UnityEngine.Playables;
+﻿using UnityEngine.Playables;
 using UnityEngine.Animations;
-using Genoverrei.Library.DesignPatternCore;
+using Kogetsu.Library.DesignPatternCore;
 using UnityEngine.Accessibility;
-using Genoverrei.Library.Extension;
+using Kogetsu.Library.Extension;
 
-namespace Genoverrei.Library.Core
+namespace Kogetsu.Library.Core
 {
     [RequireComponent(typeof(Animator))]
     public class AnimationController2D : BaseAnimationController

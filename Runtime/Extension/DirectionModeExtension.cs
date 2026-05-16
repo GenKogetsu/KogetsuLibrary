@@ -1,7 +1,7 @@
-using System;
-using Genoverrei.Library.Core;
+﻿using System;
+using Kogetsu.Library.Core;
 
-namespace Genoverrei.Library.Extension
+namespace Kogetsu.Library.Extension
 {
     public static class DirectionModeExtension
     {

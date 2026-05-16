@@ -1,6 +1,6 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Genoverrei.Library.Core
+namespace Kogetsu.Library.Core
 {
     public struct CameraSetting
     {
