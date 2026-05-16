@@ -30,6 +30,7 @@ namespace Genoverrei.Library.DesignPatternCore
         public Action OnRollChannel;
         public Action OnFlashlightToggleChannel;
         public Action OnShootChannel;
+        public Action OnRestartChannel;
 
         // ─── Send helpers ──────────────────────────────────────────────────
         public void SendMoveSignal(Vector3 value)          => OnMoveChannel?.Invoke(value);
@@ -48,5 +49,24 @@ namespace Genoverrei.Library.DesignPatternCore
         public void SendRollSignal()                       => OnRollChannel?.Invoke();
         public void SendFlashlightToggleSignal()           => OnFlashlightToggleChannel?.Invoke();
         public void SendShootSignal()                      => OnShootChannel?.Invoke();
+        public void SendRestartSignal()                    => OnRestartChannel?.Invoke();
+
+        /// <summary>ล้าง subscriber ทั้งหมด — เรียกตอน Scene unload เพื่อป้องกัน MissingReferenceException</summary>
+        public void ClearAllChannels()
+        {
+            OnPressAnyKeyChannel      = null;
+            OnMoveChannel             = null;
+            OnJumpChannel             = null;
+            OnJumpReleasedChannel     = null;
+            OnInteractionChannel      = null;
+            OnLeftClickChannel        = null;
+            OnMiddleClickChannel      = null;
+            OnRightClickChannel       = null;
+            OnMousePositionChannel    = null;
+            OnRollChannel             = null;
+            OnFlashlightToggleChannel = null;
+            OnShootChannel            = null;
+            OnRestartChannel          = null;
+        }
     }
 }

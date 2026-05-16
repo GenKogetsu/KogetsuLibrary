@@ -4,8 +4,11 @@ using Genoverrei.Library.Core;
 
 namespace Genoverrei.Library.DesignPatternCore
 {
+    [ExecuteAlways]
     public class CameraFollow3D : FollowAbility
     {
+        [SerializeField] private bool _executeAlways = true;
+
         [Header("Orbit Camera Settings")]
         [SerializeField] private float _mouseSensitivity = 0.2f;
         [SerializeField] private float _smoothSpeed = 15f;
@@ -23,6 +26,7 @@ namespace Genoverrei.Library.DesignPatternCore
         private float _pitch = 15f;
         private float _currentDistance = 5f;
 
+
         private void Start()
         {
             _yaw = transform.eulerAngles.y;
@@ -36,6 +40,8 @@ namespace Genoverrei.Library.DesignPatternCore
 
         protected override void LateUpdate()
         {
+            if (!_executeAlways && !Application.isPlaying) return;
+
             if (FollowTarget == null) return;
 
             Vector2 mouseDelta = Vector2.zero;

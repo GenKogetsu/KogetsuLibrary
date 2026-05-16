@@ -1,4 +1,5 @@
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using Genoverrei.Library.Attribute;
 using Genoverrei.Library.DesignPatternCore;
 
@@ -11,6 +12,21 @@ namespace Genoverrei.Library.Core
         [Header("ObserverChannels")]
         [Required]
         [SerializeField] protected BasicMovementInputObserverSO BasicObserverChannel;
+
+        protected void Awake()
+        {
+            SceneManager.sceneUnloaded += OnSceneUnloaded;
+        }
+
+        protected void OnDestroy()
+        {
+            SceneManager.sceneUnloaded -= OnSceneUnloaded;
+        }
+
+        private void OnSceneUnloaded(Scene scene)
+        {
+            BasicObserverChannel?.ClearAllChannels();
+        }
 
         public void OnMoveInput(InputAction.CallbackContext context)
         {
@@ -104,6 +120,13 @@ namespace Genoverrei.Library.Core
         {
             if (BasicObserverChannel == null) return;
             BasicObserverChannel.SendMousePositionSignal(context.ReadValue<Vector2>());
+        }
+
+        /// <summary>Map action type: Button — กด R เพื่อ restart scene</summary>
+        public void OnRestartInput(InputAction.CallbackContext context)
+        {
+            if (!context.performed || BasicObserverChannel == null) return;
+            BasicObserverChannel.SendRestartSignal();
         }
     }
 }
