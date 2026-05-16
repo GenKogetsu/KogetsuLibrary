@@ -1,52 +1,97 @@
-﻿# AGENT.md — AI Coding Guide
+# AGENT.md — AI Coding Guide for Kogetsu Library
 
-คู่มือนี้ให้ AI ของทุกคนในทีม generate code ได้ถูกต้องตาม convention ของ project นี้  
-อ่านไฟล์นี้ก่อนทำงานทุกครั้ง — ห้าม guess ว่า style คืออะไร
+คู่มือนี้ให้ AI ของทุกคนในทีม generate และแก้ไขโค้ดภายใน **library** นี้ได้ถูกต้อง  
+อ่านก่อนทุกครั้ง — ห้าม guess convention
+
+> Library นี้แยกจาก project เกมที่นำไปใช้ (เช่น Yanta)  
+> โค้ดใน repo นี้คือ **เครื่องมือ** ไม่ใช่ logic ของเกม
 
 ---
 
-## 1. Project Overview
+## 1. Project Structure
 
-| Item | Value |
-|------|-------|
-| Package | `com.kogetsu.library` |
-| Unity | 6000.0+ (Unity 6) |
-| C# | **10.0** (enforced via `csc.rsp`) |
-| Root namespace | `Kogetsu.Library` |
-| Game project | **Yanta** — Horror 3D, ผู้เล่นวาดยันต์ไทยเป็น spell |
+```
+com.kogetsu.library/
+├── Runtime/
+│   ├── DesignPatternCore/     ← StateMachine, EventBus, ObjectPool, Singleton
+│   │   ├── StateMachine/
+│   │   ├── EventBus/
+│   │   ├── ObjectPool/
+│   │   └── Singleton/
+│   ├── Core/                  ← ระบบ reusable ระดับเกม
+│   │   ├── AbilityCore/       MoveController2D/3D, BaseMoveAbility
+│   │   ├── AnimationCore/     AnimationController2D/3D, DirectionalAnimation
+│   │   ├── AudioCore/         AudioManager, AudioObserverSO
+│   │   ├── InputCore/         BasicInputManager, MovementInputObserverSO
+│   │   ├── StatsCore/         StatsController, BaseStatsDataSO
+│   │   ├── SkillCore/         BaseSkillMono, CooldownController
+│   │   ├── GameManagerCore/   GameManager, GameState
+│   │   ├── TimeManagerCore/   TimeManager
+│   │   ├── CameraCore/        CameraFollow3D
+│   │   ├── ButtonCore/        BasicButtonStateController
+│   │   ├── VN_Core/           Visual Novel system
+│   │   └── …
+│   ├── Extension/
+│   ├── Attribute/
+│   └── Database/
+├── Editor/
+│   ├── Assistant/             DocAssistant, TagAssistant
+│   ├── Attribute Helper/
+│   ├── VN Editor/
+│   └── …
+├── Third Party Library/       ← ห้ามแก้ไข
+├── package.json               name: "com.kogetsu.library"
+├── Runtime/KogetsuLibrary-RuntimeAD.asmdef
+└── Editor/KogetsuLibrary-EditorAD.asmdef
+```
 
-Repository layout:
-```
-Runtime/
-  DesignPatternCore/   ← StateMachine, EventBus, ObjectPool, Singleton
-  Core/                ← MoveCore, InputCore, AudioCore, StatsCore …
-Editor/
-  Assistant/           ← Doc/Tag tools
-```
+### Assemblies
+
+| Assembly | rootNamespace | ใช้สำหรับ |
+|----------|--------------|-----------|
+| `KogetsuLibrary` | `Kogetsu.Library` | ทุกไฟล์ใน `Runtime/` |
+| `KogetsuLibrary.Editor` | `Kogetsu.Library.Editor` | ทุกไฟล์ใน `Editor/` |
 
 ---
 
 ## 2. Namespace Convention
 
-> **Rule**: file-scoped namespace สำหรับทุกไฟล์ **ยกเว้น** MonoBehaviour และ ScriptableObject
+**Rule**: file-scoped namespace สำหรับทุกไฟล์ **ยกเว้น** `MonoBehaviour` และ `ScriptableObject`
 
 ```csharp
-// ✅ Regular class / interface / enum / record struct → file-scoped
+// ✅ Interface / record struct / enum / plain class → file-scoped
 namespace Kogetsu.Library.DesignPatternCore;
 
-public interface ISpellEffect { ... }
-public record struct SpellCastEvent(SpellType Type, float Accuracy) : IEvent;
-public enum SpellType { Stun, Heal, Invisible }
+public interface IState { }
+public record struct EventName(string Name) : IEvent;
 ```
 
 ```csharp
-// ✅ MonoBehaviour / ScriptableObject → block namespace (Unity requirement)
-namespace Yanta.SpellSystem
+// ✅ MonoBehaviour / ScriptableObject → block namespace
+namespace Kogetsu.Library.DesignPatternCore
 {
-    public class SpellCaster : MonoBehaviour { ... }
-    public class SpellConfigSO : ScriptableObject { ... }
+    [Serializable]
+    public class StateMachine<TContext> { }
 }
 ```
+
+```csharp
+// ✅ Editor script → Kogetsu.Library.Editor
+namespace Kogetsu.Library.Editor
+{
+    [CustomEditor(typeof(StatsController))]
+    public class StatsControllerEditor : UnityEditor.Editor { }
+}
+```
+
+### Namespace map ตามโฟลเดอร์
+
+| โฟลเดอร์ | Namespace |
+|----------|-----------|
+| `Runtime/DesignPatternCore/` | `Kogetsu.Library.DesignPatternCore` |
+| `Runtime/Core/*` | `Kogetsu.Library.Core` |
+| `Runtime/Attribute/` | `Kogetsu.Library.Attribute` |
+| `Editor/` | `Kogetsu.Library.Editor` |
 
 ---
 
@@ -54,330 +99,228 @@ namespace Yanta.SpellSystem
 
 | สิ่งที่ตั้งชื่อ | รูปแบบ | ตัวอย่าง |
 |----------------|--------|----------|
-| Private field | `_camelCase` | `_attackTimer`, `_currentState` |
-| SerializeField | `[SerializeField]` + `_camelCase` | `[SerializeField] float _speed` |
+| Private field | `_camelCase` | `_currentState`, `_instance` |
+| `[SerializeField]` | `[SerializeField] private` + `_camelCase` | `[SerializeField] private float _speed` |
 | Property | `PascalCase` | `CurrentState { get; private set; }` |
-| Method | `PascalCase` | `void OnEnter()`, `float GetSpeed()` |
-| Interface | `I` + `PascalCase` | `ISpellEffect`, `IEnemy` |
-| Event record | `PascalCase` + `Event` suffix | `SpellCastEvent`, `PlayerDamagedEvent` |
-| Abstract class | ไม่มี prefix พิเศษ | `BaseState<T>`, `EnemyDecorator` |
-| SO class | `PascalCase` + `SO` suffix | `SpellConfigSO`, `EnemyDataSO` |
-| Enum member | `PascalCase` | `SpellType.Stun` |
+| Method | `PascalCase` | `void ChangeState()`, `T Get<T>()` |
+| Interface | `I` prefix | `IState`, `IEnterState`, `IMoveContext2D` |
+| Abstract base | `Base` prefix | `BaseState<T>`, `BaseMoveAbility2D` |
+| ScriptableObject | `SO` suffix | `BaseStatsDataSO`, `PoolTableDataSO` |
+| IEvent | `Event` suffix | `EventName`, `GameStateEvent`, `DealDamageEvent` |
+| Observer SO | `ObserverSO` suffix | `BasicMovementInputObserverSO`, `AudioObserverSO` |
+| Observer channel | `Channel` suffix | `OnMoveChannel`, `OnJumpChannel` |
 
 ---
 
-## 4. C# 10 Syntax ที่ต้องใช้
+## 4. C# 10 Syntax
 
-### 4.1 Fields และ Properties
+### Fields & Properties
 
 ```csharp
-// ✅ ใช้ [SerializeField] private — ไม่ใช้ public field เปล่า ๆ
-[SerializeField] private float _moveSpeed = 5f;
-[SerializeField] private Transform _target;
+// ✅ SerializeField — ใช้ private เสมอ
+[SerializeField] private bool _useDontDestroyOnLoad = true;
+[SerializeField] private PoolTableDataSO _poolTable;
 
-// ✅ Auto-property สำหรับ read-only จากภายนอก
-public float CurrentHp { get; private set; }
+// ✅ Auto-property read-only จากภายนอก
 public BaseState<TContext> CurrentState { get; private set; }
+public static T Instance { get; private set; }
 
 // ✅ Target-typed new
-private readonly Dictionary<string, Action<IEvent>> _handlers = new();
-private readonly List<ISpellEffect> _effects = new();
+private readonly Dictionary<Type, Action<IEvent>> _handlers = new();
+private readonly Queue<T> _pool = new();
 ```
 
-### 4.2 Events (IEvent)
+### Features ที่ใช้ใน Library
 
 ```csharp
-// ✅ record struct เสมอ — ห้ามใช้ class หรือ struct ธรรมดา
-public record struct SpellCastEvent(SpellType Type, float Accuracy) : IEvent;
-public record struct PlayerDamagedEvent(float Amount, float CurrentHp) : IEvent;
-public record struct EnemyAlertEvent(Vector3 Position) : IEvent;
-```
+// record struct สำหรับ IEvent (zero allocation)
+public record struct GameStateEvent(GameState State) : IEvent;
 
-### 4.3 Pattern Matching
+// Expression body สำหรับ method บรรทัดเดียว
+public virtual void Initialize(TContext context) => Context = context;
 
-```csharp
-// ✅ ใช้ is pattern แทน casting
-if (CurrentState is IExitState exitState) exitState.OnExit();
-if (energy is { Current: <= 0f }) return;
-
-// ✅ switch expression
-string label = spellType switch {
-    SpellType.Stun      => "สตัน",
-    SpellType.Heal      => "ฮีล",
-    SpellType.Invisible => "ซ่อนตัว",
-    _                   => "ไม่รู้จัก"
-};
-```
-
-### 4.4 อื่น ๆ
-
-```csharp
-// ✅ Expression body สำหรับ method บรรทัดเดียว
-public virtual void Initialize(TContext ctx) => Context = ctx;
-public float GetDuration() => _duration * _accuracyScale;
-
-// ✅ Null-coalescing
-private Transform _cachedTransform;
-public Transform GetTransform() => _cachedTransform ??= transform;
+// Pattern matching
+if (CurrentState is IExitState exit) exit.OnExit();
+if (CurrentState is IUpdateState update) update.OnUpdate();
 ```
 
 ---
 
-## 5. Design Pattern Core — วิธีใช้ที่ถูกต้อง
+## 5. เพิ่ม Pattern ใหม่ใน DesignPatternCore
 
-### 5.1 StateMachine\<TContext\>
+ทุก pattern ใหม่อยู่ใน `Runtime/DesignPatternCore/<PatternName>/`  
+ดู `StateMachine/` เป็น reference ของโครงสร้าง:
+
+```
+StateMachine/
+├── IState.cs          ← interfaces (file-scoped namespace)
+├── BaseState.cs       ← abstract base ([Serializable], block namespace)
+└── StateMachine.cs    ← main class ([Serializable], block namespace)
+```
+
+ตัวอย่าง — เพิ่ม `CommandQueue`:
 
 ```csharp
-// TContext = MonoBehaviour ที่เป็นเจ้าของ FSM
-// state ทุกตัว extend BaseState<TContext>
+// CommandQueue/ICommand.cs
+namespace Kogetsu.Library.DesignPatternCore;
 
-namespace Yanta.EnemySystem
+public interface ICommand
 {
-    public class EnemyControllerLv1 : MonoBehaviour
+    void Execute();
+    void Undo();
+}
+```
+
+```csharp
+// CommandQueue/CommandQueue.cs
+namespace Kogetsu.Library.DesignPatternCore
+{
+    [Serializable]
+    public class CommandQueue
     {
-        private StateMachine<EnemyControllerLv1> _fsm = new();
+        private readonly Stack<ICommand> _history = new();
 
-        private void Start()
-        {
-            var patrol = new PatrolState();
-            patrol.Initialize(this);        // ส่ง context ครั้งเดียว
-            _fsm.ChangeState(patrol);
-        }
-
-        private void Update()   => _fsm.Update();
-        private void FixedUpdate() => _fsm.FixedUpdate();
-    }
-}
-```
-
-```csharp
-// ✅ State ที่ถูกต้อง — implement เฉพาะ interface ที่ต้องการ
-namespace Yanta.EnemySystem;
-
-public class PatrolState : BaseState<EnemyControllerLv1>, IEnterState, IUpdateState, IExitState
-{
-    private float _waitTimer;
-
-    public void OnEnter()
-    {
-        _waitTimer = 0f;
-        // เข้าถึง context ผ่าน this.Context (ไม่มี parameter)
-        Context.NavAgent.isStopped = false;
-    }
-
-    public void OnUpdate()
-    {
-        _waitTimer += Time.deltaTime;
-        if (Context.DetectPlayer()) Context.Fsm.ChangeState(Context.AlertState);
-    }
-
-    public void OnExit() => Context.NavAgent.isStopped = true;
-}
-```
-
-```csharp
-// ❌ ห้ามทำแบบนี้ — context-per-call style (ของเก่าที่ไม่ใช้แล้ว)
-public interface IEnemyState {
-    void Enter(EnemyController ctx);   // ❌ wrong
-    void Update(EnemyController ctx);  // ❌ wrong
-}
-```
-
-### 5.2 HFSM (Hierarchical FSM) — Enemy Lv2
-
-```csharp
-// CombatSuperState เป็น BaseState ของ outer FSM
-// มี StateMachine<T> ภายในสำหรับ sub-states
-namespace Yanta.EnemySystem;
-
-public class CombatSuperState : BaseState<EnemyControllerLv2>, IEnterState, IUpdateState, IExitState
-{
-    private StateMachine<EnemyControllerLv2> _subFsm = new();
-    private AttackSubState _attackSub = new();
-    private DodgeSubState _dodgeSub = new();
-
-    public override void Initialize(EnemyControllerLv2 ctx)
-    {
-        base.Initialize(ctx);
-        _attackSub.Initialize(ctx);
-        _dodgeSub.Initialize(ctx);
-    }
-
-    public void OnEnter()  => _subFsm.ChangeState(_attackSub);
-    public void OnUpdate() => _subFsm.Update();
-    public void OnExit()   { }
-}
-```
-
-### 5.3 EventBus
-
-```csharp
-// Subscribe ใน OnEnable, Unsubscribe ใน OnDisable เสมอ
-private void OnEnable()
-{
-    EventBus.Instance.Subscribe<SpellCastEvent>(OnSpellCast);
-    EventBus.Instance.Subscribe<PlayerDamagedEvent>(OnPlayerDamaged);
-}
-
-private void OnDisable()
-{
-    EventBus.Instance.Unsubscribe<SpellCastEvent>(OnSpellCast);
-    EventBus.Instance.Unsubscribe<PlayerDamagedEvent>(OnPlayerDamaged);
-}
-
-private void OnSpellCast(SpellCastEvent e) => PlaySFX($"spell_{e.Type}");
-```
-
-```csharp
-// Publish
-EventBus.Instance.Publish(new SpellCastEvent(SpellType.Stun, accuracy: 0.85f));
-```
-
-### 5.4 ObjectPoolManager
-
-```csharp
-// ต้องมี ObjectPoolManager GameObject ใน Scene
-// ต้องมี PoolTableDataSO assign ไว้
-Enemy enemy = ObjectPoolManager.Instance.Get<Enemy>(enemyType.ToString(), pos, rot);
-ObjectPoolManager.Instance.Release(key, enemyComponent);
-```
-
-### 5.5 Singleton\<T\>
-
-```csharp
-namespace Yanta.SpellSystem
-{
-    public class SpellCaster : Singleton<SpellCaster>
-    {
-        // ใช้งาน: SpellCaster.Instance.Cast(...)
+        public void Execute(ICommand cmd) { cmd.Execute(); _history.Push(cmd); }
+        public void Undo() { if (_history.TryPop(out var cmd)) cmd.Undo(); }
     }
 }
 ```
 
 ---
 
-## 6. Yanta — Game Events ทั้งหมด
+## 6. เพิ่ม Core System ใหม่
 
-```csharp
-namespace Yanta.Events;
+Core Systems อยู่ใน `Runtime/Core/<Name>Core/`  
+ทุก system ใช้ **Observer SO + Manager** pattern:
 
-// Player
-public record struct PlayerDamagedEvent(float Amount, float CurrentHp)  : IEvent;
-public record struct PlayerHealedEvent(float Amount, float CurrentHp)   : IEvent;
-public record struct PlayerInvisibleEvent(bool IsActive)                 : IEvent;
-
-// Spell
-public record struct SpellCastEvent(SpellType Type, float Accuracy)      : IEvent;
-public record struct SpellCancelledEvent(SpellType Type)                 : IEvent;
-public record struct DrawingCompleteEvent(SpellType Type, float Accuracy): IEvent;
-
-// Enemy
-public record struct EnemyAlertEvent(Vector3 Position)                   : IEvent;
-public record struct EnemyDespawnedEvent(EnemyType Type)                 : IEvent;
-
-// Game
-public record struct PuzzleSolvedEvent(string PuzzleId)                  : IEvent;
-public record struct GameStateChangedEvent(GameState State)              : IEvent;
+```
+NewThingCore/
+├── Scripts/
+│   ├── Manager/         ← MonoBehaviour Singleton (block namespace)
+│   ├── ObserverChannel/ ← ScriptableObject channel (block namespace)
+│   ├── DataContainer/   ← plain structs/classes (file-scoped)
+│   └── Interfaces/      ← interfaces (file-scoped)
+└── NewThingChannel.asset
 ```
 
----
-
-## 7. Spell System — ISpellEffect
-
 ```csharp
-namespace Yanta.SpellSystem;
-
-public interface ISpellEffect
+// Observer Channel SO
+namespace Kogetsu.Library.Core
 {
-    void Apply(Transform target);
-    void Cancel();
-    float GetDuration();
-}
-
-// ตัวอย่าง concrete effect
-public class StunSpellEffect : ISpellEffect
-{
-    private readonly float _duration;
-    private readonly float _accuracyScale;
-
-    public StunSpellEffect(float baseDuration, float accuracy)
+    [CreateAssetMenu(menuName = "KogetsuLibrary/Core/Observer/NewThingObserver",
+                     fileName = "NewThingChannel")]
+    public class NewThingObserverSO : ScriptableObject
     {
-        _duration = baseDuration;
-        _accuracyScale = accuracy;
-    }
-
-    public void Apply(Transform target) { /* stun logic */ }
-    public void Cancel()               { /* remove stun */ }
-    public float GetDuration()         => _duration * _accuracyScale;
-}
-```
-
----
-
-## 8. ScriptableObject Convention
-
-```csharp
-// SO สำหรับ config data — ชื่อลงท้าย SO
-namespace Yanta.SpellSystem
-{
-    [CreateAssetMenu(menuName = "Yanta/SpellConfig", fileName = "SpellConfig")]
-    public class SpellConfigSO : ScriptableObject
-    {
-        public SpellType spellType;        // public field ไม่มี _ (SO data field)
-        public float baseDuration;
-        public Sprite icon;
-        public Texture2D drawPattern;
-
-        // Prototype clone — ถ้า SO นั้นใช้เป็น template
-        public SpellData Clone() => new() {
-            spellType    = this.spellType,
-            baseDuration = this.baseDuration,
-        };
+        public Action<NewThingData> OnChannel;
+        public void SendSignal(NewThingData data) => OnChannel?.Invoke(data);
     }
 }
 ```
 
-> SO fields ใช้ `public` แบบไม่มี underscore (Unity serialization convention)  
-> ต่างจาก MonoBehaviour ที่ใช้ `[SerializeField] private _camelCase`
+```csharp
+// Manager — subscribe ใน OnEnable, unsubscribe ใน OnDisable
+namespace Kogetsu.Library.Core
+{
+    public class NewThingManager : Singleton<NewThingManager>
+    {
+        [SerializeField] private NewThingObserverSO _channel;
+
+        private void OnEnable()  => _channel.OnChannel += Handle;
+        private void OnDisable() => _channel.OnChannel -= Handle;
+
+        private void Handle(NewThingData data) { ... }
+    }
+}
+```
 
 ---
 
-## 9. Comment Policy
+## 7. Singleton\<T\> — Pattern ที่ Library ใช้เอง
 
 ```csharp
-// ✅ เขียน comment เฉพาะเมื่อ WHY ไม่ชัดเจน
-// Unity NavMeshAgent ต้องให้ isStopped = true ก่อน destroy ไม่งั้น crash
-agent.isStopped = true;
+// ทุก Manager ใน library extend Singleton<T>
+// UseDontDestroyOnLoad [SerializeField] อยู่ใน base class แล้ว
+namespace Kogetsu.Library.Core
+{
+    public class AudioManager : Singleton<AudioManager> { ... }
+}
 
-// ❌ ห้าม comment อธิบาย WHAT (ชื่อ method บอกอยู่แล้ว)
-// Reset the timer   ← ไม่จำเป็น
+namespace Kogetsu.Library.DesignPatternCore
+{
+    public class EventBus : Singleton<EventBus> { ... }
+    public sealed class ObjectPoolManager : Singleton<ObjectPoolManager> { ... }
+}
+```
+
+---
+
+## 8. IEvent ที่ Library Ship มาให้
+
+Built-in events อยู่ใน `Runtime/DesignPatternCore/EventBus/` และ `Runtime/Core/EventCore/`:
+
+```csharp
+// generic — ใช้ได้โดยไม่ต้อง define ใหม่
+public record struct EventName(string Name)                            : IEvent;
+public record struct EventNameAndTag(string Name, string Tag)          : IEvent;
+
+// game-level
+public record struct GameStateEvent(GameState State)                   : IEvent;
+public record struct DealDamageEvent(float Damage)                     : IEvent;
+public record struct TakeDamageEvent(float Damage, float CurrentHp)   : IEvent;
+```
+
+เพิ่ม event ใหม่ใน library: ต้องเป็น `record struct : IEvent` เสมอ
+
+---
+
+## 9. CreateAssetMenu Convention
+
+```csharp
+// รูปแบบ: "KogetsuLibrary/<Category>/..."
+[CreateAssetMenu(menuName = "KogetsuLibrary/DesignPattern/PoolTable")]
+[CreateAssetMenu(menuName = "KogetsuLibrary/Core/BaseStatsData")]
+[CreateAssetMenu(menuName = "KogetsuLibrary/DesignPattern/Observer/AudioObserver")]
+[CreateAssetMenu(menuName = "KogetsuLibrary/Core/Observer/NewThingObserver")]
+```
+
+---
+
+## 10. Editor Script Convention
+
+```csharp
+// อยู่ใน Editor/ folder เท่านั้น — namespace Kogetsu.Library.Editor
+namespace Kogetsu.Library.Editor
+{
+    [CustomEditor(typeof(MoveController2D))]
+    public class MoveController2DEditor : UnityEditor.Editor { ... }
+
+    [CustomPropertyDrawer(typeof(DirectionalAnimationData))]
+    public class DirectionalAnimationDataDrawer : PropertyDrawer { ... }
+}
+```
+
+---
+
+## 11. Comment Policy
+
+```csharp
+// ✅ WHY ที่ไม่ชัดเจน — เขียน
+// FindFirstObjectByType fallback เพราะ Awake ของ scene ใหม่อาจยังไม่ถูกเรียก
+if (_instance == null) _instance = FindFirstObjectByType<T>();
+
+// ❌ WHAT — ไม่ต้องเขียน
+// Reset timer          ← ชัดอยู่แล้ว
 _timer = 0f;
-
-// ❌ ห้าม multi-line comment block / XML doc สำหรับ method ทั่วไป
 ```
 
 ---
 
-## 10. ไฟล์อ้างอิงสำคัญ
+## 12. Checklist ก่อน Commit
 
-| ไฟล์ | ประโยชน์ |
-|------|---------|
-| `README.md` | ภาพรวม library + Yanta showcase |
-| `LibrarySkill.md` (memory) | API reference ครบทุก core — อ่านแทนโค้ด |
-| `C:/Users/genzo/Downloads/yanta-class-diagrams_2.html` | Class diagram SVG ทั้ง 10 ระบบ (dark blue theme) |
-| `Runtime/DesignPatternCore/StateMachine/` | StateMachine, BaseState, IState interfaces |
-| `Runtime/DesignPatternCore/EventBus/` | EventBus, IEvent |
-| `Runtime/DesignPatternCore/ObjectPool/` | ObjectPoolManager, ObjectPool\<T\> |
-| `Runtime/DesignPatternCore/Singleton/` | Singleton\<T\> |
-
----
-
-## 11. ก่อน Generate Code — Checklist
-
-- [ ] namespace ถูก? (file-scoped vs block ตาม base class)
-- [ ] field ใช้ `_camelCase` + `[SerializeField]` ถูก?
-- [ ] event เป็น `record struct : IEvent`?
-- [ ] state ไม่มี context parameter ใน method (ใช้ `Context` property แทน)?
-- [ ] Subscribe/Unsubscribe EventBus จับคู่ใน OnEnable/OnDisable?
-- [ ] SO field เป็น `public` ไม่มี underscore?
-- [ ] comment มีเฉพาะที่ WHY ไม่ชัดเจน?
+- [ ] ไฟล์อยู่ใน folder ที่ถูก (`DesignPatternCore` vs `Core` vs `Editor`)
+- [ ] Namespace ถูกต้อง (file-scoped ยกเว้น MB/SO)
+- [ ] `[SerializeField] private _camelCase`
+- [ ] IEvent เป็น `record struct`
+- [ ] `CreateAssetMenu` path ขึ้นต้นด้วย `"KogetsuLibrary/"`
+- [ ] Editor script อยู่ใน `Editor/` folder เท่านั้น
+- [ ] Comment มีเฉพาะ WHY ที่ซับซ้อน
