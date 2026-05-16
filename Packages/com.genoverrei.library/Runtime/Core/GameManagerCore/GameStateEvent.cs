@@ -1,5 +1,5 @@
-using Genoverrei.Library.Core;
+﻿using Kogetsu.Library.Core;
 
-namespace Genoverrei.Library.DesignPatternCore;
+namespace Kogetsu.Library.DesignPatternCore;
 
 public record struct GameStateEvent(GameState State) : IEvent;

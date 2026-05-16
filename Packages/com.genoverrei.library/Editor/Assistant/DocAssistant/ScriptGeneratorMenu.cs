@@ -1,11 +1,11 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using UnityEditor;
 
-namespace Genoverrei.Library.Assistant
+namespace Kogetsu.Library.Assistant
 {
     public static class ScriptGeneratorMenuPackages
     {
-        private const string _rootPath = "Packages/com.genoverrei.library/Editor/Assistant/DocAssistant/Templates/";
+        private const string _rootPath = "Packages/com.Kogetsu.Library/Editor/Assistant/DocAssistant/Templates/";
 
         private const string _interfaceTemplatePath = _rootPath + "InterfaceTemplate.txt";
         private const string _enumTemplatePath = _rootPath + "EnumTemplate.txt";

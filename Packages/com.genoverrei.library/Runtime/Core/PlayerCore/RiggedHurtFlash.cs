@@ -1,7 +1,7 @@
-using System.Collections;
-using Genoverrei.Library.DesignPatternCore;
+﻿using System.Collections;
+using Kogetsu.Library.DesignPatternCore;
 
-namespace Genoverrei.Library.Core;
+namespace Kogetsu.Library.Core;
 
 /// <summary>
 /// ย้อมสี SpriteRenderer ทุกตัวใน rig เมื่อโดนโจมตี / ตาย

@@ -67,7 +67,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6cebb567d34d30d4dbae17aadb971ff4, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: GenoverreiLibraryAD::Genoverrei.Library.DesignPatternCore.VNCharacterController
+  m_EditorClassIdentifier: KogetsuLibraryAD::Kogetsu.Library.DesignPatternCore.VNCharacterController
   _characterBehaviorAniamtor: {fileID: 2007734463972775990}
   _characterSpriteAnimator: {fileID: 5032561853675004684}
   _characterSprite: {fileID: 5817395423681311366}

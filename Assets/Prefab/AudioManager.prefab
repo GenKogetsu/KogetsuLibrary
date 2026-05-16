@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 979901248715935451}
   m_Layer: 0
   m_Name: AudioManager
-  m_TagString: AudioManager.GenoverreiLibrary
+  m_TagString: AudioManager.KogetsuLibrary
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -45,7 +45,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91a72f5ac4a08fc479f9546e2a48e3f9, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: GenoverreiLibraryAD::Genoverrei.Library.Core.AudioManager
+  m_EditorClassIdentifier: KogetsuLibrary::Kogetsu.Library.Core.AudioManager
   _audioChannel: {fileID: 11400000, guid: c99b30f36e5bf0949b291d22cd5d3d59, type: 2}
   _sfx: {fileID: 0}
   _bmg: {fileID: 160189706956322106}
@@ -62,7 +62,7 @@ GameObject:
   - component: {fileID: 936863951205129281}
   m_Layer: 0
   m_Name: Voiceover_Channel
-  m_TagString: Voiceover_Channel.GenoverreiLibrary
+  m_TagString: Voiceover_Channel.KogetsuLibrary
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -191,7 +191,7 @@ GameObject:
   - component: {fileID: 160189706956322106}
   m_Layer: 0
   m_Name: BMG_Channel
-  m_TagString: BMG_Channel.GenoverreiLibrary
+  m_TagString: BMG_Channel.KogetsuLibrary
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

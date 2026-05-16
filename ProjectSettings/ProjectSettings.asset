@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: DefaultCompany
-  productName: GenoverreiLibary6
+  productName: KogetsuLibrary
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -851,14 +851,14 @@ PlayerSettings:
   editorAssembliesCompatibilityLevel: 2
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: GenoverreiLibary6
+  metroPackageName: KogetsuLibrary
   metroPackageVersion: 
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
   metroCertificateIssuer: 
   metroCertificateNotAfter: 0000000000000000
-  metroApplicationDescription: GenoverreiLibary6
+  metroApplicationDescription: KogetsuLibrary
   wsaImages: {}
   metroTileShortName: 
   metroTileShowName: 0
@@ -932,7 +932,7 @@ PlayerSettings:
   cloudProjectId: 9a48bd68-28d5-48ba-84b4-166f8522e514
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: GenoverreiLibary6
+  projectName: KogetsuLibrary
   organizationId: genzoover0
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0

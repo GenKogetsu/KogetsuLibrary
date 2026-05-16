@@ -1,4 +1,4 @@
-using Genoverrei.Library.Core;
+﻿using Kogetsu.Library.Core;
 using UnityEngine;
 
 public class LoadNextSceneAffter : MonoBehaviour

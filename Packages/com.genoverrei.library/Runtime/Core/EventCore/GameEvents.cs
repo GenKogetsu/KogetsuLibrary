@@ -1,6 +1,6 @@
-using Genoverrei.Library.DesignPatternCore;
+﻿using Kogetsu.Library.DesignPatternCore;
 
-namespace Genoverrei.Library.Core;
+namespace Kogetsu.Library.Core;
 
 public record struct PlayerRollEvent(Vector2 Direction)                        : IEvent;
 public record struct PlayerShootEvent(Vector2 MuzzlePosition, int PelletCount) : IEvent;

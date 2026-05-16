@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Genoverrei.Library.DesignPatternCore
+namespace Kogetsu.Library.DesignPatternCore
 {
-    [CreateAssetMenu(fileName = "PoolTable_", menuName = "GenoverreiLibrary/DesignPattern/PoolTable")]
+    [CreateAssetMenu(fileName = "PoolTable_", menuName = "KogetsuLibrary/DesignPattern/PoolTable")]
     public sealed class PoolTableDataSO : ScriptableObject
     {
         [Serializable]

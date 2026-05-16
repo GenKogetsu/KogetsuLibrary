@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Genoverrei.Library.DesignPatternCore
+namespace Kogetsu.Library.DesignPatternCore
 {
     [Serializable]
     public class StateMachine<TContext>

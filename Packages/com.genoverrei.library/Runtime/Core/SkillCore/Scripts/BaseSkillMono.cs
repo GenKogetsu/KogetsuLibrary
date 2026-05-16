@@ -1,7 +1,7 @@
-using TMPro;
+﻿using TMPro;
 using UnityEngine.InputSystem;
 
-namespace Genoverrei.Library.Core
+namespace Kogetsu.Library.Core
 {
     public abstract class BaseSkillMono : MonoBehaviour, ISkill
     {

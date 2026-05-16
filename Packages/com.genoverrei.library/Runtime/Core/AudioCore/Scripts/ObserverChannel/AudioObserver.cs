@@ -1,8 +1,8 @@
-using System;
+﻿using System;
 
-namespace Genoverrei.Library.DesignPatternCore
+namespace Kogetsu.Library.DesignPatternCore
 {
-    [CreateAssetMenu(fileName = "AudioObserver", menuName = "GenoverreiLibrary/DesignPattern/Observer/AudioObserver")]
+    [CreateAssetMenu(fileName = "AudioObserver", menuName = "KogetsuLibrary/DesignPattern/Observer/AudioObserver")]
     public class AudioObserverSO : ScriptableObject
     {
         public Action<AudioClip> OnSfxChannel;

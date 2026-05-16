@@ -1,7 +1,7 @@
-using System;
+﻿using System;
 using TMPro;
 
-namespace Genoverrei.Library.Core
+namespace Kogetsu.Library.Core
 {
     /// <summary>
     /// <para> Summary : </para>

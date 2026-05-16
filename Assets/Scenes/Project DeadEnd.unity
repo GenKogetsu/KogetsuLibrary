@@ -513,7 +513,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce5becaa2ca8bf14db72d438be539a7e, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: GenoverreiLibrary::Genoverrei.Library.DesignPatternCore.CameraFollow3D
+  m_EditorClassIdentifier: KogetsuLibrary::Kogetsu.Library.DesignPatternCore.CameraFollow3D
   FollowTarget: {fileID: 1457318567}
   CameraTarget: {fileID: 1020956943}
   CameraLookat: 0
@@ -800,7 +800,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 25224e07751a71b4c8eec425bee0e668, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: GenoverreiLibrary::Genoverrei.Library.Core.MoveController3D
+  m_EditorClassIdentifier: KogetsuLibrary::Kogetsu.Library.Core.MoveController3D
   Stats: {fileID: 1457318562}
   InputObserverChannel: {fileID: 11400000, guid: c0d221c124409de48bd4b9fb75a4b3b1, type: 2}
   MoveAbility:
@@ -815,7 +815,7 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 8918615269875122273
-      type: {class: BasicMoveAbility3D, ns: Genoverrei.Library.Core, asm: GenoverreiLibrary}
+      type: {class: BasicMoveAbility3D, ns: Kogetsu.Library.Core, asm: KogetsuLibrary}
       data:
         CurrentInput: {x: 0, y: 0, z: 0}
         EnableRotation: 1
@@ -833,7 +833,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3318d65e7b3ed4545a4859cc40c7c7f9, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: GenoverreiLibrary::Genoverrei.Library.Core.StatsController
+  m_EditorClassIdentifier: KogetsuLibrary::Kogetsu.Library.Core.StatsController
   StatsData: {fileID: 11400000, guid: da1e24e2682bdf24eb20ad410be17cc9, type: 2}
   CurrentMoveSpeed: 0
   CurrectJumpForce: 0
@@ -1220,7 +1220,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3174224110c82a1499b7ee37873d6a28, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: GenoverreiLibrary::Genoverrei.Library.Core.MoveController2D
+  m_EditorClassIdentifier: KogetsuLibrary::Kogetsu.Library.Core.MoveController2D
   Stats: {fileID: 0}
   InputObserverChannel: {fileID: 11400000, guid: c0d221c124409de48bd4b9fb75a4b3b1, type: 2}
   MoveAbility:
@@ -1249,7 +1249,7 @@ MonoBehaviour:
     - rid: -2
       type: {class: , ns: , asm: }
     - rid: 8918615225115607130
-      type: {class: BasicMoveAbility2D, ns: Genoverrei.Library.Core, asm: GenoverreiLibrary}
+      type: {class: BasicMoveAbility2D, ns: Kogetsu.Library.Core, asm: KogetsuLibrary}
       data:
         CurrentInput: {x: 0, y: 0, z: 0}
         _sideViewMode: 1
@@ -1269,7 +1269,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3318d65e7b3ed4545a4859cc40c7c7f9, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: GenoverreiLibrary::Genoverrei.Library.Core.StatsController
+  m_EditorClassIdentifier: KogetsuLibrary::Kogetsu.Library.Core.StatsController
   StatsData: {fileID: 11400000, guid: da1e24e2682bdf24eb20ad410be17cc9, type: 2}
   CurrentMoveSpeed: 0
   CurrectJumpForce: 0
@@ -1415,7 +1415,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3174224110c82a1499b7ee37873d6a28, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: GenoverreiLibrary::Genoverrei.Library.Core.MoveController2D
+  m_EditorClassIdentifier: KogetsuLibrary::Kogetsu.Library.Core.MoveController2D
   Stats: {fileID: 0}
   InputObserverChannel: {fileID: 0}
   MoveAbility:
@@ -1444,7 +1444,7 @@ MonoBehaviour:
     - rid: -2
       type: {class: , ns: , asm: }
     - rid: 8918615251058163712
-      type: {class: BasicMoveAbility2D, ns: Genoverrei.Library.Core, asm: GenoverreiLibrary}
+      type: {class: BasicMoveAbility2D, ns: Kogetsu.Library.Core, asm: KogetsuLibrary}
       data:
         CurrentInput: {x: 0, y: 0, z: 0}
         _sideViewMode: 0
@@ -1464,7 +1464,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3318d65e7b3ed4545a4859cc40c7c7f9, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: GenoverreiLibrary::Genoverrei.Library.Core.StatsController
+  m_EditorClassIdentifier: KogetsuLibrary::Kogetsu.Library.Core.StatsController
   StatsData: {fileID: 0}
   CurrentMoveSpeed: 0
   CurrectJumpForce: 0

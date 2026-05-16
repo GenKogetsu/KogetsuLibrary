@@ -404,27 +404,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8071892320418444330, guid: b9def114a4d974c49a36d32bdbb47dbe, type: 3}
       propertyPath: m_ActionEvents.Array.data[48].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Genoverrei.Library.Core.BasicInputManager, GenoverreiLibrary
+      value: Kogetsu.Library.Core.BasicInputManager, KogetsuLibrary
       objectReference: {fileID: 0}
     - target: {fileID: 8071892320418444330, guid: b9def114a4d974c49a36d32bdbb47dbe, type: 3}
       propertyPath: m_ActionEvents.Array.data[49].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Genoverrei.Library.Core.BasicInputManager, GenoverreiLibrary
+      value: Kogetsu.Library.Core.BasicInputManager, KogetsuLibrary
       objectReference: {fileID: 0}
     - target: {fileID: 8071892320418444330, guid: b9def114a4d974c49a36d32bdbb47dbe, type: 3}
       propertyPath: m_ActionEvents.Array.data[50].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Genoverrei.Library.Core.BasicInputManager, GenoverreiLibrary
+      value: Kogetsu.Library.Core.BasicInputManager, KogetsuLibrary
       objectReference: {fileID: 0}
     - target: {fileID: 8071892320418444330, guid: b9def114a4d974c49a36d32bdbb47dbe, type: 3}
       propertyPath: m_ActionEvents.Array.data[51].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Genoverrei.Library.Core.BasicInputManager, GenoverreiLibrary
+      value: Kogetsu.Library.Core.BasicInputManager, KogetsuLibrary
       objectReference: {fileID: 0}
     - target: {fileID: 8071892320418444330, guid: b9def114a4d974c49a36d32bdbb47dbe, type: 3}
       propertyPath: m_ActionEvents.Array.data[52].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Genoverrei.Library.Core.BasicInputManager, GenoverreiLibrary
+      value: Kogetsu.Library.Core.BasicInputManager, KogetsuLibrary
       objectReference: {fileID: 0}
     - target: {fileID: 8071892320418444330, guid: b9def114a4d974c49a36d32bdbb47dbe, type: 3}
       propertyPath: m_ActionEvents.Array.data[53].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Genoverrei.Library.Core.BasicInputManager, GenoverreiLibrary
+      value: Kogetsu.Library.Core.BasicInputManager, KogetsuLibrary
       objectReference: {fileID: 0}
     - target: {fileID: 8071892320418444330, guid: b9def114a4d974c49a36d32bdbb47dbe, type: 3}
       propertyPath: m_ActionEvents.Array.data[48].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -845,7 +845,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3174224110c82a1499b7ee37873d6a28, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: GenoverreiLibrary::Genoverrei.Library.DesignPatternCore.MoveController2D
+  m_EditorClassIdentifier: KogetsuLibrary::Kogetsu.Library.DesignPatternCore.MoveController2D
   Stats: {fileID: 892069737}
   InputObserverChannel: {fileID: 11400000, guid: c0d221c124409de48bd4b9fb75a4b3b1, type: 2}
   MoveAbility:
@@ -861,7 +861,7 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 8058328614326239335
-      type: {class: BasicMoveAbility2D, ns: Genoverrei.Library.Core, asm: GenoverreiLibrary}
+      type: {class: BasicMoveAbility2D, ns: Kogetsu.Library.Core, asm: KogetsuLibrary}
       data:
         CurrentInput: {x: 0, y: 0, z: 0}
 --- !u!114 &892069737
@@ -875,7 +875,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3318d65e7b3ed4545a4859cc40c7c7f9, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: GenoverreiLibrary::Genoverrei.Library.DesignPatternCore.StatsController
+  m_EditorClassIdentifier: KogetsuLibrary::Kogetsu.Library.DesignPatternCore.StatsController
   StatsData: {fileID: 11400000, guid: da1e24e2682bdf24eb20ad410be17cc9, type: 2}
   CurrentMoveSpeed: 0
   CurrectJumpForce: 0
@@ -1056,7 +1056,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 76b009f9d1be08f42a278d3353443bb1, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Genoverrei-DesignPatternCoreAD::Genoverrei.Library.DesignPatternCore.InputManager
+  m_EditorClassIdentifier: KogetsuLibrary::Kogetsu.Library.DesignPatternCore.InputManager
 --- !u!1 &1404289775
 GameObject:
   m_ObjectHideFlags: 0
@@ -1546,7 +1546,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a3b4d2d5fec222e45a07114414563216, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: GenoverreiLibrary::Genoverrei.Library.Core.AnimationController2D
+  m_EditorClassIdentifier: KogetsuLibrary::Kogetsu.Library.Core.AnimationController2D
   IdleAnimationArray:
   - Direction: {x: 0, y: 0, z: 0}
     Model: {fileID: 0}

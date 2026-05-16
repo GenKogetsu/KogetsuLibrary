@@ -1,4 +1,4 @@
-namespace Genoverrei.Library.Core;
+﻿namespace Kogetsu.Library.Core;
 
 public enum GameState
 {

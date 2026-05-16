@@ -1,10 +1,10 @@
-using Genoverrei.Library.Core;
+﻿using Kogetsu.Library.Core;
 using System;
 
-namespace Genoverrei.Library.DesignPatternCore
+namespace Kogetsu.Library.DesignPatternCore
 {
 
-    [CreateAssetMenu(fileName = "BasicMovementInputObserver", menuName = "GenoverreiLibrary/DesignPattern/Observer/BasicMovementInputObserver")]
+    [CreateAssetMenu(fileName = "BasicMovementInputObserver", menuName = "KogetsuLibrary/DesignPattern/Observer/BasicMovementInputObserver")]
     public class BasicMovementInputObserverSO : ScriptableObject
     {
         // ─── General ───────────────────────────────────────────────────────

@@ -1,6 +1,6 @@
 ﻿global using System.Collections;
 global using System.Collections.Generic;
 global using UnityEngine;
-global using Genoverrei.Library.Core;
-global using Genoverrei.Library.DesignPatternCore;
-global using Genoverrei.Library.Attribute;
+global using Kogetsu.Library.Core;
+global using Kogetsu.Library.DesignPatternCore;
+global using Kogetsu.Library.Attribute;

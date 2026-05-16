@@ -1,7 +1,7 @@
-using UnityEngine;
-using Genoverrei.Library.DesignPatternCore;
+﻿using UnityEngine;
+using Kogetsu.Library.DesignPatternCore;
 
-namespace Genoverrei.Library.Core
+namespace Kogetsu.Library.Core
 {
     public class AudioManager : Singleton<AudioManager>
     {

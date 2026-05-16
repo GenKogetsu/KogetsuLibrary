@@ -1,10 +1,10 @@
-#if UNITY_EDITOR
-using Genoverrei.Library.Core;
+﻿#if UNITY_EDITOR
+using Kogetsu.Library.Core;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Genoverrei.Library.Editor
+namespace Kogetsu.Library.Editor
 {
     [CustomPropertyDrawer(typeof(VNConversationNode))]
     public class VNConversationNodeDrawer : PropertyDrawer

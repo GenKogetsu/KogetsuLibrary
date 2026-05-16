@@ -462,7 +462,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 05fbf0178c6940241b04630481a6d1f0, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: GenoverreiLibrary::Genoverrei.Library.Core.VNDialogueAdvancer
+  m_EditorClassIdentifier: KogetsuLibrary::Kogetsu.Library.Core.VNDialogueAdvancer
   _observerChannel: {fileID: 0}
   _anyKeyAdvances: 1
 --- !u!1001 &2846580010697536256

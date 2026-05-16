@@ -1,4 +1,4 @@
-namespace Genoverrei.Library.DesignPatternCore;
+﻿namespace Kogetsu.Library.DesignPatternCore;
 
 public interface IState { }
 

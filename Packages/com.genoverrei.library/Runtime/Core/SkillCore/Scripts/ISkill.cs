@@ -1,6 +1,6 @@
-using UnityEngine.InputSystem;
+﻿using UnityEngine.InputSystem;
 
-namespace Genoverrei.Library.Core
+namespace Kogetsu.Library.Core
 {
     public interface ISkill
     {

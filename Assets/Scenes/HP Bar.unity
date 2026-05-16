@@ -204,7 +204,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 96d7a6563cd32434894a5998feb10ed4, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: GenoverreiLibrary::Genoverrei.Library.Core.CooldowmContoller
+  m_EditorClassIdentifier: KogetsuLibrary::Kogetsu.Library.Core.CooldowmContoller
   Skills:
   - {fileID: 1830611414}
   - {fileID: 2056459389}

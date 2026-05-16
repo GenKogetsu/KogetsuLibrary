@@ -1,6 +1,6 @@
-using System;
+﻿using System;
 
-namespace Genoverrei.Library.DesignPatternCore
+namespace Kogetsu.Library.DesignPatternCore
 {
     [Serializable]
     public abstract class BaseState<TContext> : IState

@@ -1,7 +1,7 @@
-using UnityEngine.EventSystems;
-using Genoverrei.Library.DesignPatternCore;
+﻿using UnityEngine.EventSystems;
+using Kogetsu.Library.DesignPatternCore;
 
-namespace Genoverrei.Library.Core
+namespace Kogetsu.Library.Core
 {
     [RequireComponent(typeof(Animator))]
     public class BasicButtonStateController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler

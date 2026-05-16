@@ -1,8 +1,8 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 
-namespace Genoverrei.Library.Assistant
+namespace Kogetsu.Library.Assistant
 {
-    [CreateAssetMenu(fileName = "TagSettings", menuName = "GenoverreiLibrary/Assistant/Tag Settings")]
+    [CreateAssetMenu(fileName = "TagSettings", menuName = "KogetsuLibrary/Assistant/Tag Settings")]
     public class TagSettingsSO : ScriptableObject
     {
         [Header("Settings")]

@@ -1,7 +1,7 @@
-using System;
-using Genoverrei.Library.DesignPatternCore;
+﻿using System;
+using Kogetsu.Library.DesignPatternCore;
 
-namespace Genoverrei.Library.Core
+namespace Kogetsu.Library.Core
 {
     [Serializable]
     public class ClickMoveAbility3D : BaseMoveAbility3D

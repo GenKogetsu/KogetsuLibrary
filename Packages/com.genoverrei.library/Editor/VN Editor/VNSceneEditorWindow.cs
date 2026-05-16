@@ -1,9 +1,9 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
-using Genoverrei.Library.Core;
+using Kogetsu.Library.Core;
 
-namespace Genoverrei.Library.Editor
+namespace Kogetsu.Library.Editor
 {
     public class VNSceneEditorWindow : EditorWindow
     {
@@ -16,7 +16,7 @@ namespace Genoverrei.Library.Editor
         private Vector2 _rightScroll;
         private const float LeftWidth = 210f;
 
-        [MenuItem("Window/GenoverreiLibrary/VN Scene Editor")]
+        [MenuItem("Window/KogetsuLibrary/VN Scene Editor")]
         public static void ShowWindow()
         {
             var w = GetWindow<VNSceneEditorWindow>("VN Scene Editor");

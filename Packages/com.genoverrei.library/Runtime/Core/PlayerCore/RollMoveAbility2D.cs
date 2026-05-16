@@ -1,6 +1,6 @@
-using System;
+﻿using System;
 
-namespace Genoverrei.Library.Core;
+namespace Kogetsu.Library.Core;
 
 /// <summary>
 /// Roll/Dodge ability สำหรับ 2D

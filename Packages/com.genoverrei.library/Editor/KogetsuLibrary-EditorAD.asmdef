@@ -1,6 +1,6 @@
-{
-    "name": "GenoverreiLibrary.Editor",
-    "rootNamespace": "Genoverrei.Library.Editor",
+﻿{
+    "name": "KogetsuLibrary.Editor",
+    "rootNamespace": "Kogetsu.Library.Editor",
     "references": [
         "GUID:d63609535a0353d4190e39c32acafbdb",
         "GUID:b81ef6c0d1f9ea34fa8501fff460bdd1",

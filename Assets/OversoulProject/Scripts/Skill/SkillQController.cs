@@ -1,6 +1,6 @@
 
 using System;
-using Genoverrei.Library.Core;
+using Kogetsu.Library.Core;
 using UnityEngine.InputSystem;
 
 public sealed class SkillQController : BaseSkillMono

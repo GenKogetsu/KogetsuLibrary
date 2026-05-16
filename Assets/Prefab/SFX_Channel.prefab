@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7673296010295958370}
   m_Layer: 0
   m_Name: SFX_Channel
-  m_TagString: SFX_Channel.GenoverreiLibrary
+  m_TagString: SFX_Channel.KogetsuLibrary
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

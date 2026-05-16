@@ -1,7 +1,7 @@
-using System;
-using Genoverrei.Library.DesignPatternCore;
+﻿using System;
+using Kogetsu.Library.DesignPatternCore;
 
-namespace Genoverrei.Library.Core
+namespace Kogetsu.Library.Core
 {
     /// <summary>
     /// 2D move ability รองรับ 2 โหมด:

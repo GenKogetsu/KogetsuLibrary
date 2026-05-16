@@ -1,6 +1,6 @@
-namespace Genoverrei.Library.Core
+﻿namespace Kogetsu.Library.Core
 {
-    [CreateAssetMenu(fileName = "TimeScaleData", menuName = "GenoverreiLibrary/Core/TimeScaleData")]
+    [CreateAssetMenu(fileName = "TimeScaleData", menuName = "KogetsuLibrary/Core/TimeScaleData")]
     public class TimeScaleDataSO : ScriptableObject
     {
         public float BaseAcceleratorScale = 1.0f;

@@ -1,8 +1,8 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
-using Genoverrei.Library.DesignPatternCore;
+using Kogetsu.Library.DesignPatternCore;
 
-namespace Genoverrei.Library
+namespace Kogetsu.Library
 {
     public record struct InputEvent(InputAction.CallbackContext Context) : IEvent;
 
