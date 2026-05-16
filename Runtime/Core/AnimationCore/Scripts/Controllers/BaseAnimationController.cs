@@ -1,9 +1,9 @@
-using Genoverrei.Library.DesignPatternCore;
+﻿using Kogetsu.Library.DesignPatternCore;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Genoverrei.Library.Core
+namespace Kogetsu.Library.Core
 {
     public abstract class BaseAnimationController : MonoBehaviour
     {

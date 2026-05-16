@@ -1,9 +1,9 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
-using Genoverrei.Library.Core;
+using Kogetsu.Library.Core;
 
-namespace Genoverrei.Library.Editor
+namespace Kogetsu.Library.Editor
 {
     [CustomEditor(typeof(VNCharacterSO))]
     public class VNCharacterSOEditor : UnityEditor.Editor

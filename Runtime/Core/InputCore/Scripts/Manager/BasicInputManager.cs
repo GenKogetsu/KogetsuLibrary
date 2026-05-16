@@ -1,11 +1,11 @@
-using UnityEngine.InputSystem;
-using Genoverrei.Library.Attribute;
-using Genoverrei.Library.DesignPatternCore;
+﻿using UnityEngine.InputSystem;
+using Kogetsu.Library.Attribute;
+using Kogetsu.Library.DesignPatternCore;
 
-namespace Genoverrei.Library.Core
+namespace Kogetsu.Library.Core
 {
     [RequireComponent(typeof(PlayerInput))]
-    [CreateHierarchyMenu("GenoverreiLibrary/Core/Manager")]
+    [CreateHierarchyMenu("KogetsuLibrary/Core/Manager")]
     public class BasicInputManager : MonoBehaviour, IAbility
     {
         [Header("ObserverChannels")]

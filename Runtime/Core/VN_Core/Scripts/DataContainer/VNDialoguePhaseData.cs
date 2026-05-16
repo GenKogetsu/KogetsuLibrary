@@ -1,7 +1,7 @@
-
+﻿
 using System;
 
-namespace Genoverrei.Library.Core
+namespace Kogetsu.Library.Core
 {
     [Serializable]
     public class VNDialoguePhaseData : VNChoicePhaseData

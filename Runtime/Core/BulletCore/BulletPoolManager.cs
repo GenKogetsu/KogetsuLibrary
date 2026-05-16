@@ -1,6 +1,6 @@
-using Genoverrei.Library.DesignPatternCore;
+﻿using Kogetsu.Library.DesignPatternCore;
 
-namespace Genoverrei.Library.Core;
+namespace Kogetsu.Library.Core;
 
 /// <summary>
 /// ห่อ ObjectPool&lt;ElectricBullet&gt; ของ library

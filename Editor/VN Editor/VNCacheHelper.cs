@@ -1,8 +1,8 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using UnityEditor;
 using System.Collections.Generic;
 
-namespace Genoverrei.Library.Editor
+namespace Kogetsu.Library.Editor
 {
     public static class VNCacheHelper
     {

@@ -1,8 +1,8 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
-using Genoverrei.Library.Core;
+using Kogetsu.Library.Core;
 
-namespace Genoverrei.Library.DesignPatternCore
+namespace Kogetsu.Library.DesignPatternCore
 {
     public class CameraFollow3D : FollowAbility
     {

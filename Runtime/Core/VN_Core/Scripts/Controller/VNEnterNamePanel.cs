@@ -1,11 +1,11 @@
-using System;
+﻿using System;
 using System.Collections;
 using TMPro;
 using UnityEngine.UI;
 using NaughtyAttributes;
-using Genoverrei.Library.DesignPatternCore;
+using Kogetsu.Library.DesignPatternCore;
 
-namespace Genoverrei.Library.Core
+namespace Kogetsu.Library.Core
 {
     /// <summary>
     /// <para> Summary : </para>

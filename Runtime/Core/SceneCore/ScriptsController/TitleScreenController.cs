@@ -1,4 +1,4 @@
-namespace Genoverrei.Library.Core
+﻿namespace Kogetsu.Library.Core
 {
     [RequireComponent(typeof(Animator))]
     public class TitleScreenController : MonoBehaviour

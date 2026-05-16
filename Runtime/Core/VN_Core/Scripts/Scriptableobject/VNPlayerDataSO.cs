@@ -1,13 +1,13 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Genoverrei.Library.Core
+namespace Kogetsu.Library.Core
 {
     /// <summary>
     /// <para> Summary : </para>
     /// <para> (TH) : เก็บข้อมูลชื่อผู้เล่น — บันทึกผ่าน PlayerPrefs และ sync กับ VNCharacterSO ของผู้เล่น </para>
     /// <para> (EN) : Stores player name — persists via PlayerPrefs and syncs with the player's VNCharacterSO. </para>
     /// </summary>
-    [CreateAssetMenu(fileName = "NewVNPlayerData", menuName = "GenoverreiLibrary/Core/VN/Player Data")]
+    [CreateAssetMenu(fileName = "NewVNPlayerData", menuName = "KogetsuLibrary/Core/VN/Player Data")]
     public class VNPlayerDataSO : ScriptableObject
     {
         private const string SAVE_KEY = "VN_PlayerName";

@@ -1,7 +1,7 @@
-using System;
+﻿using System;
 using UnityEngine.UI;
 
-namespace Genoverrei.Library.Core
+namespace Kogetsu.Library.Core
 {
     public enum StatsUIMode { Bar, Block }
 

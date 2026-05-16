@@ -1,9 +1,9 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
-using Genoverrei.Library.Core;
+using Kogetsu.Library.Core;
 
-namespace Genoverrei.Library.Editor //new: fixed namespace (was UIEditor)
+namespace Kogetsu.Library.Editor //new: fixed namespace (was UIEditor)
 {
     [CustomPropertyDrawer(typeof(VNSpeakerData))]
     public class VNSpeakerDataDrawer : PropertyDrawer

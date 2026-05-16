@@ -1,11 +1,11 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-using Genoverrei.Library.Core;
+using Kogetsu.Library.Core;
 
-namespace Genoverrei.Library.Editor
+namespace Kogetsu.Library.Editor
 {
     [CustomEditor(typeof(VNChoicePanel))]
     public class VNChoicePanelEditor : UnityEditor.Editor
@@ -100,7 +100,7 @@ namespace Genoverrei.Library.Editor
         /// สร้าง VNChoiceButton ใน Scene (ผู้ใช้ save เป็น Prefab เอง)
         /// Structure : [Button + Image + VNChoiceButton] → Label [TMP]
         /// </summary>
-        [MenuItem("GameObject/GenoverreiLibrary/VN Choice Button (Prefab Source)", false, 12)]
+        [MenuItem("GameObject/KogetsuLibrary/VN Choice Button (Prefab Source)", false, 12)]
         public static void CreateChoiceButtonInScene()
         {
             // ─── Root ───────────────────────────────────────────────────
@@ -171,7 +171,7 @@ namespace Genoverrei.Library.Editor
         /// <summary>
         /// สร้าง VNChoicePanel ใน Scene พร้อม ButtonContainer ลูก
         /// </summary>
-        [MenuItem("GameObject/GenoverreiLibrary/VN Choice Panel", false, 11)]
+        [MenuItem("GameObject/KogetsuLibrary/VN Choice Panel", false, 11)]
         public static void CreateChoicePanelInScene()
         {
 #pragma warning disable CS0618

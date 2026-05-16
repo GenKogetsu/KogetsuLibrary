@@ -1,8 +1,8 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-namespace Genoverrei.Library.Core;
+namespace Kogetsu.Library.Core;
 
 /// <summary>
 /// วาด debug range ซ้อนสองชั้นใน Scene view:

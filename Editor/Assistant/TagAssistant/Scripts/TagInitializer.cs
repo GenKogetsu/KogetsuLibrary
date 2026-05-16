@@ -1,14 +1,14 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace Genoverrei.Library.Assistant
+namespace Kogetsu.Library.Assistant
 {
     [InitializeOnLoad]
     public static class TagInitializer
     {
-        private const string Suffix = ".GenoverreiLibrary";
+        private const string Suffix = ".KogetsuLibrary";
 
         static TagInitializer()
         {
@@ -63,7 +63,7 @@ namespace Genoverrei.Library.Assistant
             }
 
             tagManager.ApplyModifiedProperties();
-            Debug.Log($"<color=#87CEEB>[Genoverrei]</color> Auto-Synced tags after Domain Reload.");
+            Debug.Log($"<color=#87CEEB>[kogetsu]</color> Auto-Synced tags after Domain Reload.");
         }
 
         private static bool NeedsUpdate(SerializedProperty tagsProp, List<string> userTags, List<string> requiredTags)

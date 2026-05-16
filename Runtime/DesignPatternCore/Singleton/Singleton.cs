@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Genoverrei.Library.DesignPatternCore
+namespace Kogetsu.Library.DesignPatternCore
 {
     /// <summary>
     /// <para> Summary : </para>

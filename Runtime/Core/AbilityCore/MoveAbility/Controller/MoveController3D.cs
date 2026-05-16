@@ -1,4 +1,4 @@
-namespace Genoverrei.Library.Core
+﻿namespace Kogetsu.Library.Core
 {
     [RequireComponent(typeof(Rigidbody))]
     public class MoveController3D : BaseMoveController<IMoveContext3D, BaseMoveAbility3D>, IMoveContext3D

@@ -1,6 +1,6 @@
-using System;
+﻿using System;
 
-namespace Genoverrei.Library.Attribute
+namespace Kogetsu.Library.Attribute
 {
     [AttributeUsage(AttributeTargets.Field)]
     public class MoveAbilitySelector : PropertyAttribute { }

@@ -1,4 +1,4 @@
-%YAML 1.1
+﻿%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!1 &292636489958041630
 GameObject:
@@ -676,7 +676,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3b0a39dc3c96590498944b9c8c903a24, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Genoverrei-CoreAD::Genoverrei.Library.Core.VNController
+  m_EditorClassIdentifier: kogetsu-CoreAD::Kogetsu.Library.Core.VNController
   _currentScene: {fileID: 11400000, guid: 23eb1d5a5dfbf6344b01f3e1dc3a1f0c, type: 2}
   _basicObserverChannel: {fileID: 0}
   _audioChannel: {fileID: 11400000, guid: c99b30f36e5bf0949b291d22cd5d3d59, type: 2}

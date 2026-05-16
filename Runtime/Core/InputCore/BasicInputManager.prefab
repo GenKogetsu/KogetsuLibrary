@@ -1,4 +1,4 @@
-%YAML 1.1
+﻿%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!1 &659958750747550079
 GameObject:
@@ -61,8 +61,8 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 4028519914757936438}
-        m_TargetAssemblyTypeName: Genoverrei.Library.DesignPatternCore.InputManager,
-          Genoverrei-DesignPatternCoreAD
+        m_TargetAssemblyTypeName: Kogetsu.Library.DesignPatternCore.InputManager,
+          Kogetsu-DesignPatternCoreAD
         m_MethodName: OnMoveInput
         m_Mode: 0
         m_Arguments:
@@ -78,8 +78,8 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 4028519914757936438}
-        m_TargetAssemblyTypeName: Genoverrei.Library.DesignPatternCore.InputManager,
-          Genoverrei-DesignPatternCoreAD
+        m_TargetAssemblyTypeName: Kogetsu.Library.DesignPatternCore.InputManager,
+          Kogetsu-DesignPatternCoreAD
         m_MethodName: OnInteractionInput
         m_Mode: 0
         m_Arguments:
@@ -95,8 +95,8 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 4028519914757936438}
-        m_TargetAssemblyTypeName: Genoverrei.Library.DesignPatternCore.InputManager,
-          Genoverrei-DesignPatternCoreAD
+        m_TargetAssemblyTypeName: Kogetsu.Library.DesignPatternCore.InputManager,
+          Kogetsu-DesignPatternCoreAD
         m_MethodName: OnMoveInput
         m_Mode: 0
         m_Arguments:
@@ -112,8 +112,8 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 4028519914757936438}
-        m_TargetAssemblyTypeName: Genoverrei.Library.DesignPatternCore.InputManager,
-          Genoverrei-DesignPatternCoreAD
+        m_TargetAssemblyTypeName: Kogetsu.Library.DesignPatternCore.InputManager,
+          Kogetsu-DesignPatternCoreAD
         m_MethodName: OnInteractionInput
         m_Mode: 0
         m_Arguments:
@@ -354,5 +354,5 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 76b009f9d1be08f42a278d3353443bb1, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Genoverrei-DesignPatternCoreAD::Genoverrei.Library.DesignPatternCore.InputManager
+  m_EditorClassIdentifier: Kogetsu-DesignPatternCoreAD::Kogetsu.Library.DesignPatternCore.InputManager
   BasicObserverChannel: {fileID: 11400000, guid: c0d221c124409de48bd4b9fb75a4b3b1, type: 2}

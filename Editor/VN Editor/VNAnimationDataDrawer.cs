@@ -1,10 +1,10 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
-using Genoverrei.Library.Core;
+using Kogetsu.Library.Core;
 using System.Collections.Generic;
 
-namespace Genoverrei.Library.Editor
+namespace Kogetsu.Library.Editor
 {
     [CustomPropertyDrawer(typeof(VNCharacterSO.VNBehaviorAnimationData))]
     public class VNAnimationDataDrawer : PropertyDrawer

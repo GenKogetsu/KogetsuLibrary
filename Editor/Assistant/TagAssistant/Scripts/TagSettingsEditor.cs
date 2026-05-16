@@ -1,8 +1,8 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using UnityEditor;
-using Genoverrei.Library.Assistant;
+using Kogetsu.Library.Assistant;
 
-namespace Genoverrei.Library.Editor
+namespace Kogetsu.Library.Editor
 {
     [CustomEditor(typeof(TagSettingsSO))]
     public class TagSettingsEditor : UnityEditor.Editor

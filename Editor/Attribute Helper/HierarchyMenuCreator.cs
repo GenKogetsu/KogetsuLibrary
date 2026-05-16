@@ -1,10 +1,10 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using System.IO;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
-namespace Genoverrei.Library.Editor
+namespace Kogetsu.Library.Editor
 {
     /// <summary>
     /// Runtime helper for hierarchy menu entries produced by HierarchyMenuGenerator.

@@ -1,16 +1,16 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using NaughtyAttributes;
 
-namespace Genoverrei.Library.Core
+namespace Kogetsu.Library.Core
 {
     /// <summary>
     /// <para> Summary : </para>
     /// <para> (TH) : ไฟล์ข้อมูลตัวละคร แยกการจัดการระหว่าง Emotion (หน้าตา) และ Animation (การเคลื่อนที่) </para>
     /// <para> (EN) : Character data file, separating Emotion (face) and Animation (movement) management. </para>
     /// </summary>
-    [CreateAssetMenu(fileName = "NewVNCharacter", menuName = "GenoverreiLibrary/Core/VN/Character")]
+    [CreateAssetMenu(fileName = "NewVNCharacter", menuName = "KogetsuLibrary/Core/VN/Character")]
     public class VNCharacterSO : ScriptableObject
     {
         [Serializable]

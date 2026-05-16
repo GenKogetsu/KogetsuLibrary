@@ -1,11 +1,11 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using System;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using Genoverrei.Library.Attribute;
+using Kogetsu.Library.Attribute;
 
-namespace Genoverrei.Library.Editor
+namespace Kogetsu.Library.Editor
 {
     [CustomPropertyDrawer(typeof(MoveAbilitySelector))]
     public class MoveAbilityDrawer : PropertyDrawer

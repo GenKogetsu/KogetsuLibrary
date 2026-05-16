@@ -1,6 +1,6 @@
-using System;
+﻿using System;
 
-namespace Genoverrei.Library.Attribute
+namespace Kogetsu.Library.Attribute
 {
     /// <summary>
     /// Marks a MonoBehaviour class so HierarchyMenuGenerator produces
@@ -9,7 +9,7 @@ namespace Genoverrei.Library.Attribute
     ///
     /// The prefab name is discovered automatically — no need to declare it:
     /// <code>
-    ///   [CreateHierarchyMenu("GenoverreiLibrary/Core/Manager")]
+    ///   [CreateHierarchyMenu("KogetsuLibrary/Core/Manager")]
     ///   public class BasicInputManager : MonoBehaviour { }
     /// </code>
     /// If two prefabs share the same component they both appear in the menu,
@@ -18,7 +18,7 @@ namespace Genoverrei.Library.Attribute
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
     public class CreateHierarchyMenu : System.Attribute
     {
-        /// <summary>Path after "GameObject/" in the menu, e.g. "GenoverreiLibrary/Core/Manager".</summary>
+        /// <summary>Path after "GameObject/" in the menu, e.g. "KogetsuLibrary/Core/Manager".</summary>
         public string MenuPath { get; }
 
         public CreateHierarchyMenu(string menuPath) => MenuPath = menuPath;

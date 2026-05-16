@@ -1,9 +1,9 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
-using Genoverrei.Library.Core;
+using Kogetsu.Library.Core;
 
-namespace Genoverrei.Library.Editor
+namespace Kogetsu.Library.Editor
 {
     public class VNCharacterEditorWindow : EditorWindow
     {
@@ -15,7 +15,7 @@ namespace Genoverrei.Library.Editor
 
         private Vector2 _scrollPosition;
 
-        [MenuItem("Window/GenoverreiLibrary/VN Character Editor")]
+        [MenuItem("Window/KogetsuLibrary/VN Character Editor")]
         public static void ShowWindow()
         {
             var window = GetWindow<VNCharacterEditorWindow>("VN Character Editor");

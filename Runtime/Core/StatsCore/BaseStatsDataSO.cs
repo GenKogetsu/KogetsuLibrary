@@ -1,6 +1,6 @@
-namespace Genoverrei.Library.DesignPatternCore
+﻿namespace Kogetsu.Library.DesignPatternCore
 {
-    [CreateAssetMenu(fileName = "BaseStatsData", menuName = "GenoverreiLibrary/DesignPattern/DataAssets/BaseStatsData")]
+    [CreateAssetMenu(fileName = "BaseStatsData", menuName = "KogetsuLibrary/DesignPattern/DataAssets/BaseStatsData")]
     public class BaseStatsDataSO : ScriptableObject
     {
         public float BaseMoveSpeed = 5f;

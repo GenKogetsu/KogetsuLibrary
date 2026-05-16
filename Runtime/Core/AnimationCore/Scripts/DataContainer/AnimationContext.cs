@@ -1,8 +1,8 @@
-using System;
+﻿using System;
 using UnityEngine.Playables;
 using UnityEngine.Animations;
 
-namespace Genoverrei.Library.Core
+namespace Kogetsu.Library.Core
 {
     [Serializable]
     public class AnimationContext

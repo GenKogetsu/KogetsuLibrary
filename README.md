@@ -1,7 +1,7 @@
-# com.genoverrei.library
+﻿# com.kogetsu.library
 
 <div align="center">
-  <h1>Genoverrei Library</h1>
+  <h1>Kogetsu Library</h1>
   <p><b>Core Utilities, Design Patterns, and Editor Enhancements for Unity 6</b></p>
   <a href="#english-version">English</a> • <a href="#thai-version-ภาษาไทย">ภาษาไทย</a>
 </div>
@@ -10,7 +10,7 @@
 
 <h2 id="english-version">🇬🇧 English Version</h2>
 
-**Genoverrei Library** is a comprehensive, modular framework designed to accelerate game development in Unity 6000.0+. It provides a robust set of core utilities, implementation of essential design patterns, and powerful Editor enhancements.
+**Kogetsu Library** is a comprehensive, modular framework designed to accelerate game development in Unity 6000.0+. It provides a robust set of core utilities, implementation of essential design patterns, and powerful Editor enhancements.
 
 ### 🌟 Key Features
 
@@ -37,7 +37,7 @@
 ### 🚀 Installation
 1. Open **Unity Package Manager**.
 2. Click **+** -> **Add package from git URL...**
-3. Enter: `git@github.com:GenKogetsu/GenoverreiLibary6.git`
+3. Enter: `git@github.com:GenKogetsu/kogetsuLibary6.git`
 
 ### ⚙️ Requirements
 * **Unity:** 6000.0 or higher.
@@ -45,7 +45,7 @@
 * **Dependencies:** `com.unity.textmeshpro` is required and automatically resolved.
 
 ### 📄 License
-This work is licensed under the CC BY-NC 4.0 (Attribution-NonCommercial) license. Commercial use without permission from Genoverrei is prohibited.
+This work is licensed under the CC BY-NC 4.0 (Attribution-NonCommercial) license. Commercial use without permission from Kogetsu is prohibited.
 
 ---
 
@@ -69,7 +69,7 @@ This work is licensed under the CC BY-NC 4.0 (Attribution-NonCommercial) license
 
 <h2 id="thai-version-ภาษาไทย">🇹🇭 Thai Version (ภาษาไทย)</h2>
 
-**Genoverrei Library** คือเฟรมเวิร์กแบบ Modular สำหรับ Unity 6 (6000.0+) ที่รวบรวมระบบพื้นฐาน (Core Utilities) และ Design Pattern ที่สำคัญ เพื่อให้นักพัฒนาสามารถสร้างเกมได้อย่างรวดเร็วและเป็นระบบ
+**Kogetsu Library** คือเฟรมเวิร์กแบบ Modular สำหรับ Unity 6 (6000.0+) ที่รวบรวมระบบพื้นฐาน (Core Utilities) และ Design Pattern ที่สำคัญ เพื่อให้นักพัฒนาสามารถสร้างเกมได้อย่างรวดเร็วและเป็นระบบ
 
 ### 🌟 ฟีเจอร์หลัก
 
@@ -95,7 +95,7 @@ This work is licensed under the CC BY-NC 4.0 (Attribution-NonCommercial) license
 
 ### 🚀 การติดตั้ง
 ติดตั้งผ่าน **Unity Package Manager** โดยใช้ Git URL:
-`git@github.com:GenKogetsu/GenoverreiLibary6.git`
+`git@github.com:GenKogetsu/kogetsuLibary6.git`
 
 ### ⚙️ ความต้องการของระบบ
 * **Unity:** 6000.0 หรือ สูงกว่า.
@@ -103,7 +103,7 @@ This work is licensed under the CC BY-NC 4.0 (Attribution-NonCommercial) license
 * **Dependencies:** `com.unity.textmeshpro` จะถูกติดตั้งโดยอัตโนมัติ.
 
 ### 📄 สัญญาอนุญาตสิทธิ์ (License)
-อยู่ภายใต้สัญญาอนุญาตแบบ **CC BY-NC 4.0** (แสดงที่มา-ไม่ใช้เพื่อการค้า) **ห้ามใช้ในเชิงพาณิชย์โดยไม่ได้รับอนุญาตจาก Genoverrei**
+อยู่ภายใต้สัญญาอนุญาตแบบ **CC BY-NC 4.0** (แสดงที่มา-ไม่ใช้เพื่อการค้า) **ห้ามใช้ในเชิงพาณิชย์โดยไม่ได้รับอนุญาตจาก kogetsu**
 
 ---
 
@@ -123,4 +123,4 @@ This work is licensed under the CC BY-NC 4.0 (Attribution-NonCommercial) license
 **ประเภทยันต์**: Stun, Heal, Invisible — แต่ละแบบ implement `ISpellEffect` แยกกัน
 
 ---
-<div align="center"><i>Developed by Genoverrei</i></div>
+<div align="center"><i>Developed by Kogetsu</i></div>

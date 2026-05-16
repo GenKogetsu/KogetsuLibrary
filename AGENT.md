@@ -1,4 +1,4 @@
-# AGENT.md — AI Coding Guide
+﻿# AGENT.md — AI Coding Guide
 
 คู่มือนี้ให้ AI ของทุกคนในทีม generate code ได้ถูกต้องตาม convention ของ project นี้  
 อ่านไฟล์นี้ก่อนทำงานทุกครั้ง — ห้าม guess ว่า style คืออะไร
@@ -9,10 +9,10 @@
 
 | Item | Value |
 |------|-------|
-| Package | `com.genoverrei.library` |
+| Package | `com.kogetsu.library` |
 | Unity | 6000.0+ (Unity 6) |
 | C# | **10.0** (enforced via `csc.rsp`) |
-| Root namespace | `Genoverrei.Library` |
+| Root namespace | `Kogetsu.Library` |
 | Game project | **Yanta** — Horror 3D, ผู้เล่นวาดยันต์ไทยเป็น spell |
 
 Repository layout:
@@ -32,7 +32,7 @@ Editor/
 
 ```csharp
 // ✅ Regular class / interface / enum / record struct → file-scoped
-namespace Genoverrei.Library.DesignPatternCore;
+namespace Kogetsu.Library.DesignPatternCore;
 
 public interface ISpellEffect { ... }
 public record struct SpellCastEvent(SpellType Type, float Accuracy) : IEvent;

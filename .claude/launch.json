@@ -1,10 +1,10 @@
-{
+﻿{
   "version": "0.0.1",
   "configurations": [
     {
       "name": "diagram",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["serve", "-p", "3131", "-s", "D:\\Unity\\Learning\\GenoverreiLibary6"],
+      "runtimeArgs": ["serve", "-p", "3131", "-s", "D:\\Unity\\Learning\\kogetsuLibary6"],
       "port": 3131
     }
   ]

@@ -1,7 +1,7 @@
-using UnityEngine.UI;
-using Genoverrei.Library.DesignPatternCore;
+﻿using UnityEngine.UI;
+using Kogetsu.Library.DesignPatternCore;
 
-namespace Genoverrei.Library.Core
+namespace Kogetsu.Library.Core
 {
     public class StatsController : MonoBehaviour
     {
