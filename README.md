@@ -49,6 +49,24 @@ This work is licensed under the CC BY-NC 4.0 (Attribution-NonCommercial) license
 
 ---
 
+### 🎮 Showcase — Yanta (Horror Spell-Drawing Game)
+
+**Yanta** is a 3D horror game built with this library, where players draw Thai sacred symbols (ยันต์) to cast spells against enemies. It demonstrates the library's design patterns in a real project context.
+
+| System | Library Features Used |
+|--------|-----------------------|
+| Player FSM | `StateMachine<T>` · `BaseState<T>` · `IEnterState` / `IUpdateState` / `IExitState` |
+| Enemy Lv1 FSM | `StateMachine<T>` · `BaseState<T>` · Strategy (IMovementStrategy) |
+| Enemy Lv2 HFSM | Nested `StateMachine<T>` · Decorator pattern |
+| Spell System | Strategy (ISpellEffect) · Factory Method · `IEvent` record structs |
+| Enemy Pool | `Singleton<T>` · `ObjectPoolManager` · Prototype (SO.Clone) |
+| Sound System | `Singleton<T>` · `EventBus` subscriptions · ScriptableObject data |
+| Event Layer | `EventBus` · `IEvent` (SpellCastEvent, PlayerDamagedEvent, EnemyAlertEvent) |
+
+**Spell types**: Stun (push), Heal (status restore), Invisible (stealth) — each implemented as a separate `ISpellEffect` strategy.
+
+---
+
 <h2 id="thai-version-ภาษาไทย">🇹🇭 Thai Version (ภาษาไทย)</h2>
 
 **Genoverrei Library** คือเฟรมเวิร์กแบบ Modular สำหรับ Unity 6 (6000.0+) ที่รวบรวมระบบพื้นฐาน (Core Utilities) และ Design Pattern ที่สำคัญ เพื่อให้นักพัฒนาสามารถสร้างเกมได้อย่างรวดเร็วและเป็นระบบ
@@ -86,6 +104,23 @@ This work is licensed under the CC BY-NC 4.0 (Attribution-NonCommercial) license
 
 ### 📄 สัญญาอนุญาตสิทธิ์ (License)
 อยู่ภายใต้สัญญาอนุญาตแบบ **CC BY-NC 4.0** (แสดงที่มา-ไม่ใช้เพื่อการค้า) **ห้ามใช้ในเชิงพาณิชย์โดยไม่ได้รับอนุญาตจาก Genoverrei**
+
+---
+
+### 🎮 ตัวอย่างการใช้งาน — เกม Yanta (วาดยันต์)
+
+**Yanta** คือเกม Horror 3D ที่สร้างด้วย Library นี้ ผู้เล่นวาดยันต์ไทยเพื่อใช้เป็นอาวุธหรือ spell โจมตีศัตรู แสดงให้เห็นการใช้งาน Design Pattern จาก Library ในโปรเจกต์จริง
+
+| ระบบ | ฟีเจอร์ของ Library ที่ใช้ |
+|------|---------------------------|
+| Player FSM | `StateMachine<T>` · `BaseState<T>` · State interfaces |
+| Enemy Lv1 FSM | `StateMachine<T>` · `BaseState<T>` · Strategy |
+| Enemy Lv2 HFSM | `StateMachine<T>` ซ้อนกัน · Decorator |
+| Spell System | Strategy (ISpellEffect) · Factory Method · `IEvent` |
+| Enemy Pool | `Singleton<T>` · `ObjectPoolManager` · Prototype |
+| Sound System | `Singleton<T>` · `EventBus` · ScriptableObject data |
+
+**ประเภทยันต์**: Stun, Heal, Invisible — แต่ละแบบ implement `ISpellEffect` แยกกัน
 
 ---
 <div align="center"><i>Developed by Genoverrei</i></div>
