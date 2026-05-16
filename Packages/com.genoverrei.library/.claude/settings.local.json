@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-Command npx)",
+      "PowerShell(Get-Command node)",
+      "Bash(dir \"D:\\\\CGE\\\\Year1\\\\CEG108 2D Game Development\\\\Project.DeadEnd\\\\Assets\\\\Scripts\" /b /ad)"
+    ]
+  }
+}

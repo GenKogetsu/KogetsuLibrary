@@ -1,0 +1,14 @@
+﻿{
+  "name": "com.kogetsu.library",
+  "version": "0.2.27",
+  "displayName": "Kogetsu Library 6",
+  "description": "Core Utilities and Design Patterns",
+  "unity": "6000.0",
+  "author": {
+    "name": "Kogetsu",
+    "email": "thiratham.chuluck@gmail.com"
+  },
+  "dependencies": {
+    "com.unity.textmeshpro": "3.0.9"
+  }
+}

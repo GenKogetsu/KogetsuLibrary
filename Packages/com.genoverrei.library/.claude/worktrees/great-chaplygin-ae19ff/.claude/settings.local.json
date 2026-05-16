@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-Command npx)",
+      "PowerShell(Get-Command node)"
+    ]
+  }
+}
