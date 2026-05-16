@@ -1,11 +1,11 @@
-﻿{
+{
   "name": "com.kogetsu.library",
   "version": "0.2.28",
-  "displayName": "Kogetsu Library 6",
+  "displayName": "Kogetsu Library",
   "description": "Core Utilities and Design Patterns",
   "unity": "6000.0",
   "author": {
-    "name": "Kogetsu",
+    "name": "Genoverrei",
     "email": "thiratham.chuluck@gmail.com"
   },
   "dependencies": {

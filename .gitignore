@@ -99,3 +99,11 @@ InitTestScene*.unity*
 
 # Claude Code
 .claude/
+
+# Unity project files — ไม่ควรอยู่ใน package repo
+/Assets/
+/Packages/
+/ProjectSettings/
+*.slnx
+ignore.conf
+monster-ai-*
