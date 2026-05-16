@@ -1,0 +1,5 @@
+0000000000000000000000000000000000000000 17951e0ba7e5511d4ce7a2f6d7835035d570eb11 GenKogetsu <thiratham.chuluck@gmail.com> 1778919702 +0700
+17951e0ba7e5511d4ce7a2f6d7835035d570eb11 47ed9051bc55f8d1019952fd6dbfb340f8116904 GenKogetsu <thiratham.chuluck@gmail.com> 1778939957 +0700	commit: docs: add Yanta spell-drawing game showcase to README
+47ed9051bc55f8d1019952fd6dbfb340f8116904 15a9073f1511745b0998683b192bcef4232d7a3d GenKogetsu <thiratham.chuluck@gmail.com> 1778940189 +0700	commit: docs: add AGENT.md — AI coding guide for team
+15a9073f1511745b0998683b192bcef4232d7a3d 77c89e0f8030f5ae58f90e1ca45c211f613bbe0c GenKogetsu <thiratham.chuluck@gmail.com> 1778940583 +0700	commit: refactor: rename namespace root Genoverrei → Kogetsu across entire project
+77c89e0f8030f5ae58f90e1ca45c211f613bbe0c e19897f12d46d1af866748d91c525812b38a6707 GenKogetsu <thiratham.chuluck@gmail.com> 1778940804 +0700	commit: docs: rewrite AGENT.md — library-focused AI guide
