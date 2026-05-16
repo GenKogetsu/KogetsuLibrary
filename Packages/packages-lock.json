@@ -7,8 +7,8 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
-    "com.genoverrei.library": {
-      "version": "file:com.genoverrei.library",
+    "com.kogetsu.library": {
+      "version": "file:com.kogetsu.library",
       "depth": 0,
       "source": "embedded",
       "dependencies": {

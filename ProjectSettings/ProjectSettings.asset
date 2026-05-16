@@ -114,6 +114,7 @@ PlayerSettings:
   xboxEnableGuest: 0
   xboxEnablePIXSampling: 0
   metalFramebufferOnly: 0
+  metalUseMetalDisplayLink: 0
   xboxOneResolution: 0
   xboxOneSResolution: 0
   xboxOneXResolution: 3
@@ -932,7 +933,7 @@ PlayerSettings:
   cloudProjectId: 9a48bd68-28d5-48ba-84b4-166f8522e514
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: KogetsuLibrary
+  projectName: GenoverreiLibary6
   organizationId: genzoover0
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0

@@ -1,4 +1,0 @@
-using Genoverrei.Library.DesignPatternCore;
-
-
-public record struct #SCRIPTNAME#() : IEvent;
