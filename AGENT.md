@@ -3,8 +3,78 @@
 คู่มือนี้ให้ AI ของทุกคนในทีม generate และแก้ไขโค้ดภายใน **library** นี้ได้ถูกต้อง  
 อ่านก่อนทุกครั้ง — ห้าม guess convention
 
-> Library นี้แยกจาก project เกมที่นำไปใช้ (เช่น Yanta)  
+> Library นี้แยกจาก project เกมที่นำไปใช้  
 > โค้ดใน repo นี้คือ **เครื่องมือ** ไม่ใช่ logic ของเกม
+
+---
+
+## 0. Library Overview — อ่านอันนี้ก่อนเลย
+
+### หัวใจของ Library
+
+Library นี้ทำงานบน **3 เสา**:
+
+| เสา | ที่อยู่ | บทบาท |
+|-----|---------|-------|
+| **DesignPatternCore** | `Runtime/DesignPatternCore/` | รากฐานทุกอย่าง — Singleton, EventBus, ObjectPool, StateMachine |
+| **Core Systems** | `Runtime/Core/` | ระบบเกมสำเร็จรูป — Audio, Input, Stats, Animation, VN, Skill |
+| **Editor Tools** | `Editor/` | เครื่องมือช่วย Dev — DocAssistant, TagAssistant, VN Editor |
+
+### วิธีทำงานหลัก — Observer SO Pattern
+
+ระบบทุกอย่างใน Core ไหลผ่าน **ScriptableObject Channel**:
+
+```
+[ผู้ส่ง] → ObserverSO.SendSignal(data) → [Manager] → handle logic
+```
+
+- **ObserverSO** คือสะพานข้อมูล — ไม่มี dependency ตรง ไม่ต้อง GetComponent
+- **Manager** (Singleton) subscribe ใน `OnEnable` / unsubscribe ใน `OnDisable` เสมอ
+- **ผู้ส่ง** (Input, Trigger, UI) รู้จักแค่ channel SO — ไม่รู้จัก Manager
+
+### การสื่อสารข้ามระบบ — EventBus
+
+เมื่อหลายระบบต้องรับ event เดียวกัน ใช้ **EventBus + IEvent**:
+
+```
+[ผู้ส่ง] → EventBus.Publish(new DamageEvent(10f))
+[ผู้รับ A] ← EventBus.Subscribe<DamageEvent>(OnDamage)
+[ผู้รับ B] ← EventBus.Subscribe<DamageEvent>(OnShake)
+```
+
+- IEvent ต้องเป็น `record struct` เสมอ (zero allocation)
+- EventBus เป็น Singleton — เข้าถึงผ่าน `EventBus.Instance`
+
+### ลำดับ dependency
+
+```
+Third Party (NaughtyAttributes, HierarchyDecorator)
+    ↑
+DesignPatternCore (Singleton, EventBus, StateMachine, ObjectPool)
+    ↑
+Core Systems (AudioCore, InputCore, StatsCore, AnimationCore ...)
+    ↑
+Editor Tools (อ่าน Runtime ได้ แต่ Runtime ห้ามอ่าน Editor)
+```
+
+### กฎเหล็กที่ห้ามทำ
+
+- ❌ Runtime อ้าง Editor namespace
+- ❌ แก้ไขโค้ดใน `Third Party Library/`
+- ❌ Manager ไม่ unsubscribe ใน OnDisable
+- ❌ IEvent เป็น class (ต้อง record struct)
+
+---
+
+## กฎการอัปเดตไฟล์นี้
+
+**ทุกครั้งที่ AI เพิ่ม/แก้ไข/ลบสิ่งต่อไปนี้ ต้องอัปเดต AGENT.md และ EDITLOG.md ด้วย:**
+
+- เพิ่ม Core System ใหม่ → อัปเดต Project Structure (section 1) + Overview table
+- เปลี่ยน namespace หรือ assembly → อัปเดต section 2 และ Namespace map
+- เปลี่ยน naming convention → อัปเดต section 3
+- เพิ่ม built-in IEvent → อัปเดต section 8
+- เพิ่ม Design Pattern → อัปเดต section 5
 
 ---
 
