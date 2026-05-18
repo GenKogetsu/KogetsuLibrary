@@ -44,6 +44,15 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.31] — 2026-05-18
+**AI:** Claude Sonnet 4.6
+
+### Added
+- `MoveController3D` — Ground Check: `_enableJump`, `_groundCheck`, `_groundRadius`, `_groundLayer`, `UpdateGroundCheck()` ใน FixedUpdate ด้วย `Physics.CheckSphere`
+- `MoveController3D` — Gizmo sphere (สีเขียว = grounded, แดง = airborne) เหมือน 2D
+
+---
+
 ## [0.2.30] — 2026-05-18
 **AI:** Claude Sonnet 4.6
 
