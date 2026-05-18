@@ -44,6 +44,15 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.32] — 2026-05-18
+**AI:** Claude Sonnet 4.6
+
+### Removed
+- `BaseMoveAbility2D` — ลบ Damage Flash ออก (ซ้ำกับ StatsController Color Lerp)
+- `BaseMoveAbility3D` — ลบ Damage Flash ออก (ซ้ำกับ StatsController Color Lerp)
+
+---
+
 ## [0.2.31] — 2026-05-18
 **AI:** Claude Sonnet 4.6
 

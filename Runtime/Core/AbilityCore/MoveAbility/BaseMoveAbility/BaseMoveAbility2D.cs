@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+using System;
 using Kogetsu.Library.DesignPatternCore;
 using UnityEngine;
 
@@ -17,57 +16,6 @@ public abstract class BaseMoveAbility2D : BaseMoveAbility<IMoveContext2D>
 
     /// <summary>Jump force from StatsController.</summary>
     protected float JumpForce => Context.Stats.GetJumpForce();
-
-    // ─── Damage Flash ─────────────────────────────────────────────────────
-    [Header("Damage Flash")]
-    [Tooltip("ถ้าว่างจะหา SpriteRenderer บน Context Transform แล้ว fallback ไป children อัตโนมัติ")]
-    [SerializeField] private SpriteRenderer _flashTarget;
-    [SerializeField] private Color          _flashColor    = Color.red;
-    [Min(0.01f)]
-    [SerializeField] private float          _flashDuration = 0.2f;
-
-    private Color        _originalColor;
-    private Coroutine    _flashCoroutine;
-    private MonoBehaviour _flashRunner;
-
-    public override void Initialize(IMoveContext2D context)
-    {
-        base.Initialize(context);
-
-        _flashRunner = context as MonoBehaviour;
-
-        if (_flashTarget == null)
-        {
-            if (!context.Transform.TryGetComponent(out _flashTarget))
-                _flashTarget = context.Transform.GetComponentInChildren<SpriteRenderer>();
-        }
-
-        _originalColor = _flashTarget != null ? _flashTarget.color : Color.white;
-    }
-
-    /// <summary>Trigger damage flash — เรียกจาก damage handler หรือ ability ใดก็ได้</summary>
-    protected void Flash()
-    {
-        if (_flashRunner == null || _flashTarget == null) return;
-        if (_flashCoroutine != null) _flashRunner.StopCoroutine(_flashCoroutine);
-        _flashCoroutine = _flashRunner.StartCoroutine(Flash2DRoutine());
-    }
-
-    private IEnumerator Flash2DRoutine()
-    {
-        _flashTarget.color = _flashColor;
-
-        float elapsed = 0f;
-        while (elapsed < _flashDuration)
-        {
-            elapsed += Time.deltaTime;
-            _flashTarget.color = Color.Lerp(_flashColor, _originalColor, elapsed / _flashDuration);
-            yield return null;
-        }
-
-        _flashTarget.color = _originalColor;
-        _flashCoroutine    = null;
-    }
 
     // ─── Direction ────────────────────────────────────────────────────────
     /// <summary>
