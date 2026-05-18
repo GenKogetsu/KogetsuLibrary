@@ -44,6 +44,19 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.30] — 2026-05-18
+**AI:** Claude Sonnet 4.6
+
+### Added
+- `BaseMoveAbility2D` — Damage Flash สำหรับ SpriteRenderer: `Flash()` protected method, coroutine lerp, Inspector fields (_flashTarget, _flashColor, _flashDuration), auto-cache ใน `Initialize()`
+- `BaseMoveAbility3D` — Damage Flash สำหรับ MeshRenderer + MaterialPropertyBlock: ไม่ GC spike, รองรับ custom shader property name
+
+### Removed
+- `DirectionMode.OneDiraction` — ซ้ำซ้อนกับ `None` (SnapDirection คืน rawInput เหมือนกันทั้งคู่)
+- `DirectionModeExtension.ToByte()` case `OneDiraction => 1`
+
+---
+
 ## [0.2.28] — 2026-05-17
 **AI:** Claude Sonnet 4.6
 

@@ -3,7 +3,6 @@
     public enum DirectionMode
     {
         None,
-        OneDiraction,
         TwoDiraction,
         FourDiraction,
         EightDiraction,
