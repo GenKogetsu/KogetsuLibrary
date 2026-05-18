@@ -10,6 +10,10 @@ namespace Kogetsu.Library.Core
         [SerializeField] protected bool EnableRotation = true;
         [SerializeField] protected float RotationSpeed = 15f;
 
+        [Tooltip("ถ้าเปิด จะใช้ input เป็น world-space ตรงๆ ไม่ผ่าน camera transform\n" +
+                 "ใช้เมื่อ AI ส่ง direction มาเป็น world-space โดยตรง")]
+        [SerializeField] protected bool BypassCameraTransform = false;
+
         [Header("Ball Settings (Physics Rolling)")]
         [SerializeField] protected bool IsBallRolling = false;
         [SerializeField] protected float RollTorque = 10f;
@@ -39,10 +43,17 @@ namespace Kogetsu.Library.Core
             Vector3 moveDir = Vector3.zero;
             if (CurrentInput.sqrMagnitude > 0.001f)
             {
-                Transform cam = Camera.main.transform;
-                Vector3 camForward = Vector3.Scale(cam.forward, new Vector3(1, 0, 1)).normalized;
-                Vector3 camRight = Vector3.Scale(cam.right, new Vector3(1, 0, 1)).normalized;
-                moveDir = (camForward * CurrentInput.z + camRight * CurrentInput.x).normalized;
+                if (BypassCameraTransform)
+                {
+                    moveDir = new Vector3(CurrentInput.x, 0f, CurrentInput.z).normalized;
+                }
+                else
+                {
+                    Transform cam = Camera.main.transform;
+                    Vector3 camForward = Vector3.Scale(cam.forward, new Vector3(1, 0, 1)).normalized;
+                    Vector3 camRight   = Vector3.Scale(cam.right,   new Vector3(1, 0, 1)).normalized;
+                    moveDir = (camForward * CurrentInput.z + camRight * CurrentInput.x).normalized;
+                }
             }
 
             Vector3 targetVel = moveDir * Context.Stats.GetMoveSpeed();
