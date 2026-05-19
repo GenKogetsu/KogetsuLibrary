@@ -9,7 +9,6 @@ namespace Kogetsu.Library.Editor
     [CustomPropertyDrawer(typeof(VNInteractState))]
     public class VNInteractStateDrawer : PropertyDrawer
     {
-        private static readonly Dictionary<string, int> _arraySizes = new();
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
@@ -111,36 +110,49 @@ namespace Kogetsu.Library.Editor
 
         private void CheckAndClearIfNewlyAdded(SerializedProperty property)
         {
-            string path = property.propertyPath;
+            // SubConversation ใช้ [SerializeReference] — เมื่อ Unity duplicate element
+            // managed reference IDs จะถูก copy ทำให้ทุก element ชี้ object เดียวกัน
+            // ตรวจโดยเปรียบ managedReferenceId กับ element ก่อนหน้า
 
-            // Unity element paths always end with ".Array.data[n]"
-            // We need to strip that suffix to get a path FindProperty understands.
+            var subConv = property.FindPropertyRelative("SubConversation");
+            if (subConv == null || !subConv.isArray || subConv.arraySize == 0) return;
+
+            string path = property.propertyPath;
             int dotArrayData = path.LastIndexOf(".Array.data[");
             if (dotArrayData < 0) return;
 
             int lastBracket = path.LastIndexOf('[');
             int lastClose   = path.LastIndexOf(']');
-            if (!int.TryParse(path[(lastBracket + 1)..lastClose], out int currentIndex)) return;
+            if (!int.TryParse(path[(lastBracket + 1)..lastClose], out int myIndex)) return;
+            if (myIndex == 0) return;  // element แรกไม่มี predecessor
 
-            string arrayFieldPath = path[..dotArrayData];   // e.g. "ChoiceNode.InteractStates"
-            var arrayProp = property.serializedObject.FindProperty(arrayFieldPath);
-            if (arrayProp == null || !arrayProp.isArray) return;
-
-            int currentSize = arrayProp.arraySize;
-
-            if (_arraySizes.TryGetValue(arrayFieldPath, out int prevSize))
+            // เก็บ IDs ของ SubConversation element นี้
+            var myIds = new HashSet<long>();
+            for (int i = 0; i < subConv.arraySize; i++)
             {
-                if (currentSize > prevSize && currentIndex == currentSize - 1)
+                long id = subConv.GetArrayElementAtIndex(i).managedReferenceId;
+                if (id >= 0) myIds.Add(id);
+            }
+            if (myIds.Count == 0) return;
+
+            // ดึง element ก่อนหน้าและเช็คว่า SubConversation มี ID ซ้ำกันไหม
+            string prevPath = path[..dotArrayData] + ".Array.data[" + (myIndex - 1) + "]";
+            var prevElem    = property.serializedObject.FindProperty(prevPath);
+            if (prevElem == null) return;
+
+            var prevSubConv = prevElem.FindPropertyRelative("SubConversation");
+            if (prevSubConv == null || !prevSubConv.isArray) return;
+
+            for (int i = 0; i < prevSubConv.arraySize; i++)
+            {
+                long id = prevSubConv.GetArrayElementAtIndex(i).managedReferenceId;
+                if (id >= 0 && myIds.Contains(id))
                 {
                     ResetInteract(property);
-                    _arraySizes[arrayFieldPath] = currentSize;
                     GUIUtility.ExitGUI();
                     return;
                 }
             }
-
-            if (currentIndex == currentSize - 1)
-                _arraySizes[arrayFieldPath] = currentSize;
         }
 
         private int GetIndex(string path)
