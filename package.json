@@ -1,6 +1,6 @@
 {
   "name": "com.kogetsu.library",
-  "version": "0.2.32",
+  "version": "0.2.34",
   "displayName": "Kogetsu Library",
   "description": "Core Utilities and Design Patterns",
   "unity": "6000.0",

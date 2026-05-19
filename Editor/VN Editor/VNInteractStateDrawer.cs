@@ -1,4 +1,5 @@
 ﻿#if UNITY_EDITOR
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using Kogetsu.Library.Core;
@@ -8,8 +9,11 @@ namespace Kogetsu.Library.Editor
     [CustomPropertyDrawer(typeof(VNInteractState))]
     public class VNInteractStateDrawer : PropertyDrawer
     {
+        private static readonly Dictionary<string, int> _arraySizes = new();
+
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
+            CheckAndClearIfNewlyAdded(property);
             EditorGUI.BeginProperty(position, label, property);
 
             Color bgColor = VNConversationNodeDrawer.UseTint ? new Color(0.98f, 0.92f, 0.95f) : Color.white;
@@ -103,6 +107,36 @@ namespace Kogetsu.Library.Editor
             h += EditorGUIUtility.singleLineHeight + 6f;
             h += VNConversationNodeDrawer.GetArrayWithCacheHeight(property.FindPropertyRelative("SubConversation"));
             return h + 4f;
+        }
+
+        private void CheckAndClearIfNewlyAdded(SerializedProperty property)
+        {
+            string path = property.propertyPath;
+            int lastBracket = path.LastIndexOf('[');
+            if (lastBracket < 0) return;
+
+            string arrayPath = path[..lastBracket];
+            var arrayProp = property.serializedObject.FindProperty(arrayPath);
+            if (arrayProp == null || !arrayProp.isArray) return;
+
+            int currentSize  = arrayProp.arraySize;
+            int currentIndex = GetIndex(path) - 1;  // GetIndex returns 1-based
+
+            if (_arraySizes.TryGetValue(arrayPath, out int prevSize))
+            {
+                // A new element was just added and this is that element → reset it
+                if (currentSize > prevSize && currentIndex == currentSize - 1)
+                {
+                    ResetInteract(property);
+                    _arraySizes[arrayPath] = currentSize;
+                    GUIUtility.ExitGUI();
+                    return;
+                }
+            }
+
+            // Always keep the recorded size up-to-date (update on last element draw)
+            if (currentIndex == currentSize - 1)
+                _arraySizes[arrayPath] = currentSize;
         }
 
         private int GetIndex(string path)

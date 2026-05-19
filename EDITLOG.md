@@ -44,6 +44,23 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.34] — 2026-05-19
+**AI:** Claude Sonnet 4.6
+
+### Fixed
+- `VNInteractStateDrawer` — แก้ bug `[SerializeReference]` shared reference ใน `List<VNInteractState>`: เมื่อ Unity duplicate element ใน array managed reference IDs จะ copy กัน ทำให้ทุก element ใน list ชี้ไปยัง `SubConversation` object เดียวกัน
+- เพิ่ม `CheckAndClearIfNewlyAdded()` method ตรวจจับการเพิ่ม element ใหม่ (array size เพิ่มขึ้น) แล้วเรียก `ResetInteract()` บน element นั้นทันที เพื่อตัด shared reference และให้ข้อมูลเริ่มต้นสะอาด
+
+---
+
+## [0.2.33] — 2026-05-19
+**AI:** Claude Sonnet 4.6
+
+### Added
+- `BasicMoveAbility3D` — `BypassCameraTransform` bool: เมื่อ `true` จะใช้ input เป็น world-space ตรงๆ ไม่แปลงผ่าน camera transform เหมาะสำหรับ AI ที่ส่ง direction เป็น world-space โดยตรง
+
+---
+
 ## [0.2.32] — 2026-05-18
 **AI:** Claude Sonnet 4.6
 
