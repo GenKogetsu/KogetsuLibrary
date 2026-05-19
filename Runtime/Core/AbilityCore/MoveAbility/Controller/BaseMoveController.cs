@@ -6,12 +6,10 @@ using UnityEngine;
 
 namespace Kogetsu.Library.Core
 {
-    [RequireComponent(typeof(StatsController))]
     public abstract class BaseMoveController<TContext, TAbility> : MonoBehaviour, IMoveContext
         where TContext : class, IMoveContext
         where TAbility : BaseMoveAbility<TContext>
     {
-        [ReadOnly]
         [SerializeField] protected StatsController Stats;
 
         [Header("Assign")]
