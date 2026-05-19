@@ -75,9 +75,10 @@ namespace Kogetsu.Library.Editor
             // ── Script (readonly) ───────────────────────────────────────
             GUI.enabled = false;
             EditorGUILayout.ObjectField("Script", MonoScript.FromMonoBehaviour((MonoBehaviour)target), typeof(MonoScript), false);
-            EditorGUILayout.PropertyField(_stats);
             EditorGUILayout.PropertyField(_rb2);
             GUI.enabled = true;
+
+            EditorGUILayout.PropertyField(_stats);
 
             EditorGUILayout.Space(4);
 
