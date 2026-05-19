@@ -112,31 +112,35 @@ namespace Kogetsu.Library.Editor
         private void CheckAndClearIfNewlyAdded(SerializedProperty property)
         {
             string path = property.propertyPath;
-            int lastBracket = path.LastIndexOf('[');
-            if (lastBracket < 0) return;
 
-            string arrayPath = path[..lastBracket];
-            var arrayProp = property.serializedObject.FindProperty(arrayPath);
+            // Unity element paths always end with ".Array.data[n]"
+            // We need to strip that suffix to get a path FindProperty understands.
+            int dotArrayData = path.LastIndexOf(".Array.data[");
+            if (dotArrayData < 0) return;
+
+            int lastBracket = path.LastIndexOf('[');
+            int lastClose   = path.LastIndexOf(']');
+            if (!int.TryParse(path[(lastBracket + 1)..lastClose], out int currentIndex)) return;
+
+            string arrayFieldPath = path[..dotArrayData];   // e.g. "ChoiceNode.InteractStates"
+            var arrayProp = property.serializedObject.FindProperty(arrayFieldPath);
             if (arrayProp == null || !arrayProp.isArray) return;
 
-            int currentSize  = arrayProp.arraySize;
-            int currentIndex = GetIndex(path) - 1;  // GetIndex returns 1-based
+            int currentSize = arrayProp.arraySize;
 
-            if (_arraySizes.TryGetValue(arrayPath, out int prevSize))
+            if (_arraySizes.TryGetValue(arrayFieldPath, out int prevSize))
             {
-                // A new element was just added and this is that element → reset it
                 if (currentSize > prevSize && currentIndex == currentSize - 1)
                 {
                     ResetInteract(property);
-                    _arraySizes[arrayPath] = currentSize;
+                    _arraySizes[arrayFieldPath] = currentSize;
                     GUIUtility.ExitGUI();
                     return;
                 }
             }
 
-            // Always keep the recorded size up-to-date (update on last element draw)
             if (currentIndex == currentSize - 1)
-                _arraySizes[arrayPath] = currentSize;
+                _arraySizes[arrayFieldPath] = currentSize;
         }
 
         private int GetIndex(string path)
