@@ -86,6 +86,13 @@ namespace Kogetsu.Library.DesignPatternCore
             animator.Play(state.fullPathHash, 0, 1f);
         }
 
+        // ── CutScene ─────────────────────────────────────────────────────────────
+
+        private void OnCutScene(VNCutSceneEvent e)
+        {
+            _characterSprite.gameObject.SetActive(!e.IsCutScene);
+        }
+
         // ── Lifecycle ────────────────────────────────────────────────────────────
 
         private void OnEnable()
@@ -94,6 +101,7 @@ namespace Kogetsu.Library.DesignPatternCore
             _characterData.OnVNAnimationChannel   += OnAnimationSignel;
             _characterData.OnVNSoundEffectChannel += OnSoundEffectSignel;
             _characterData.OnVNSkipChannel        += OnSkipSignel;
+            EventBus.Instance.Subscribe<VNCutSceneEvent>(OnCutScene);
         }
 
         private void OnDisable()
@@ -102,6 +110,7 @@ namespace Kogetsu.Library.DesignPatternCore
             _characterData.OnVNAnimationChannel   -= OnAnimationSignel;
             _characterData.OnVNSoundEffectChannel -= OnSoundEffectSignel;
             _characterData.OnVNSkipChannel        -= OnSkipSignel;
+            EventBus.Instance.Unsubscribe<VNCutSceneEvent>(OnCutScene);
         }
     }
 }

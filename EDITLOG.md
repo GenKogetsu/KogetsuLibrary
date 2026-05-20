@@ -44,6 +44,15 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.40] — 2026-05-20
+**AI:** Claude Sonnet 4.6
+
+### Added
+- `VNCutSceneEvent` — record struct `(bool IsCutScene) : IEvent` ใน Runtime/Core/VN_Core/Scripts/Event/
+- `VNCharacterController.OnCutScene` — subscribe `VNCutSceneEvent` จาก EventBus: `IsCutScene = true` → ซ่อน `_characterSprite` GameObject, `false` → แสดงกลับ
+
+---
+
 ## [0.2.39] — 2026-05-20
 **AI:** Claude Sonnet 4.6
 
