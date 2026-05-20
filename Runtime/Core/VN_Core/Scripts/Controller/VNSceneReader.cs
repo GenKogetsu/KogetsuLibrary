@@ -584,7 +584,7 @@ namespace Kogetsu.Library.Core
                 foreach (var subNode in matchedInteract.SubConversation)
                 {
                     if (subNode == null) continue;
-                    yield return PlayNodeRoutine(subNode);
+                    yield return PlaySubNodeRoutine(subNode);
                 }
 
                 // --- ตรวจว่าต้องวนกลับไปถามใหม่ไหม ---
@@ -767,6 +767,30 @@ namespace Kogetsu.Library.Core
             _isTyping = false;
             _waitForInput = true;
             while (_waitForInput) yield return null;
+        }
+
+        /// <summary>
+        /// <para> (TH) : เล่น VNConversationNode ที่อยู่ใน SubConversation — ไม่ยุ่งกับ _currentConversationIndex หรือ main-list </para>
+        /// <para> (EN) : Plays a SubConversation node without touching _currentConversationIndex or advancing the main list. </para>
+        /// </summary>
+        private IEnumerator PlaySubNodeRoutine(VNConversationNode node)
+        {
+            switch (node.ConversationMode)
+            {
+                case VNConversationMode.DialogueMode:
+                    yield return PlaySubDialogueRoutine(node.DialogueNode);
+                    break;
+                case VNConversationMode.ChoiceMode:
+                    yield return ChoiceModeRotine(node.ChoiceNode);
+                    break;
+            }
+        }
+
+        private IEnumerator PlaySubDialogueRoutine(VNDialogueNode node)
+        {
+            if (node.UseEnterPhase) yield return PlayPhaseRoutine(node.EnterPhase, VNCurrentPhase.EnterPhase);
+            yield return PlayPhaseRoutine(node.MainPhase, VNCurrentPhase.MainPhase);
+            if (node.UseExitPhase) yield return PlayPhaseRoutine(node.ExitPhase, VNCurrentPhase.ExitPhase);
         }
 
         /// <summary>

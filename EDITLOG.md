@@ -44,6 +44,15 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.39] — 2026-05-20
+**AI:** Claude Sonnet 4.6
+
+### Fixed
+- `VNSceneReader.ChoiceModeRotine` — แก้ SubConversation เล่นแค่ node แรก: เปลี่ยนจาก `yield return PlayNodeRoutine(subNode)` เป็น `yield return PlaySubNodeRoutine(subNode)` ใน foreach loop
+- เพิ่ม `PlaySubNodeRoutine` และ `PlaySubDialogueRoutine` — เล่น SubConversation node โดยไม่แตะ `_currentConversationIndex` และไม่ `StartCoroutine` main-list ต่อ ทำให้ foreach วน SubConversation ทุก node ได้ครบ
+
+---
+
 ## [0.2.38] — 2026-05-20
 **AI:** Claude Sonnet 4.6
 
