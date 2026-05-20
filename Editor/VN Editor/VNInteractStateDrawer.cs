@@ -58,7 +58,25 @@ namespace Kogetsu.Library.Editor
                 y += EditorGUIUtility.singleLineHeight + 2f;
 
                 EditorGUI.PropertyField(new Rect(position.x, y, position.width, EditorGUIUtility.singleLineHeight), property.FindPropertyRelative("ReturnToChoicePhase"));
-                y += EditorGUIUtility.singleLineHeight + 6f;
+                y += EditorGUIUtility.singleLineHeight + 2f;
+
+                var changeRelProp = property.FindPropertyRelative("ChangeRelationship");
+                changeRelProp.boolValue = EditorGUI.ToggleLeft(
+                    new Rect(position.x, y, position.width * 0.5f, EditorGUIUtility.singleLineHeight),
+                    changeRelProp.displayName, changeRelProp.boolValue);
+                y += EditorGUIUtility.singleLineHeight + 2f;
+
+                if (changeRelProp.boolValue)
+                {
+                    EditorGUI.indentLevel++;
+                    EditorGUI.PropertyField(new Rect(position.x, y, position.width, EditorGUIUtility.singleLineHeight), property.FindPropertyRelative("RelationshipCharacter"));
+                    y += EditorGUIUtility.singleLineHeight + 2f;
+                    EditorGUI.PropertyField(new Rect(position.x, y, position.width, EditorGUIUtility.singleLineHeight), property.FindPropertyRelative("RelationshipDelta"));
+                    y += EditorGUIUtility.singleLineHeight + 2f;
+                    EditorGUI.indentLevel--;
+                }
+
+                y += 4f;
 
                 var subConvProp = property.FindPropertyRelative("SubConversation");
 
@@ -89,6 +107,9 @@ namespace Kogetsu.Library.Editor
             prop.FindPropertyRelative("TargetAnswerNumber").intValue = 0;
             prop.FindPropertyRelative("ReturnValue").floatValue = 0f;
             prop.FindPropertyRelative("ReturnToChoicePhase").boolValue = false;
+            prop.FindPropertyRelative("ChangeRelationship").boolValue = false;
+            prop.FindPropertyRelative("RelationshipCharacter").objectReferenceValue = null;
+            prop.FindPropertyRelative("RelationshipDelta").intValue = 0;
 
             var subConvProp = prop.FindPropertyRelative("SubConversation");
             if (subConvProp != null) { subConvProp.ClearArray(); subConvProp.arraySize = 0; }
@@ -100,10 +121,20 @@ namespace Kogetsu.Library.Editor
         {
             if (!property.isExpanded) return EditorGUIUtility.singleLineHeight + 4f;
 
-            float h = EditorGUIUtility.singleLineHeight + 6f;
-            h += EditorGUIUtility.singleLineHeight + 2f;
-            h += EditorGUIUtility.singleLineHeight + 2f;
-            h += EditorGUIUtility.singleLineHeight + 6f;
+            float h = EditorGUIUtility.singleLineHeight + 6f;  // header
+            h += EditorGUIUtility.singleLineHeight + 2f;       // TargetAnswerNumber
+            h += EditorGUIUtility.singleLineHeight + 2f;       // ReturnValue
+            h += EditorGUIUtility.singleLineHeight + 2f;       // ReturnToChoicePhase
+            h += EditorGUIUtility.singleLineHeight + 2f;       // ChangeRelationship
+
+            var changeRelProp = property.FindPropertyRelative("ChangeRelationship");
+            if (changeRelProp != null && changeRelProp.boolValue)
+            {
+                h += EditorGUIUtility.singleLineHeight + 2f;   // RelationshipCharacter
+                h += EditorGUIUtility.singleLineHeight + 2f;   // RelationshipDelta
+            }
+
+            h += 4f;                                            // spacing before SubConversation
             h += VNConversationNodeDrawer.GetArrayWithCacheHeight(property.FindPropertyRelative("SubConversation"));
             return h + 4f;
         }

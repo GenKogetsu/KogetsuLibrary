@@ -12,6 +12,10 @@ namespace Kogetsu.Library.Core
 
         public bool ReturnToChoicePhase;
 
+        public bool ChangeRelationship;
+        public VNCharacterSO RelationshipCharacter;
+        public int RelationshipDelta;
+
         [SerializeReference] //new: break circular serialization chain (VNConversationNode→VNChoiceNode→VNInteractState)
         public List<VNConversationNode> SubConversation = new();
     }

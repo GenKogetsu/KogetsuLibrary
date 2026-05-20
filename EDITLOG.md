@@ -44,6 +44,18 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.42] — 2026-05-20
+**AI:** Claude Sonnet 4.6
+
+### Added
+- `VNCharacterSO.RelationshipValue` (int 0–10, serialized) + `OnRelationshipChanged` (Action<int>) + `AddRelationship(int delta)` — clamp 0–10 แล้ว invoke channel
+- `VNInteractState.ChangeRelationship` (bool) + `RelationshipCharacter` (VNCharacterSO) + `RelationshipDelta` (int) — เพิ่ม/ลดค่าความสัมพันธ์เมื่อผู้เล่นเลือก choice นั้น
+- `VNSceneReader.ChoiceModeRotine` — เรียก `AddRelationship` ทันทีหลัง matchedInteract ถูกเลือก
+- `VNRelationshipDisplay` — MonoBehaviour subscribe `OnRelationshipChanged`; loop `List<Image>` hearts SetActive(i < value)
+- `VNInteractStateDrawer` — draw/reset/height สำหรับ ChangeRelationship + RelationshipCharacter + RelationshipDelta
+
+---
+
 ## [0.2.41] — 2026-05-20
 **AI:** Claude Sonnet 4.6
 

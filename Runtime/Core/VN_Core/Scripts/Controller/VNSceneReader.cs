@@ -583,6 +583,10 @@ namespace Kogetsu.Library.Core
 
                 if (!hasInteractMatch) break;
 
+                // --- อัปเดตค่าความสัมพันธ์ ---
+                if (matchedInteract.ChangeRelationship && matchedInteract.RelationshipCharacter != null)
+                    matchedInteract.RelationshipCharacter.AddRelationship(matchedInteract.RelationshipDelta);
+
                 // --- เล่น SubConversation ตามคำตอบที่เลือก ---
                 foreach (var subNode in matchedInteract.SubConversation)
                 {

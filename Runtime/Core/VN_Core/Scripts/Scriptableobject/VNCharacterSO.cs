@@ -44,6 +44,17 @@ namespace Kogetsu.Library.Core
         public ushort CharacterID;
         public Sprite NameIcon; //new: displayed when VNNameDisplayMode.Icon is set on a speaker
 
+        [Header("Relationship")]
+        [SerializeField] private int _relationshipValue = 0;
+        public int RelationshipValue => _relationshipValue;
+        public Action<int> OnRelationshipChanged;
+
+        public void AddRelationship(int delta)
+        {
+            _relationshipValue = Mathf.Clamp(_relationshipValue + delta, 0, 10);
+            OnRelationshipChanged?.Invoke(_relationshipValue);
+        }
+
         [Header("Character Assets")]
         public List<VNEmotionData> Emotions = new();
         public List<VNBehaviorAnimationData> BehaviorAnimations = new();
