@@ -44,6 +44,18 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.43] — 2026-05-20
+**AI:** Claude Sonnet 4.6
+
+### Changed
+- ย้าย relationship display logic จาก `VNRelationshipDisplay` (ลบแล้ว) เข้า `VNSceneReader` โดยตรง
+- `VNSceneReader` — เพิ่ม `_relationshipCharacter` (VNCharacterSO) + `_relationshipHearts` (List<Image>); subscribe `OnRelationshipChanged` ใน OnEnable/OnDisable; `UpdateRelationshipHearts(int)` loop SetActive
+
+### Removed
+- `VNRelationshipDisplay.cs` — ไม่ใช้แล้ว ย้าย logic เข้า VNSceneReader
+
+---
+
 ## [0.2.42] — 2026-05-20
 **AI:** Claude Sonnet 4.6
 

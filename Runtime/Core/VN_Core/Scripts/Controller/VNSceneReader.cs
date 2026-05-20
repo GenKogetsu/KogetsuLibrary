@@ -46,6 +46,10 @@ namespace Kogetsu.Library.Core
         [Header("Player Data")]
         [SerializeField] private VNPlayerDataSO _playerData;
 
+        [Header("Relationship Display")]
+        [SerializeField] private VNCharacterSO _relationshipCharacter;
+        [SerializeField] private List<Image>   _relationshipHearts = new();
+
         private readonly Queue<string>          _logViewQueue       = new();
         private readonly HashSet<VNCharacterSO>  _previousSpeakerSOs = new();
         private readonly List<Coroutine>         _actionCoroutines   = new();
@@ -77,8 +81,31 @@ namespace Kogetsu.Library.Core
 
         #endregion //End Field Region
 
-        private void OnEnable() => _basicObserverChannel.OnInteractionChannel += HandleInput;
-        private void OnDisable() => _basicObserverChannel.OnInteractionChannel -= HandleInput;
+        private void OnEnable()
+        {
+            _basicObserverChannel.OnInteractionChannel += HandleInput;
+            if (_relationshipCharacter != null)
+            {
+                _relationshipCharacter.OnRelationshipChanged += UpdateRelationshipHearts;
+                UpdateRelationshipHearts(_relationshipCharacter.RelationshipValue);
+            }
+        }
+
+        private void OnDisable()
+        {
+            _basicObserverChannel.OnInteractionChannel -= HandleInput;
+            if (_relationshipCharacter != null)
+                _relationshipCharacter.OnRelationshipChanged -= UpdateRelationshipHearts;
+        }
+
+        private void UpdateRelationshipHearts(int value)
+        {
+            for (int i = 0; i < _relationshipHearts.Count; i++)
+            {
+                if (_relationshipHearts[i] == null) continue;
+                _relationshipHearts[i].gameObject.SetActive(i < value);
+            }
+        }
 
         private void Awake()
         {
