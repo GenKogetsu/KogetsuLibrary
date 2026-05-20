@@ -44,6 +44,16 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.38] — 2026-05-20
+**AI:** Claude Sonnet 4.6
+
+### Fixed
+- `VNSceneReader.ChoiceModeRotine` — แก้ `ReturnToChoicePhase` ไม่วนกลับ: เปลี่ยนจาก replay MainPhase ครั้งเดียว เป็น `while (returnToChoice)` loop ครอบทั้ง Question→Choices→SubConversation; EnterPhase ยังคงวิ่งครั้งเดียวก่อน loop
+- `VNSceneReader.DialogueSetup` — แก้ข้อความคำถามหายตอนแสดง choices: `VNChoicePhaseData` (AnswerState phases) จะ `yield break` ก่อนยุ่ง dialogue box ทำให้ text คงอยู่จนเลือกได้
+- `VNSceneReader.HandleInput` — แก้ Continue รั่วขณะ choices แสดง: เพิ่ม guard `if (_waitForChoiceInput || _waitForNameInput) return` ต้นฟังก์ชัน
+
+---
+
 ## [0.2.34] — 2026-05-19
 **AI:** Claude Sonnet 4.6
 

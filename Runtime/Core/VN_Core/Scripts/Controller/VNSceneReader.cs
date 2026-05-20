@@ -206,6 +206,7 @@ namespace Kogetsu.Library.Core
 
         private void HandleInput()
         {
+            if (_waitForChoiceInput || _waitForNameInput) return;  // ล็อคขณะรอ choice / name input
             if (_isTyping)
             {
                 _skipTyping = true;
@@ -541,50 +542,54 @@ namespace Kogetsu.Library.Core
         /// </summary>
         private IEnumerator ChoiceModeRotine(VNChoiceNode node)
         {
-            // --- Question Phase ---
+            // --- Question Enter Phase (ครั้งเดียว ไม่วนซ้ำ) ---
             if (node.QuestionState.UseEnterPhase)
                 yield return PlayPhaseRoutine(node.QuestionState.EnterPhase, VNCurrentPhase.EnterPhase);
 
-            yield return PlayPhaseRoutine(node.QuestionState.MainPhase, VNCurrentPhase.MainPhase);
-
-            // --- Answer Phase (VNChoicePhaseData – ไม่มี DialogueText, ใช้แสดง choice buttons) ---
-            if (node.AnswerState.UseEnterPhase)
-                yield return PlayPhaseRoutine(node.AnswerState.EnterPhase, VNCurrentPhase.EnterPhase);
-
-            yield return PlayPhaseRoutine(node.AnswerState.MainPhase, VNCurrentPhase.MainPhase);
-
-            _choicePanel?.ShowChoices(node.AnswerState.Choices, SelectChoice);
-            _waitForChoiceInput = true;
-            while (_waitForChoiceInput) yield return null;
-            if (_choicePanel != null) yield return _choicePanel.HideChoices();
-
-            if (node.AnswerState.UseExitPhase)
-                yield return PlayPhaseRoutine(node.AnswerState.ExitPhase, VNCurrentPhase.ExitPhase);
-
-            // --- หาค่า InteractState ที่ตรงกับคำตอบที่เลือก ---
-            bool hasInteractMatch = false;
-            VNInteractState matchedInteract = default;
-
-            foreach (var interact in node.InteractStates)
+            bool returnToChoice = true;
+            while (returnToChoice)
             {
-                if (interact.TargetAnswerNumber != _selectedAnswerNumber) continue;
-                matchedInteract = interact;
-                hasInteractMatch = true;
-                break;
-            }
-
-            if (!hasInteractMatch) yield break;
-
-            // --- เล่น SubConversation ตามคำตอบที่เลือก ---
-            foreach (var subNode in matchedInteract.SubConversation)
-            {
-                if (subNode == null) continue; //new: null guard for [SerializeReference] managed refs
-                yield return PlayNodeRoutine(subNode);
-            }
-
-            // --- วนกลับไปถามใหม่ถ้าตั้งค่าไว้ ---
-            if (matchedInteract.ReturnToChoicePhase)
+                // --- Question Main Phase ---
                 yield return PlayPhaseRoutine(node.QuestionState.MainPhase, VNCurrentPhase.MainPhase);
+
+                // --- Answer Phase (ตัวเลือก) ---
+                if (node.AnswerState.UseEnterPhase)
+                    yield return PlayPhaseRoutine(node.AnswerState.EnterPhase, VNCurrentPhase.EnterPhase);
+
+                yield return PlayPhaseRoutine(node.AnswerState.MainPhase, VNCurrentPhase.MainPhase);
+
+                _choicePanel?.ShowChoices(node.AnswerState.Choices, SelectChoice);
+                _waitForChoiceInput = true;
+                while (_waitForChoiceInput) yield return null;
+                if (_choicePanel != null) yield return _choicePanel.HideChoices();
+
+                if (node.AnswerState.UseExitPhase)
+                    yield return PlayPhaseRoutine(node.AnswerState.ExitPhase, VNCurrentPhase.ExitPhase);
+
+                // --- หาค่า InteractState ที่ตรงกับคำตอบที่เลือก ---
+                VNInteractState matchedInteract = default;
+                bool hasInteractMatch = false;
+
+                foreach (var interact in node.InteractStates)
+                {
+                    if (interact.TargetAnswerNumber != _selectedAnswerNumber) continue;
+                    matchedInteract = interact;
+                    hasInteractMatch = true;
+                    break;
+                }
+
+                if (!hasInteractMatch) break;
+
+                // --- เล่น SubConversation ตามคำตอบที่เลือก ---
+                foreach (var subNode in matchedInteract.SubConversation)
+                {
+                    if (subNode == null) continue;
+                    yield return PlayNodeRoutine(subNode);
+                }
+
+                // --- ตรวจว่าต้องวนกลับไปถามใหม่ไหม ---
+                returnToChoice = matchedInteract.ReturnToChoicePhase;
+            }
 
             _currentConversationIndex++;
 
@@ -609,6 +614,11 @@ namespace Kogetsu.Library.Core
                 ApplyTextSettings(dialoguePhase.TextSettings);
 
             ApplyBackground(phase);
+
+            // VNChoicePhaseData (Answer/Enter phase) — ไม่ยุ่งกับ dialogue box
+            // ให้ข้อความคำถามยังคงแสดงอยู่จนกว่าผู้เล่นจะเลือก
+            if (phase is not VNDialoguePhaseData)
+                yield break;
 
             bool isModeChanged = _currentDialogueType != phase.DialogueMode;
 
