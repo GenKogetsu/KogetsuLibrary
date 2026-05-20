@@ -775,6 +775,9 @@ namespace Kogetsu.Library.Core
         /// </summary>
         private IEnumerator PlaySubNodeRoutine(VNConversationNode node)
         {
+#if UNITY_EDITOR
+            Debug.Log($"<b><color=#80CBC4>[VN Sub]</color></b> PlaySubNodeRoutine mode={node.ConversationMode}");
+#endif
             switch (node.ConversationMode)
             {
                 case VNConversationMode.DialogueMode:
@@ -788,6 +791,9 @@ namespace Kogetsu.Library.Core
 
         private IEnumerator PlaySubDialogueRoutine(VNDialogueNode node)
         {
+#if UNITY_EDITOR
+            Debug.Log($"<b><color=#80CBC4>[VN Sub]</color></b> PlaySubDialogueRoutine start");
+#endif
             if (node.UseEnterPhase) yield return PlayPhaseRoutine(node.EnterPhase, VNCurrentPhase.EnterPhase);
             yield return PlayPhaseRoutine(node.MainPhase, VNCurrentPhase.MainPhase);
             if (node.UseExitPhase) yield return PlayPhaseRoutine(node.ExitPhase, VNCurrentPhase.ExitPhase);
