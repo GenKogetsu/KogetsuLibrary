@@ -329,9 +329,11 @@ namespace Kogetsu.Library.Editor
                 }
                 else if (child.name == "UseEnterName")
                 {
-                    float h = EditorGUI.GetPropertyHeight(child, true);
-                    EditorGUI.PropertyField(new Rect(pos.x, currentY, pos.width, h), child, true);
-                    currentY += h + 2f;
+                    float indentOffset = EditorGUI.indentLevel * 15f;
+                    child.boolValue = EditorGUI.ToggleLeft(
+                        new Rect(pos.x + indentOffset, currentY, pos.width - indentOffset, EditorGUIUtility.singleLineHeight),
+                        child.displayName, child.boolValue);
+                    currentY += EditorGUIUtility.singleLineHeight + 2f;
                 }
                 else if (child.name == "TextSettings")
                 {

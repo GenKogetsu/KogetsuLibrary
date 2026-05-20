@@ -44,6 +44,19 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.41] — 2026-05-20
+**AI:** Claude Sonnet 4.6
+
+### Added
+- `VNCutSceneMode` enum (`On` / `Off`) ใน Runtime/Core/VN_Core/Scripts/Enums/
+- `VNChoicePhaseData.UseCutScene` (bool) + `CutSceneMode` (VNCutSceneMode) — เพิ่มหลัง `UseEnterName`
+- `VNSceneReader.TriggerPhaseEvents` — publish `VNCutSceneEvent(CutSceneMode == On)` เมื่อ `UseCutScene = true`
+
+### Fixed
+- `VNConversationNodeDrawer.DrawPhaseContent` — แก้ `UseEnterName` ใช้ `EditorGUI.ToggleLeft` แทน `PropertyField` ให้ checkbox ตรงแถวเดียวกับ bool fields อื่น
+
+---
+
 ## [0.2.40] — 2026-05-20
 **AI:** Claude Sonnet 4.6
 

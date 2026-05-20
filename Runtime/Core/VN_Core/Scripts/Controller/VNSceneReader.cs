@@ -377,6 +377,9 @@ namespace Kogetsu.Library.Core
         /// <remarks>รับ VNChoicePhaseData เพราะ event fields อยู่ใน base class</remarks>
         private void TriggerPhaseEvents(VNChoicePhaseData phase)
         {
+            if (phase.UseCutScene)
+                EventBus.Instance.Publish(new VNCutSceneEvent(phase.CutSceneMode == VNCutSceneMode.On));
+
             if (phase.UseAmbientEvent)
             {
                 if (phase.AmbientEventType != VNAmbientEventType.None)
