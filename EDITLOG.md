@@ -44,6 +44,15 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.50] — 2026-05-21
+**AI:** Claude Sonnet 4.6
+
+### Fixed
+- `AudioManager` click SFX — เปลี่ยนกลับเป็น `Mouse.current.leftButton.wasPressedThisFrame` ใน `Update()` เพราะ `ClearAllChannels()` ตอน scene unload ล้าง subscription ของ AudioManager ทิ้ง ทำให้ไม่มีเสียง; ลบ `_basicObserverChannel` field ออก
+- `AudioManager.OnTypingSfxSignal` — เปลี่ยนจาก `PlayOneShot` ทุก character เป็น `Play()` ครั้งเดียวตอนเริ่ม (`if isPlaying return`), `Stop()` ตอนรับ null; แก้ปัญหาเสียงซ้อนกันและ loop
+
+---
+
 ## [0.2.49] — 2026-05-21
 **AI:** Claude Sonnet 4.6
 

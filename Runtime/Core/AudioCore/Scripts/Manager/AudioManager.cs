@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Kogetsu.Library.DesignPatternCore;
 
 namespace Kogetsu.Library.Core
@@ -8,9 +9,6 @@ namespace Kogetsu.Library.Core
         [Header("Obsever Channels")]
         [Required]
         [SerializeField] private AudioObserverSO _audioObserver;
-
-        [Required]
-        [SerializeField] private BasicMovementInputObserverSO _basicObserverChannel;
 
         [Header("Audio Source")]
         [Required]
@@ -33,20 +31,24 @@ namespace Kogetsu.Library.Core
 
         private void OnEnable()
         {
-            _audioObserver.OnSfxChannel              += OnSfxSignal;
-            _audioObserver.OnBmgChannel              += OnBmgSignal;
-            _audioObserver.OnVoiceoverChannel        += OnVoiceoverSignal;
-            _audioObserver.OnTypingSfxChannel        += OnTypingSfxSignal;
-            _basicObserverChannel.OnLeftClickChannel += OnLeftClick;
+            _audioObserver.OnSfxChannel       += OnSfxSignal;
+            _audioObserver.OnBmgChannel       += OnBmgSignal;
+            _audioObserver.OnVoiceoverChannel += OnVoiceoverSignal;
+            _audioObserver.OnTypingSfxChannel += OnTypingSfxSignal;
         }
 
         private void OnDisable()
         {
-            _audioObserver.OnSfxChannel              -= OnSfxSignal;
-            _audioObserver.OnBmgChannel              -= OnBmgSignal;
-            _audioObserver.OnVoiceoverChannel        -= OnVoiceoverSignal;
-            _audioObserver.OnTypingSfxChannel        -= OnTypingSfxSignal;
-            _basicObserverChannel.OnLeftClickChannel -= OnLeftClick;
+            _audioObserver.OnSfxChannel       -= OnSfxSignal;
+            _audioObserver.OnBmgChannel       -= OnBmgSignal;
+            _audioObserver.OnVoiceoverChannel -= OnVoiceoverSignal;
+            _audioObserver.OnTypingSfxChannel -= OnTypingSfxSignal;
+        }
+
+        private void Update()
+        {
+            if (_clickSfx != null && Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
+                _click.PlayOneShot(_clickSfx);
         }
 
         public void OnSfxSignal(AudioClip sound)
@@ -71,12 +73,9 @@ namespace Kogetsu.Library.Core
         public void OnTypingSfxSignal(AudioClip sound)
         {
             if (sound == null) { _typing.Stop(); _typing.clip = null; return; }
-            _typing.PlayOneShot(sound);
-        }
-
-        private void OnLeftClick(ClickData _)
-        {
-            if (_clickSfx != null) _click.PlayOneShot(_clickSfx);
+            if (_typing.isPlaying) return;
+            _typing.clip = sound;
+            _typing.Play();
         }
     }
 }
