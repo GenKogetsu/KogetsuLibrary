@@ -110,7 +110,7 @@ namespace Kogetsu.Library.DesignPatternCore
             _characterData.OnVNAnimationChannel   -= OnAnimationSignel;
             _characterData.OnVNSoundEffectChannel -= OnSoundEffectSignel;
             _characterData.OnVNSkipChannel        -= OnSkipSignel;
-            EventBus.Instance.Unsubscribe<VNCutSceneEvent>(OnCutScene);
+            if (EventBus.Instance != null) EventBus.Instance.Unsubscribe<VNCutSceneEvent>(OnCutScene);
         }
     }
 }
