@@ -95,11 +95,12 @@ namespace Kogetsu.Library.Core
 
         private IEnumerator RelationshipBlinkRoutine(int value)
         {
+            // ใช้ Image.enabled เพื่อ show/hide — ไม่แตะ SetActive รายตัว
+            // หัวใจ i < value → เปิด, i >= value → ปิด
             for (int i = 0; i < _relationshipHearts.Count; i++)
             {
                 if (_relationshipHearts[i] == null) continue;
-                _relationshipHearts[i].gameObject.SetActive(i < value);
-                _relationshipHearts[i].enabled = true;
+                _relationshipHearts[i].enabled = i < value;
             }
             if (_relationshipDisplayRoot != null) _relationshipDisplayRoot.SetActive(true);
 
@@ -114,7 +115,7 @@ namespace Kogetsu.Library.Core
                 {
                     visible     = !visible;
                     nextToggle += halfPeriod;
-                    for (int i = 0; i < _relationshipHearts.Count && i < value; i++)
+                    for (int i = 0; i < value && i < _relationshipHearts.Count; i++)
                         if (_relationshipHearts[i] != null) _relationshipHearts[i].enabled = visible;
                 }
                 yield return null;
@@ -123,7 +124,7 @@ namespace Kogetsu.Library.Core
             if (_relationshipDisplayRoot != null)
                 _relationshipDisplayRoot.SetActive(false);
             else
-                foreach (var h in _relationshipHearts) if (h != null) h.gameObject.SetActive(false);
+                foreach (var h in _relationshipHearts) if (h != null) h.enabled = false;
             _blinkCoroutine = null;
         }
 

@@ -44,6 +44,14 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.51] — 2026-05-21
+**AI:** Claude Sonnet 4.6
+
+### Fixed
+- `VNSceneReader.RelationshipBlinkRoutine` — แก้หัวใจแสดงผิด (แสดง 10 แทน 4): เปลี่ยนจาก `SetActive(i < value)` + `enabled = true` เป็น `enabled = i < value` อย่างเดียว; `SetActive` + `enabled = true` ทำให้ตอน parent กลับมา active หัวใจที่ควรซ่อนก็โผล่ขึ้นมาด้วย; ใช้ `Image.enabled` ล้วนๆ แทนซึ่งเป็น idiomatic วิธีสำหรับ UI
+
+---
+
 ## [0.2.50] — 2026-05-21
 **AI:** Claude Sonnet 4.6
 
