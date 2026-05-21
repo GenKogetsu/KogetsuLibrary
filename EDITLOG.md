@@ -44,6 +44,14 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.63] — 2026-05-21
+**AI:** Claude Sonnet 4.6
+
+### Fixed
+- `VNSceneReader.FinishScene` — แก้ StackOverflowException: `else` branch เรียก `FinishScene()` ตัวเองแทน `LoadNextScene(1)` เกิดจาก `replace_all` ตอน v0.2.60 แทนที่ทุก occurrence รวมถึงบรรทัดใน `FinishScene` เองด้วย
+
+---
+
 ## [0.2.62] — 2026-05-21
 **AI:** Claude Sonnet 4.6
 

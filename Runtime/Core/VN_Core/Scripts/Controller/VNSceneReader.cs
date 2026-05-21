@@ -97,7 +97,7 @@ namespace Kogetsu.Library.Core
             if (_currentScene.UseEndScene && !string.IsNullOrEmpty(_currentScene.EndSceneName))
                 BasicSceneEffectController.Instance.LoadScene(_currentScene.EndSceneName);
             else
-                FinishScene();
+                BasicSceneEffectController.Instance.LoadNextScene(1);
         }
 
         private void ShowRelationshipBlink(int value)
