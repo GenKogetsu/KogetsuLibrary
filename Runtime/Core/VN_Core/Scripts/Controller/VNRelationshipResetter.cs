@@ -15,6 +15,9 @@ namespace Kogetsu.Library.Core
 
         [SerializeField] private List<CharacterResetData> _characters = new();
 
+        [Header("Player Name")]
+        [SerializeField] private VNPlayerDataSO _playerData;
+
         public void ResetAll()
         {
             foreach (var data in _characters)
@@ -22,6 +25,8 @@ namespace Kogetsu.Library.Core
                 if (data.Character == null) continue;
                 data.Character.SetRelationship(data.DefaultValue);
             }
+
+            _playerData?.ResetName();
         }
 
 #if UNITY_EDITOR

@@ -44,6 +44,17 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.61] — 2026-05-21
+**AI:** Claude Sonnet 4.6
+
+### Changed
+- `VNRelationshipResetter.ResetAll()` — เพิ่ม `_playerData?.ResetName()` reset ชื่อผู้เล่นด้วย; ค่าเริ่มต้นกำหนดได้ใน `VNPlayerDataSO._defaultName` (Inspector)
+
+### Added
+- `VNRelationshipResetter._playerData` (VNPlayerDataSO) — ลาก SO มาใส่เพื่อ reset ชื่อผู้เล่นตอน New Game
+
+---
+
 ## [0.2.60] — 2026-05-21
 **AI:** Claude Sonnet 4.6
 
