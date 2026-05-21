@@ -3,7 +3,7 @@ using Kogetsu.Library.Core;
 
 public class LoadSceneOnClick : MonoBehaviour
 {
-    [SerializeField] private string _sceneName;
+    [SerializeField] private int _sceneIndex;
 
-    public void OnClick() => BasicSceneEffectController.Instance.LoadScene(_sceneName);
+    public void OnClick() => BasicSceneEffectController.Instance.LoadScene(_sceneIndex);
 }

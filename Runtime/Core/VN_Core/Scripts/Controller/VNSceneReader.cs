@@ -94,8 +94,8 @@ namespace Kogetsu.Library.Core
 
         private void FinishScene()
         {
-            if (_currentScene.UseEndScene && !string.IsNullOrEmpty(_currentScene.EndSceneName))
-                BasicSceneEffectController.Instance.LoadScene(_currentScene.EndSceneName);
+            if (_currentScene.UseEndScene)
+                BasicSceneEffectController.Instance.LoadScene(_currentScene.EndSceneIndex);
             else
                 BasicSceneEffectController.Instance.LoadNextScene(1);
         }

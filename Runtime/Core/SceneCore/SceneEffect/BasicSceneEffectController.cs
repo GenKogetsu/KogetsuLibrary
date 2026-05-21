@@ -87,12 +87,20 @@ namespace Kogetsu.Library.Core
 
         public void LoadScene(string sceneName)
         {
+            Time.timeScale = 1f;
             int sceneBulidIndex = SceneManager.GetSceneByName(sceneName).buildIndex;
             StartCoroutine(LoadSceneRotine(sceneBulidIndex));
         }
 
+        public void LoadScene(int buildIndex)
+        {
+            Time.timeScale = 1f;
+            StartCoroutine(LoadSceneRotine(buildIndex));
+        }
+
         public void LoadNextScene(int next)
         {
+            Time.timeScale = 1f;
             int sceneBulidIndex = SceneManager.GetActiveScene().buildIndex + next;
             StartCoroutine(LoadSceneRotine(sceneBulidIndex));
         }

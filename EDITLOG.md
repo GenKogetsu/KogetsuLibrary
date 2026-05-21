@@ -44,6 +44,17 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.65] — 2026-05-21
+**AI:** Claude Sonnet 4.6
+
+### Changed
+- `BasicSceneEffectController` — เพิ่ม `LoadScene(int buildIndex)` overload; เพิ่ม `Time.timeScale = 1f` ใน `LoadScene(string)` และ `LoadNextScene(int)`
+- `LoadSceneOnClick` — เปลี่ยน `_sceneName` (string) → `_sceneIndex` (int); เรียก `LoadScene(int)`
+- `VNSceneSO` — เปลี่ยน `EndSceneName` (string) → `EndSceneIndex` (int)
+- `VNSceneReader.FinishScene` — เรียก `LoadScene(int)` แทน `LoadScene(string)`; ลบ `string.IsNullOrEmpty` check ออก (int ไม่ต้องเช็ค)
+
+---
+
 ## [0.2.64] — 2026-05-21
 **AI:** Claude Sonnet 4.6
 

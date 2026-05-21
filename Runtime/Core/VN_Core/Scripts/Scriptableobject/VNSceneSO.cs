@@ -12,8 +12,8 @@
         public ushort Index;
 
         [Header("End Transition")]
-        public bool   UseEndScene;
-        public string EndSceneName;
+        public bool UseEndScene;
+        public int  EndSceneIndex;
 
         public List<VNConversationNode> Conversations = new();
     }
