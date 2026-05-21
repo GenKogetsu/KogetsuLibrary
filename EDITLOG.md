@@ -44,6 +44,15 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.56] — 2026-05-21
+**AI:** Claude Sonnet 4.6
+
+### Added
+- `VNRelationshipResetter` — MonoBehaviour สำหรับใส่บนปุ่ม; มี `List<CharacterResetData>` (VNCharacterSO + DefaultValue); `public void ResetAll()` reset ทุก character ตาม DefaultValue; `[ContextMenu("Find All VN Characters")]` ใช้ `AssetDatabase.FindAssets` auto-populate list ใน Editor
+- `VNCharacterSO.SetRelationship(int)` — ตั้งค่าความสัมพันธ์โดยตรง (clamp 0-10) แล้ว invoke channel
+
+---
+
 ## [0.2.55] — 2026-05-21
 **AI:** Claude Sonnet 4.6
 
