@@ -47,8 +47,7 @@ namespace Kogetsu.Library.Core
         [SerializeField] private VNPlayerDataSO _playerData;
 
         [Header("Relationship Display")]
-        [SerializeField] private VNCharacterSO _relationshipCharacter;
-        [SerializeField] private List<Image>   _relationshipHearts = new();
+        [SerializeField] private List<Image> _relationshipHearts = new();
 
         private readonly Queue<string>          _logViewQueue       = new();
         private readonly HashSet<VNCharacterSO>  _previousSpeakerSOs = new();
@@ -81,22 +80,8 @@ namespace Kogetsu.Library.Core
 
         #endregion //End Field Region
 
-        private void OnEnable()
-        {
-            _basicObserverChannel.OnInteractionChannel += HandleInput;
-            if (_relationshipCharacter != null)
-            {
-                _relationshipCharacter.OnRelationshipChanged += UpdateRelationshipHearts;
-                UpdateRelationshipHearts(_relationshipCharacter.RelationshipValue);
-            }
-        }
-
-        private void OnDisable()
-        {
-            _basicObserverChannel.OnInteractionChannel -= HandleInput;
-            if (_relationshipCharacter != null)
-                _relationshipCharacter.OnRelationshipChanged -= UpdateRelationshipHearts;
-        }
+        private void OnEnable() => _basicObserverChannel.OnInteractionChannel += HandleInput;
+        private void OnDisable() => _basicObserverChannel.OnInteractionChannel -= HandleInput;
 
         private void UpdateRelationshipHearts(int value)
         {
@@ -351,6 +336,12 @@ namespace Kogetsu.Library.Core
             _previousSpeakerSOs.UnionWith(newSpeakerSOs);
             _actionCoroutines.Clear();
 
+            // อัปเดต relationship hearts จาก speaker แรกที่มี character
+            foreach (var sd in phase.Speakers)
+            {
+                if (sd.Character != null) { UpdateRelationshipHearts(sd.Character.RelationshipValue); break; }
+            }
+
             if (_currentDialogueType is VNDialogueMode.None or VNDialogueMode.Cinematic or VNDialogueMode.LogView)
                 return namesBuilder;
 
@@ -363,6 +354,14 @@ namespace Kogetsu.Library.Core
                 if (speakerData.NameDisplayMode == VNNameDisplayMode.Text)
                 {
                     var name = speakerData.Character.CharacterName;
+                    if (!addedNames.Add(name)) continue;
+                    if (namesBuilder.Length > 0) namesBuilder.Append(" , ");
+                    namesBuilder.Append(name);
+                }
+                else if (speakerData.NameDisplayMode == VNNameDisplayMode.CustomText)
+                {
+                    var name = speakerData.CustomName;
+                    if (string.IsNullOrEmpty(name)) continue;
                     if (!addedNames.Add(name)) continue;
                     if (namesBuilder.Length > 0) namesBuilder.Append(" , ");
                     namesBuilder.Append(name);
@@ -612,7 +611,10 @@ namespace Kogetsu.Library.Core
 
                 // --- อัปเดตค่าความสัมพันธ์ ---
                 if (matchedInteract.ChangeRelationship && matchedInteract.RelationshipCharacter != null)
+                {
                     matchedInteract.RelationshipCharacter.AddRelationship(matchedInteract.RelationshipDelta);
+                    UpdateRelationshipHearts(matchedInteract.RelationshipCharacter.RelationshipValue);
+                }
 
                 // --- เล่น SubConversation ตามคำตอบที่เลือก ---
                 foreach (var subNode in matchedInteract.SubConversation)

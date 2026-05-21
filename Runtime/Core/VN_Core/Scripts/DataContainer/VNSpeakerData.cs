@@ -14,6 +14,7 @@ namespace Kogetsu.Library.Core
         public VNCharacterSO Character;
 
         public VNNameDisplayMode NameDisplayMode = VNNameDisplayMode.Text;
+        public string CustomName;
 
         public List<VNAction> Actions = new();
     }

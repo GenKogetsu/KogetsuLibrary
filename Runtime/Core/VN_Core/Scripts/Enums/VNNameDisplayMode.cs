@@ -7,8 +7,9 @@
     /// </summary>
     public enum VNNameDisplayMode
     {
-        Icon,  
-        Text,  
-        None,  
+        Icon,
+        Text,
+        None,
+        CustomText,
     }
 }

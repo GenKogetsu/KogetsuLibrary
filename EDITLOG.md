@@ -44,6 +44,20 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.44] — 2026-05-21
+**AI:** Claude Sonnet 4.6
+
+### Changed
+- `VNSceneReader` — ลบ `_relationshipCharacter` field ออก; ใช้ speaker แรกของ phase เป็น source ของ `UpdateRelationshipHearts` แทน (ใน `SetupSpeakers`); อัปเดต hearts ทันทีหลัง `AddRelationship` ใน `ChoiceModeRotine`
+- `VNSceneReader.SetupSpeakers` — เพิ่ม `VNNameDisplayMode.CustomText` case: ใช้ `speakerData.CustomName` เป็นชื่อแสดงผล
+
+### Added
+- `VNNameDisplayMode.CustomText` — mode ใหม่ให้พิมพ์ชื่อผู้พูดเองได้
+- `VNSpeakerData.CustomName` (string) — แสดงในฟิลด์เมื่อเลือก `CustomText`
+- `VNSpeakerDataDrawer` — แสดง `Custom Name` field เมื่อ mode เป็น `CustomText` + อัปเดต height
+
+---
+
 ## [0.2.43] — 2026-05-20
 **AI:** Claude Sonnet 4.6
 

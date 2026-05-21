@@ -41,6 +41,17 @@ namespace Kogetsu.Library.Editor //new: fixed namespace (was UIEditor)
                     float h = EditorGUI.GetPropertyHeight(nameModeProp, true);
                     EditorGUI.PropertyField(new Rect(position.x, y, position.width, h), nameModeProp, new GUIContent("Name Display Mode"), true);
                     y += h + 2f;
+
+                    if (nameModeProp.enumValueIndex == (int)VNNameDisplayMode.CustomText)
+                    {
+                        var customNameProp = property.FindPropertyRelative("CustomName");
+                        if (customNameProp != null)
+                        {
+                            float ch = EditorGUI.GetPropertyHeight(customNameProp, true);
+                            EditorGUI.PropertyField(new Rect(position.x, y, position.width, ch), customNameProp, new GUIContent("Custom Name"), true);
+                            y += ch + 2f;
+                        }
+                    }
                 }
 
                 if (actionsProp != null)
@@ -63,7 +74,15 @@ namespace Kogetsu.Library.Editor //new: fixed namespace (was UIEditor)
             var actionsProp   = property.FindPropertyRelative("Actions");
 
             if (characterProp != null) totalHeight += EditorGUI.GetPropertyHeight(characterProp, true) + 2f;
-            if (nameModeProp  != null) totalHeight += EditorGUI.GetPropertyHeight(nameModeProp,  true) + 2f;
+            if (nameModeProp  != null)
+            {
+                totalHeight += EditorGUI.GetPropertyHeight(nameModeProp, true) + 2f;
+                if (nameModeProp.enumValueIndex == (int)VNNameDisplayMode.CustomText)
+                {
+                    var customNameProp = property.FindPropertyRelative("CustomName");
+                    if (customNameProp != null) totalHeight += EditorGUI.GetPropertyHeight(customNameProp, true) + 2f;
+                }
+            }
             if (actionsProp   != null) totalHeight += VNConversationNodeDrawer.GetArrayWithCacheHeight(actionsProp);
 
             return totalHeight;
