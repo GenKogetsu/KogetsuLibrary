@@ -44,6 +44,14 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.67] — 2026-05-21
+**AI:** Claude Sonnet 4.6
+
+### Changed
+- `VNSceneReader._destroyOnEnd` — เปลี่ยนจาก `List<GameObject>` เป็น `List<string>`; ใช้ `GameObject.Find(name)` ตอน `FinishScene` เพื่อ Destroy แทนการลาก reference ตรงๆ
+
+---
+
 ## [0.2.66] — 2026-05-21
 **AI:** Claude Sonnet 4.6
 
