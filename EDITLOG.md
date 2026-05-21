@@ -44,6 +44,14 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.54] — 2026-05-21
+**AI:** Claude Sonnet 4.6
+
+### Changed
+- `AudioManager` — เปลี่ยน click SFX จาก `Mouse.current` ใน `Update()` เป็น subscribe `BasicMovementInputObserverSO.OnInteractionChannel`; ลบ `Update()` ออก
+
+---
+
 ## [0.2.53] — 2026-05-21
 **AI:** Claude Sonnet 4.6
 
