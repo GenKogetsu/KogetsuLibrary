@@ -44,6 +44,14 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.57] — 2026-05-21
+**AI:** Claude Sonnet 4.6
+
+### Changed
+- `VNRelationshipResetter` — เปลี่ยนจาก `[ContextMenu]` เป็น `OnValidate()`; auto-scan `AssetDatabase` ทุกครั้งที่ inspector เปลี่ยนค่า; เพิ่มเฉพาะ SO ที่ยังไม่มีในลิส (ไม่ล้างค่า DefaultValue เดิม)
+
+---
+
 ## [0.2.56] — 2026-05-21
 **AI:** Claude Sonnet 4.6
 

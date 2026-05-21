@@ -25,18 +25,17 @@ namespace Kogetsu.Library.Core
         }
 
 #if UNITY_EDITOR
-        [ContextMenu("Find All VN Characters")]
-        private void FindAllCharacters()
+        private void OnValidate()
         {
-            _characters.Clear();
             string[] guids = UnityEditor.AssetDatabase.FindAssets("t:VNCharacterSO");
             foreach (var guid in guids)
             {
                 string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
                 var so = UnityEditor.AssetDatabase.LoadAssetAtPath<VNCharacterSO>(path);
-                if (so != null) _characters.Add(new CharacterResetData { Character = so, DefaultValue = 0 });
+                if (so == null) continue;
+                if (_characters.Exists(d => d.Character == so)) continue;
+                _characters.Add(new CharacterResetData { Character = so, DefaultValue = 0 });
             }
-            UnityEditor.EditorUtility.SetDirty(this);
         }
 #endif
     }
