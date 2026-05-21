@@ -9,6 +9,9 @@ namespace Kogetsu.Library.Core
         [Required]
         [SerializeField] private AudioObserverSO _audioObserver;
 
+        [Required]
+        [SerializeField] private BasicMovementInputObserverSO _basicObserverChannel;
+
         [Header("Audio Source")]
         [Required]
         [SerializeField] private AudioSource _sfx;
@@ -30,24 +33,20 @@ namespace Kogetsu.Library.Core
 
         private void OnEnable()
         {
-            _audioObserver.OnSfxChannel        += OnSfxSignal;
-            _audioObserver.OnBmgChannel        += OnBmgSignal;
-            _audioObserver.OnVoiceoverChannel  += OnVoiceoverSignal;
-            _audioObserver.OnTypingSfxChannel  += OnTypingSfxSignal;
+            _audioObserver.OnSfxChannel              += OnSfxSignal;
+            _audioObserver.OnBmgChannel              += OnBmgSignal;
+            _audioObserver.OnVoiceoverChannel        += OnVoiceoverSignal;
+            _audioObserver.OnTypingSfxChannel        += OnTypingSfxSignal;
+            _basicObserverChannel.OnLeftClickChannel += OnLeftClick;
         }
 
         private void OnDisable()
         {
-            _audioObserver.OnSfxChannel        -= OnSfxSignal;
-            _audioObserver.OnBmgChannel        -= OnBmgSignal;
-            _audioObserver.OnVoiceoverChannel  -= OnVoiceoverSignal;
-            _audioObserver.OnTypingSfxChannel  -= OnTypingSfxSignal;
-        }
-
-        private void Update()
-        {
-            if (Input.GetMouseButtonDown(0) && _clickSfx != null)
-                _click.PlayOneShot(_clickSfx);
+            _audioObserver.OnSfxChannel              -= OnSfxSignal;
+            _audioObserver.OnBmgChannel              -= OnBmgSignal;
+            _audioObserver.OnVoiceoverChannel        -= OnVoiceoverSignal;
+            _audioObserver.OnTypingSfxChannel        -= OnTypingSfxSignal;
+            _basicObserverChannel.OnLeftClickChannel -= OnLeftClick;
         }
 
         public void OnSfxSignal(AudioClip sound)
@@ -73,6 +72,11 @@ namespace Kogetsu.Library.Core
         {
             if (sound == null) { _typing.Stop(); _typing.clip = null; return; }
             _typing.PlayOneShot(sound);
+        }
+
+        private void OnLeftClick(ClickData _)
+        {
+            if (_clickSfx != null) _click.PlayOneShot(_clickSfx);
         }
     }
 }

@@ -44,6 +44,14 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.49] — 2026-05-21
+**AI:** Claude Sonnet 4.6
+
+### Changed
+- `AudioManager` — เปลี่ยนจาก `Input.GetMouseButtonDown` (legacy) เป็น subscribe `BasicMovementInputObserverSO.OnLeftClickChannel` (New Input System); ลบ `Update()` ออก; เพิ่ม `_basicObserverChannel` field
+
+---
+
 ## [0.2.48] — 2026-05-21
 **AI:** Claude Sonnet 4.6
 
