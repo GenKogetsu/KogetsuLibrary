@@ -44,6 +44,26 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.47] — 2026-05-21
+**AI:** Claude Sonnet 4.6
+
+### Added
+- `AudioObserverSO.OnTypingSfxChannel` (Action<AudioClip>) + `SendTypingSfxSignal` — channel แยกสำหรับเสียงพิมพ์ ควบคุม volume ได้อิสระจาก SFX ปกติ
+- `AudioObserverSO.OnClickSfxChannel` (Action<AudioClip>) + `SendClickSfxSignal` — channel แยกสำหรับเสียงคลิก/continue
+- `VNSceneReader.ClickSfx` (AudioClip) — ใส่เสียงคลิกใน inspector
+- `VNSceneReader.PlayTypingEffect` — เรียก `SendTypingSfxSignal(TypingSfx)` ทุก character ขณะพิมพ์
+- `VNSceneReader.HandleInput` — เรียก `SendClickSfxSignal(ClickSfx)` เมื่อผู้เล่นกด continue
+
+---
+
+## [0.2.46] — 2026-05-21
+**AI:** Claude Sonnet 4.6
+
+### Fixed
+- `VNCharacterController.OnDisable` — guard `if (EventBus.Instance != null)` ก่อน Unsubscribe เพื่อป้องกัน NullReferenceException เมื่อปิดเกมและ EventBus ถูก destroy ก่อน
+
+---
+
 ## [0.2.45] — 2026-05-21
 **AI:** Claude Sonnet 4.6
 

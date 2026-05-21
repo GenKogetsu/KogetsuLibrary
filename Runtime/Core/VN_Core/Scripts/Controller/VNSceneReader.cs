@@ -32,6 +32,7 @@ namespace Kogetsu.Library.Core
         [SerializeField] private AnimationClip _hideDialogueClip, _showDialogueClip;
 
         public AudioClip TypingSfx;
+        public AudioClip ClickSfx;
 
         [Header("UI References")]
         [SerializeField] private VNDialogueArea _standardDialogueArea;
@@ -262,6 +263,7 @@ namespace Kogetsu.Library.Core
             }
             if (!_waitForInput) return;
             _waitForInput = false;
+            _audioObserver?.SendClickSfxSignal(ClickSfx);
         }
 
         /// <summary>
@@ -826,6 +828,7 @@ namespace Kogetsu.Library.Core
 
                 visibleCount++;
                 _currentDialogueTMP.maxVisibleCharacters = visibleCount;
+                _audioObserver?.SendTypingSfxSignal(TypingSfx);
                 yield return new WaitForSeconds(interval);
             }
 
