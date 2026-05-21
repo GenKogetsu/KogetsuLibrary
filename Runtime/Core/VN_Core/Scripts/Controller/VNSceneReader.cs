@@ -47,7 +47,6 @@ namespace Kogetsu.Library.Core
         [SerializeField] private VNPlayerDataSO _playerData;
 
         [Header("Relationship Display")]
-        [SerializeField] private GameObject  _relationshipDisplayRoot;
         [SerializeField] private List<Image> _relationshipHearts = new();
         [SerializeField] private float       _blinkSpeed         = 2f;
         [SerializeField] private float       _blinkDuration      = 20f;
@@ -95,14 +94,10 @@ namespace Kogetsu.Library.Core
 
         private IEnumerator RelationshipBlinkRoutine(int value)
         {
-            // ใช้ Image.enabled เพื่อ show/hide — ไม่แตะ SetActive รายตัว
-            // หัวใจ i < value → เปิด, i >= value → ปิด
-            for (int i = 0; i < _relationshipHearts.Count; i++)
-            {
-                if (_relationshipHearts[i] == null) continue;
-                _relationshipHearts[i].enabled = i < value;
-            }
-            if (_relationshipDisplayRoot != null) _relationshipDisplayRoot.SetActive(true);
+            // เปิดเฉพาะหัวใจตาม value (ที่เหลือปิดไว้ใน scene อยู่แล้ว)
+            int count = Mathf.Min(value, _relationshipHearts.Count);
+            for (int i = 0; i < count; i++)
+                if (_relationshipHearts[i] != null) _relationshipHearts[i].enabled = true;
 
             float elapsed    = 0f;
             float halfPeriod = 0.5f / Mathf.Max(_blinkSpeed, 0.1f);
@@ -115,16 +110,15 @@ namespace Kogetsu.Library.Core
                 {
                     visible     = !visible;
                     nextToggle += halfPeriod;
-                    for (int i = 0; i < value && i < _relationshipHearts.Count; i++)
+                    for (int i = 0; i < count; i++)
                         if (_relationshipHearts[i] != null) _relationshipHearts[i].enabled = visible;
                 }
                 yield return null;
             }
 
-            if (_relationshipDisplayRoot != null)
-                _relationshipDisplayRoot.SetActive(false);
-            else
-                foreach (var h in _relationshipHearts) if (h != null) h.enabled = false;
+            // ปิดทั้งหมดหลังหมดเวลา
+            for (int i = 0; i < count; i++)
+                if (_relationshipHearts[i] != null) _relationshipHearts[i].enabled = false;
             _blinkCoroutine = null;
         }
 

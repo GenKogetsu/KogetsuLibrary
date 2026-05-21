@@ -44,6 +44,17 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.52] — 2026-05-21
+**AI:** Claude Sonnet 4.6
+
+### Fixed
+- `VNSceneReader.RelationshipBlinkRoutine` — ใช้ assumption ที่ถูกต้อง: หัวใจทุกอันปิดไว้ใน scene ตั้งแต่แรก; เปิดเฉพาะ 0..value-1 แล้ว blink จากนั้นปิดทั้งหมดหลังหมดเวลา; ลบ logic ที่พยายามซ่อนหัวใจที่เกิน value ออก (ไม่จำเป็น)
+
+### Removed
+- `VNSceneReader._relationshipDisplayRoot` — ไม่ต้องใช้แล้วเพราะ hearts จัดการผ่าน `Image.enabled` ล้วนๆ
+
+---
+
 ## [0.2.51] — 2026-05-21
 **AI:** Claude Sonnet 4.6
 
