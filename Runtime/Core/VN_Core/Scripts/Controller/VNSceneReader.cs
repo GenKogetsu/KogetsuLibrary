@@ -820,8 +820,9 @@ namespace Kogetsu.Library.Core
                 if (_skipTyping)
                 {
                     _currentDialogueTMP.maxVisibleCharacters = totalVisibleCharacters;
-                    _audioObserver?.SendSfxSignal(null);       //new: null-safe
-                    _audioObserver?.SendVoiceoverSignal(null);  //new: null-safe
+                    _audioObserver?.SendSfxSignal(null);
+                    _audioObserver?.SendVoiceoverSignal(null);
+                    _audioObserver?.SendTypingSfxSignal(null);
                     EventBus.Instance.Publish(new VNTypingSkipEvent(_currentConversationIndex, _currentPhase));
                     break;
                 }
@@ -832,6 +833,7 @@ namespace Kogetsu.Library.Core
                 yield return new WaitForSeconds(interval);
             }
 
+            _audioObserver?.SendTypingSfxSignal(null);
             _isTyping = false;
             _waitForInput = true;
             while (_waitForInput) yield return null;
