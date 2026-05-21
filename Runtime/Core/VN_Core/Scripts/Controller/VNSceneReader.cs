@@ -662,6 +662,7 @@ namespace Kogetsu.Library.Core
 #if UNITY_EDITOR
                 Debug.Log("<b><color=#A5D6A7>[VN Engine]</color></b> VNScene Finished!");
 #endif
+                BasicSceneEffectController.Instance.LoadNextScene(1);
                 yield break;
             }
         }

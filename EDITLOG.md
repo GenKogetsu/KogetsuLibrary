@@ -44,6 +44,14 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.59] — 2026-05-21
+**AI:** Claude Sonnet 4.6
+
+### Fixed
+- `VNSceneReader.ChoiceModeRotine` — ลืมเรียก `BasicSceneEffectController.Instance.LoadNextScene(1)` ตอนที่ choice node เป็น conversation สุดท้าย; มีแค่ `yield break` ทำให้ไม่โหลด scene ถัดไป
+
+---
+
 ## [0.2.58] — 2026-05-21
 **AI:** Claude Sonnet 4.6
 
