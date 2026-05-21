@@ -55,6 +55,12 @@ namespace Kogetsu.Library.Core
             OnRelationshipChanged?.Invoke(_relationshipValue);
         }
 
+        public void ResetRelationship()
+        {
+            _relationshipValue = 0;
+            OnRelationshipChanged?.Invoke(_relationshipValue);
+        }
+
         [Header("Character Assets")]
         public List<VNEmotionData> Emotions = new();
         public List<VNBehaviorAnimationData> BehaviorAnimations = new();

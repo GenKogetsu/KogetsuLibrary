@@ -44,6 +44,14 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.55] — 2026-05-21
+**AI:** Claude Sonnet 4.6
+
+### Added
+- `VNCharacterSO.ResetRelationship()` — reset `_relationshipValue` เป็น 0 แล้ว invoke `OnRelationshipChanged`
+
+---
+
 ## [0.2.54] — 2026-05-21
 **AI:** Claude Sonnet 4.6
 
