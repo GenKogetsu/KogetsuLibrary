@@ -44,6 +44,23 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.45] — 2026-05-21
+**AI:** Claude Sonnet 4.6
+
+### Changed
+- `VNSceneReader` — เปลี่ยน relationship display จาก static `UpdateRelationshipHearts` เป็นระบบ blink-then-hide: หัวใจซ่อนตลอดเวลา, แสดงและกระพริบเฉพาะเมื่อ `ChangeRelationship` ถูกเรียก, หลังครบ `_blinkDuration` (default 20s) ซ่อนอัตโนมัติ
+- `VNSceneReader.SetupSpeakers` — ลบการเรียก `UpdateRelationshipHearts` ออก (ไม่แสดงหัวใจเมื่อเปลี่ยน phase)
+- `VNSceneReader.ChoiceModeRotine` — เปลี่ยนจาก `UpdateRelationshipHearts` เป็น `ShowRelationshipBlink`
+
+### Added
+- `VNSceneReader._relationshipDisplayRoot` (GameObject, optional) — parent container ของ hearts, ถ้าใส่จะ SetActive ทั้งกลุ่ม; ถ้าไม่ใส่จะ SetActive รายตัว
+- `VNSceneReader._blinkSpeed` (float, default 2) — ความเร็วกระพริบ (ครั้งต่อวินาที)
+- `VNSceneReader._blinkDuration` (float, default 20) — ระยะเวลาแสดงผล (วินาที)
+- `VNSceneReader.ShowRelationshipBlink(int)` — เริ่ม coroutine, หยุด coroutine เก่าก่อนถ้ามี
+- `VNSceneReader.RelationshipBlinkRoutine(int)` — แสดงหัวใจตาม value, loop กระพริบด้วย `Image.enabled`, ซ่อนหลังครบ duration
+
+---
+
 ## [0.2.44] — 2026-05-21
 **AI:** Claude Sonnet 4.6
 

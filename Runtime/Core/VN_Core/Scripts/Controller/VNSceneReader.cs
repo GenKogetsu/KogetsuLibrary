@@ -47,7 +47,11 @@ namespace Kogetsu.Library.Core
         [SerializeField] private VNPlayerDataSO _playerData;
 
         [Header("Relationship Display")]
+        [SerializeField] private GameObject  _relationshipDisplayRoot;
         [SerializeField] private List<Image> _relationshipHearts = new();
+        [SerializeField] private float       _blinkSpeed         = 2f;
+        [SerializeField] private float       _blinkDuration      = 20f;
+        private Coroutine _blinkCoroutine;
 
         private readonly Queue<string>          _logViewQueue       = new();
         private readonly HashSet<VNCharacterSO>  _previousSpeakerSOs = new();
@@ -83,13 +87,44 @@ namespace Kogetsu.Library.Core
         private void OnEnable() => _basicObserverChannel.OnInteractionChannel += HandleInput;
         private void OnDisable() => _basicObserverChannel.OnInteractionChannel -= HandleInput;
 
-        private void UpdateRelationshipHearts(int value)
+        private void ShowRelationshipBlink(int value)
+        {
+            if (_blinkCoroutine != null) StopCoroutine(_blinkCoroutine);
+            _blinkCoroutine = StartCoroutine(RelationshipBlinkRoutine(value));
+        }
+
+        private IEnumerator RelationshipBlinkRoutine(int value)
         {
             for (int i = 0; i < _relationshipHearts.Count; i++)
             {
                 if (_relationshipHearts[i] == null) continue;
                 _relationshipHearts[i].gameObject.SetActive(i < value);
+                _relationshipHearts[i].enabled = true;
             }
+            if (_relationshipDisplayRoot != null) _relationshipDisplayRoot.SetActive(true);
+
+            float elapsed    = 0f;
+            float halfPeriod = 0.5f / Mathf.Max(_blinkSpeed, 0.1f);
+            float nextToggle = halfPeriod;
+            bool  visible    = true;
+            while (elapsed < _blinkDuration)
+            {
+                elapsed += Time.deltaTime;
+                if (elapsed >= nextToggle)
+                {
+                    visible     = !visible;
+                    nextToggle += halfPeriod;
+                    for (int i = 0; i < _relationshipHearts.Count && i < value; i++)
+                        if (_relationshipHearts[i] != null) _relationshipHearts[i].enabled = visible;
+                }
+                yield return null;
+            }
+
+            if (_relationshipDisplayRoot != null)
+                _relationshipDisplayRoot.SetActive(false);
+            else
+                foreach (var h in _relationshipHearts) if (h != null) h.gameObject.SetActive(false);
+            _blinkCoroutine = null;
         }
 
         private void Awake()
@@ -335,12 +370,6 @@ namespace Kogetsu.Library.Core
             _previousSpeakerSOs.Clear();
             _previousSpeakerSOs.UnionWith(newSpeakerSOs);
             _actionCoroutines.Clear();
-
-            // อัปเดต relationship hearts จาก speaker แรกที่มี character
-            foreach (var sd in phase.Speakers)
-            {
-                if (sd.Character != null) { UpdateRelationshipHearts(sd.Character.RelationshipValue); break; }
-            }
 
             if (_currentDialogueType is VNDialogueMode.None or VNDialogueMode.Cinematic or VNDialogueMode.LogView)
                 return namesBuilder;
@@ -613,7 +642,7 @@ namespace Kogetsu.Library.Core
                 if (matchedInteract.ChangeRelationship && matchedInteract.RelationshipCharacter != null)
                 {
                     matchedInteract.RelationshipCharacter.AddRelationship(matchedInteract.RelationshipDelta);
-                    UpdateRelationshipHearts(matchedInteract.RelationshipCharacter.RelationshipValue);
+                    ShowRelationshipBlink(matchedInteract.RelationshipCharacter.RelationshipValue);
                 }
 
                 // --- เล่น SubConversation ตามคำตอบที่เลือก ---
