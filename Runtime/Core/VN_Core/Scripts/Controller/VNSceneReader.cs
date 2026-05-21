@@ -50,6 +50,9 @@ namespace Kogetsu.Library.Core
         [SerializeField] private bool  _autoAdvance      = false;
         [SerializeField] private float _autoAdvanceDelay = 2f;
 
+        [Header("Destroy On End")]
+        [SerializeField] private List<GameObject> _destroyOnEnd = new();
+
         [Header("Relationship Display")]
         [SerializeField] private List<Image> _relationshipHearts = new();
         [SerializeField] private float       _blinkSpeed         = 2f;
@@ -95,7 +98,11 @@ namespace Kogetsu.Library.Core
         private void FinishScene()
         {
             if (_currentScene.UseEndScene)
+            {
+                foreach (var obj in _destroyOnEnd)
+                    if (obj != null) Destroy(obj);
                 BasicSceneEffectController.Instance.LoadScene(_currentScene.EndSceneIndex);
+            }
             else
                 BasicSceneEffectController.Instance.LoadNextScene(1);
         }

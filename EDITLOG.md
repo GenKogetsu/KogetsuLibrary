@@ -44,6 +44,14 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.66] — 2026-05-21
+**AI:** Claude Sonnet 4.6
+
+### Added
+- `VNSceneReader._destroyOnEnd` (List<GameObject>) — ลาก obj ที่ต้องการ Destroy ใส่ list; จะ Destroy ทุกชิ้นเมื่อ `UseEndScene = true` ก่อน LoadScene
+
+---
+
 ## [0.2.65] — 2026-05-21
 **AI:** Claude Sonnet 4.6
 
