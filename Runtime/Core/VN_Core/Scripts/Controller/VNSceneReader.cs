@@ -46,6 +46,10 @@ namespace Kogetsu.Library.Core
         [Header("Player Data")]
         [SerializeField] private VNPlayerDataSO _playerData;
 
+        [Header("Auto Advance")]
+        [SerializeField] private bool  _autoAdvance      = false;
+        [SerializeField] private float _autoAdvanceDelay = 2f;
+
         [Header("Relationship Display")]
         [SerializeField] private List<Image> _relationshipHearts = new();
         [SerializeField] private float       _blinkSpeed         = 2f;
@@ -836,7 +840,20 @@ namespace Kogetsu.Library.Core
             _audioObserver?.SendTypingSfxSignal(null);
             _isTyping = false;
             _waitForInput = true;
-            while (_waitForInput) yield return null;
+            if (_autoAdvance)
+            {
+                float t = 0f;
+                while (_waitForInput && t < _autoAdvanceDelay)
+                {
+                    t += Time.deltaTime;
+                    yield return null;
+                }
+                _waitForInput = false;
+            }
+            else
+            {
+                while (_waitForInput) yield return null;
+            }
         }
 
         /// <summary>

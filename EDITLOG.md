@@ -44,6 +44,16 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.58] — 2026-05-21
+**AI:** Claude Sonnet 4.6
+
+### Added
+- `VNSceneReader._autoAdvance` (bool, default false) — เปิด/ปิดระบบ auto advance
+- `VNSceneReader._autoAdvanceDelay` (float, default 2) — หน่วงกี่วินาทีหลังข้อความแสดงครบก่อนไปบทถัดไป
+- `VNSceneReader.PlayTypingEffect` — ถ้า `_autoAdvance` เปิด จะนับเวลา `_autoAdvanceDelay` แล้วไปเองโดยไม่รอ input; ถ้าผู้เล่นคลิกก่อนครบเวลาก็ยังข้ามได้ตามปกติ
+
+---
+
 ## [0.2.57] — 2026-05-21
 **AI:** Claude Sonnet 4.6
 
