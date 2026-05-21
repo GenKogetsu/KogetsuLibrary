@@ -44,6 +44,18 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.48] — 2026-05-21
+**AI:** Claude Sonnet 4.6
+
+### Changed
+- `AudioManager` — เพิ่ม `_typing` + `_click` AudioSource; subscribe `OnTypingSfxChannel`; เพิ่ม `OnDisable` unsubscribe ทุก channel; เพิ่ม `Update()` ตรวจ `Input.GetMouseButtonDown(0)` เพื่อเล่น `_clickSfx` globally (ทุก Scene คลิกที่ไหนก็ได้)
+- `VNSceneReader` — ลบ `ClickSfx` field และ `SendClickSfxSignal` call ออก (AudioManager จัดการ click แทน)
+
+### Added
+- `AudioManager._clickSfx` (AudioClip, Inspector) — clip ที่เล่นทุกครั้งที่คลิกซ้าย
+
+---
+
 ## [0.2.47] — 2026-05-21
 **AI:** Claude Sonnet 4.6
 
