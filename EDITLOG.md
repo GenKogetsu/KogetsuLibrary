@@ -44,6 +44,15 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.64] — 2026-05-21
+**AI:** Claude Sonnet 4.6
+
+### Added
+- `LoadSceneOnClick` — MonoBehaviour; `_sceneName` field; `OnClick()` เรียก `LoadScene(name)`
+- `LoadNextSceneOnClick` — MonoBehaviour; `OnClick()` เรียก `LoadNextScene(1)`
+
+---
+
 ## [0.2.63] — 2026-05-21
 **AI:** Claude Sonnet 4.6
 
