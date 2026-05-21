@@ -90,6 +90,8 @@ namespace Kogetsu.Library.Core
         private void OnEnable() => _basicObserverChannel.OnInteractionChannel += HandleInput;
         private void OnDisable() => _basicObserverChannel.OnInteractionChannel -= HandleInput;
 
+        public void ToggleAutoAdvance() => _autoAdvance = !_autoAdvance;
+
         private void FinishScene()
         {
             if (_currentScene.UseEndScene && !string.IsNullOrEmpty(_currentScene.EndSceneName))

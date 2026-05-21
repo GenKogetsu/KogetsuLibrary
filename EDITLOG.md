@@ -44,6 +44,14 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.62] — 2026-05-21
+**AI:** Claude Sonnet 4.6
+
+### Added
+- `VNSceneReader.ToggleAutoAdvance()` — public method toggle `_autoAdvance`; ค่าเริ่มต้น false; ลาก method ใส่ Button OnClick ได้เลย
+
+---
+
 ## [0.2.61] — 2026-05-21
 **AI:** Claude Sonnet 4.6
 
