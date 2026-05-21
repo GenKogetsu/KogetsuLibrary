@@ -90,6 +90,14 @@ namespace Kogetsu.Library.Core
         private void OnEnable() => _basicObserverChannel.OnInteractionChannel += HandleInput;
         private void OnDisable() => _basicObserverChannel.OnInteractionChannel -= HandleInput;
 
+        private void FinishScene()
+        {
+            if (_currentScene.UseEndScene && !string.IsNullOrEmpty(_currentScene.EndSceneName))
+                BasicSceneEffectController.Instance.LoadScene(_currentScene.EndSceneName);
+            else
+                FinishScene();
+        }
+
         private void ShowRelationshipBlink(int value)
         {
             if (_blinkCoroutine != null) StopCoroutine(_blinkCoroutine);
@@ -587,7 +595,7 @@ namespace Kogetsu.Library.Core
 #if UNITY_EDITOR
                 Debug.Log("<b><color=#A5D6A7>[VN Engine]</color></b> VNScene Finished!");
 #endif
-                BasicSceneEffectController.Instance.LoadNextScene(1);
+                FinishScene();
 
                 yield break;
             }
@@ -662,7 +670,7 @@ namespace Kogetsu.Library.Core
 #if UNITY_EDITOR
                 Debug.Log("<b><color=#A5D6A7>[VN Engine]</color></b> VNScene Finished!");
 #endif
-                BasicSceneEffectController.Instance.LoadNextScene(1);
+                FinishScene();
                 yield break;
             }
         }

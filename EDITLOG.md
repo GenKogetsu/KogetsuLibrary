@@ -44,6 +44,15 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.60] — 2026-05-21
+**AI:** Claude Sonnet 4.6
+
+### Added
+- `VNSceneSO.UseEndScene` (bool) + `EndSceneName` (string) — ถ้าติด flag จะโหลด scene ที่ระบุชื่อไว้แทน scene ถัดไปใน build index
+- `VNSceneReader.FinishScene()` — helper รวม logic ตรวจ `UseEndScene`: `true` → `LoadScene(EndSceneName)`, `false` → `LoadNextScene(1)`; ใช้แทน 2 จุดเดิมใน `DialogueModeRotine` และ `ChoiceModeRotine`
+
+---
+
 ## [0.2.59] — 2026-05-21
 **AI:** Claude Sonnet 4.6
 
