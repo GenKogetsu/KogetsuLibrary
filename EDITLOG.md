@@ -44,6 +44,14 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.53] — 2026-05-21
+**AI:** Claude Sonnet 4.6
+
+### Added
+- `VNSceneReader.PlayTypingEffect` — ถ้า dialogue text ว่างเปล่า (`totalVisibleCharacters == 0`) จะรอ 1 วินาทีแล้วข้ามไป phase ถัดไปโดยอัตโนมัติ แทนที่จะรอ player input
+
+---
+
 ## [0.2.52] — 2026-05-21
 **AI:** Claude Sonnet 4.6
 

@@ -802,6 +802,13 @@ namespace Kogetsu.Library.Core
             _currentDialogueTMP.ForceMeshUpdate();
             int totalVisibleCharacters = _currentDialogueTMP.textInfo.characterCount;
 
+            if (totalVisibleCharacters == 0)
+            {
+                _isTyping = false;
+                yield return new WaitForSeconds(1f);
+                yield break;
+            }
+
             // new: guard TypingSpeed ≤ 0 → instant (ป้องกัน 1f/0 = Infinity → WaitForSeconds ค้างตลอดไป)
             float speed = (phase.TextSettings != null && phase.TextSettings.TypingSpeed > 0f)
                 ? phase.TextSettings.TypingSpeed
