@@ -44,6 +44,16 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.68] — 2026-05-21
+**AI:** Claude Sonnet 4.6
+
+### Added
+- `CameraFollow3D._enableMouseLook` (bool, default true) — เปิด/ปิดการหันกล้องตามเมาส์; ถ้าปิดกล้องยังคง follow target และ zoom ได้ตามปกติ
+- `CameraFollow3D.ToggleMouseLook()` — toggle เปิด/ปิด
+- `CameraFollow3D.SetMouseLook(bool)` — ตั้งค่าตรงๆ
+
+---
+
 ## [0.2.67] — 2026-05-21
 **AI:** Claude Sonnet 4.6
 

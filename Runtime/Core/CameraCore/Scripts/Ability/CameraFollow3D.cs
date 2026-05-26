@@ -10,6 +10,7 @@ namespace Kogetsu.Library.DesignPatternCore
         [SerializeField] private bool _executeAlways = true;
 
         [Header("Orbit Camera Settings")]
+        [SerializeField] private bool  _enableMouseLook  = true;
         [SerializeField] private float _mouseSensitivity = 0.2f;
         [SerializeField] private float _smoothSpeed = 15f;
 
@@ -26,6 +27,9 @@ namespace Kogetsu.Library.DesignPatternCore
         private float _pitch = 15f;
         private float _currentDistance = 5f;
 
+
+        public void ToggleMouseLook() => _enableMouseLook = !_enableMouseLook;
+        public void SetMouseLook(bool enable) => _enableMouseLook = enable;
 
         private void Start()
         {
@@ -49,14 +53,16 @@ namespace Kogetsu.Library.DesignPatternCore
 
             if (Mouse.current != null)
             {
-                mouseDelta = Mouse.current.delta.ReadValue();
+                if (_enableMouseLook) mouseDelta = Mouse.current.delta.ReadValue();
                 scrollDelta = Mouse.current.scroll.ReadValue().y;
             }
 
-            _yaw += mouseDelta.x * _mouseSensitivity;
-            _pitch -= mouseDelta.y * _mouseSensitivity;
-
-            _pitch = Mathf.Clamp(_pitch, _minPitch, _maxPitch);
+            if (_enableMouseLook)
+            {
+                _yaw   += mouseDelta.x * _mouseSensitivity;
+                _pitch -= mouseDelta.y * _mouseSensitivity;
+                _pitch  = Mathf.Clamp(_pitch, _minPitch, _maxPitch);
+            }
 
             if (scrollDelta != 0f)
             {
