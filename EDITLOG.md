@@ -44,6 +44,14 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.69] — 2026-05-21
+**AI:** Claude Sonnet 4.6
+
+### Added
+- `CameraFollow3D._rotationOffset` (Vector3, default zero) — offset บวกเข้ากับ rotation สุดท้าย: x=pitch offset, y=yaw offset, z=roll offset
+
+---
+
 ## [0.2.68] — 2026-05-21
 **AI:** Claude Sonnet 4.6
 

@@ -18,6 +18,9 @@ namespace Kogetsu.Library.DesignPatternCore
         [SerializeField] private float _minPitch = -20f;
         [SerializeField] private float _maxPitch = 70f;
 
+        [Header("Rotation Offset")]
+        [SerializeField] private Vector3 _rotationOffset = Vector3.zero;
+
         [Header("Zoom Settings")]
         [SerializeField] private float _zoomSensitivity = 0.01f;
         [SerializeField] private float _minDistance = 0f;
@@ -71,7 +74,7 @@ namespace Kogetsu.Library.DesignPatternCore
                 Offset.z = -_currentDistance;
             }
 
-            Quaternion targetRotation = Quaternion.Euler(_pitch, _yaw, 0f);
+            Quaternion targetRotation = Quaternion.Euler(_pitch + _rotationOffset.x, _yaw + _rotationOffset.y, _rotationOffset.z);
 
             Vector3 lookTarget = FollowTarget.position + new Vector3(0, Offset.y, 0);
 
