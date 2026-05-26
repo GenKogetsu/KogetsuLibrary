@@ -36,8 +36,8 @@ namespace Kogetsu.Library.DesignPatternCore
 
         private void Start()
         {
-            _yaw = transform.eulerAngles.y;
-            _pitch = transform.eulerAngles.x;
+            _yaw   = 0f;
+            _pitch = 0f;
 
             _currentDistance = Mathf.Abs(Offset.z);
 

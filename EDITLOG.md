@@ -44,6 +44,14 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.71] — 2026-05-26
+**AI:** Claude Sonnet 4.6
+
+### Fixed
+- `CameraFollow3D.Start()` — เปลี่ยนจากดึงค่า `transform.eulerAngles` มาใส่ `_yaw`/`_pitch` เป็นตั้งค่า `0f` ตรงๆ ทำให้ rotation เริ่มต้นเป็น 0,0,0 เสมอ
+
+---
+
 ## [0.2.70] — 2026-05-26
 **AI:** Claude Sonnet 4.6
 
