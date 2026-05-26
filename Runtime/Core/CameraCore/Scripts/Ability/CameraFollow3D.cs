@@ -9,6 +9,9 @@ namespace Kogetsu.Library.DesignPatternCore
     {
         [SerializeField] private bool _executeAlways = true;
 
+        [Header("Transform Offset")]
+        [SerializeField] private Vector3 _rotationOffset = Vector3.zero;
+
         [Header("Orbit Camera Settings")]
         [SerializeField] private bool  _enableMouseLook  = true;
         [SerializeField] private float _mouseSensitivity = 0.2f;
@@ -18,16 +21,13 @@ namespace Kogetsu.Library.DesignPatternCore
         [SerializeField] private float _minPitch = -20f;
         [SerializeField] private float _maxPitch = 70f;
 
-        [Header("Rotation Offset")]
-        [SerializeField] private Vector3 _rotationOffset = Vector3.zero;
-
         [Header("Zoom Settings")]
         [SerializeField] private float _zoomSensitivity = 0.01f;
         [SerializeField] private float _minDistance = 0f;
         [SerializeField] private float _maxDistance = 15f;
 
         private float _yaw = 0f;
-        private float _pitch = 15f;
+        private float _pitch = 0f;
         private float _currentDistance = 5f;
 
 
@@ -78,7 +78,7 @@ namespace Kogetsu.Library.DesignPatternCore
 
             Vector3 lookTarget = FollowTarget.position + new Vector3(0, Offset.y, 0);
 
-            Vector3 desiredPosition = lookTarget + (targetRotation * new Vector3(0, 0, Offset.z));
+            Vector3 desiredPosition = lookTarget + (targetRotation * new Vector3(Offset.x, 0, Offset.z));
 
             transform.SetPositionAndRotation(Vector3.Lerp(transform.position, desiredPosition, _smoothSpeed * Time.deltaTime), Quaternion.Slerp(transform.rotation, targetRotation, _smoothSpeed * Time.deltaTime));
         }

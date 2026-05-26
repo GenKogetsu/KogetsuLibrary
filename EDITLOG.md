@@ -44,6 +44,19 @@ Version ปัจจุบันดูได้ที่ `package.json` → `"ve
 
 ---
 
+## [0.2.70] — 2026-05-26
+**AI:** Claude Sonnet 4.6
+
+### Fixed
+- `CameraFollow3D` — `Offset.x` ไม่มีผลต่อ position เพราะ hardcode `new Vector3(0, 0, Offset.z)` แก้เป็น `new Vector3(Offset.x, 0, Offset.z)`
+- `CameraFollow3D._pitch` default เปลี่ยนจาก `15f` → `0f`
+- `FollowAbility.Offset` default เปลี่ยนจาก `new(0, 10, -10)` → `new(0, 0, 0)`
+
+### Changed
+- `CameraFollow3D` — ย้าย `_rotationOffset` ขึ้นมาเป็น field แรกใต้ header **"Transform Offset"** จัดกลุ่ม position offset (`Offset` จาก parent) และ rotation offset ไว้ด้วยกันในใน Inspector
+
+---
+
 ## [0.2.69] — 2026-05-21
 **AI:** Claude Sonnet 4.6
 

@@ -10,7 +10,7 @@
 
         [SerializeField] protected bool CameraLookat;
 
-        public Vector3 Offset = new(0, 10, -10);
+        public Vector3 Offset = new(0, 0, 0);
 
         protected virtual void LateUpdate()
         {
